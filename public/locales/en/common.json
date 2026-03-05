@@ -1,0 +1,21 @@
+{
+    "nav": {
+        "home": "Home",
+        "categories": "Categories",
+        "about": "About",
+        "contact": "Contact",
+        "login": "Login",
+        "register": "Register"
+    },
+    "actions": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "loading": "Loading..."
+    },
+    "languages": {
+        "vi": "Vietnamese",
+        "en": "English"
+    }
+}

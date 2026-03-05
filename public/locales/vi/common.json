@@ -1,0 +1,21 @@
+{
+    "nav": {
+        "home": "Trang chủ",
+        "categories": "Danh mục",
+        "about": "Về chúng tôi",
+        "contact": "Liên hệ",
+        "login": "Đăng nhập",
+        "register": "Đăng ký"
+    },
+    "actions": {
+        "save": "Lưu",
+        "cancel": "Hủy",
+        "delete": "Xóa",
+        "edit": "Sửa",
+        "loading": "Đang tải..."
+    },
+    "languages": {
+        "vi": "Tiếng Việt",
+        "en": "Tiếng Anh"
+    }
+}
