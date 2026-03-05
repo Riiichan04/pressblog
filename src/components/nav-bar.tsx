@@ -21,6 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/context/auth-context";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -46,7 +47,11 @@ export default function Navbar() {
         return name.split(" ").map(n => n[0]).join("").toUpperCase().substring(0, 2);
     };
 
-    const colors = ["bg-orange-500", "bg-blue-500", "bg-green-500", "bg-purple-500"];
+    const colors = [
+        "bg-red-500", "bg-orange-500", "bg-amber-500",
+        "bg-emerald-500", "bg-blue-500", "bg-indigo-500",
+        "bg-violet-500", "bg-rose-500"
+    ]
     const colorIndex = (user?.username?.charCodeAt(0) || 0) % colors.length;
 
     return (
@@ -101,83 +106,89 @@ export default function Navbar() {
                         <span className="uppercase text-xs font-bold">{i18n.language}</span>
                     </Button>
 
-
-                    {user ? (
-                        // User button
-                        <>
-                            {/* Notification */}
-                            <Button variant="ghost" size="icon" className="relative cursor-pointer">
-                                <Bell className="h-5 w-5" />
-                                {/* <span className="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-destructive"></span> */}
-                            </Button>
-
-                            {/* Write */}
-                            <Link href="/write" className="hidden md:block">
-                                <Button className="gap-2 rounded-full px-5 cursor-pointer">
-                                    <PenSquare className="h-4 w-4" />
-                                    {t("navbar.write")}
+                    {mounted ?
+                        user ? (
+                            // User button
+                            <>
+                                {/* Notification */}
+                                <Button variant="ghost" size="icon" className="relative cursor-pointer">
+                                    <Bell className="h-5 w-5" />
+                                    {/* <span className="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-destructive"></span> */}
                                 </Button>
-                            </Link>
 
-                            {/* User Menu */}
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="relative h-10 w-10 rounded-full border cursor-pointer">
-                                        <Avatar className="h-10 w-10">
-                                            <AvatarImage src={user.avatar || ""} alt={user.username} />
-                                            <AvatarFallback className={`${colors[colorIndex]} text-white`}>
-                                                {user ? getFallback(user.displayName || user.username) : "U"}
-                                            </AvatarFallback>
-                                        </Avatar>
+                                {/* Write */}
+                                <Link href="/write" className="hidden md:block">
+                                    <Button className="gap-2 rounded-full px-5 cursor-pointer">
+                                        <PenSquare className="h-4 w-4" />
+                                        {t("navbar.write")}
                                     </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-56" align="end">
-                                    <DropdownMenuLabel className="font-normal">
-                                        <div className="flex items-center gap-2">
-                                            <Avatar className="h-8 w-8 shrink-0">
+                                </Link>
+
+                                {/* User Menu */}
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="relative h-10 w-10 rounded-full border cursor-pointer">
+                                            <Avatar className="h-10 w-10">
                                                 <AvatarImage src={user.avatar || ""} alt={user.username} />
                                                 <AvatarFallback className={`${colors[colorIndex]} text-white`}>
                                                     {user ? getFallback(user.displayName || user.username) : "U"}
                                                 </AvatarFallback>
                                             </Avatar>
-                                            <div className="flex flex-col space-y-1 min-w-0">
-                                                <p className="text-sm font-medium leading-tight truncate">
-                                                    {user.displayName || user.username}
-                                                </p>
-                                                <p className="text-xs leading-tight text-muted-foreground truncate">
-                                                    {user.email}
-                                                </p>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-56" align="end">
+                                        <DropdownMenuLabel className="font-normal">
+                                            <div className="flex items-center gap-2">
+                                                <Avatar className="h-8 w-8 shrink-0">
+                                                    <AvatarImage src={user.avatar || ""} alt={user.username} />
+                                                    <AvatarFallback className={`${colors[colorIndex]} text-white`}>
+                                                        {user ? getFallback(user.displayName || user.username) : "U"}
+                                                    </AvatarFallback>
+                                                </Avatar>
+                                                <div className="flex flex-col space-y-1 min-w-0">
+                                                    <p className="text-sm font-medium leading-tight truncate">
+                                                        {user.displayName || user.username}
+                                                    </p>
+                                                    <p className="text-xs leading-tight text-muted-foreground truncate">
+                                                        {user.email}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem className="cursor-pointer">
-                                        <User className="mr-2 h-4 w-4" /> {t("navbar.profile")}
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">
-                                        <Settings className="mr-2 h-4 w-4" /> {t("navbar.settings")}
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem
-                                        className="text-destructive focus:bg-destructive/10 cursor-pointer"
-                                        onClick={() => logout()}
-                                    >
-                                        <LogOut className="mr-2 h-4 w-4 text-destructive" /> {t("navbar.logout")}
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </>
-                    ) : (
-                        //Login and register button
-                        <div className="flex items-center gap-2">
-                            <Link href="/login">
-                                <Button className="cursor-pointer" variant="ghost">{t("navbar.login")}</Button>
-                            </Link>
-                            <Link href="/register">
-                                <Button className="cursor-pointer">{t("navbar.get_started")}</Button>
-                            </Link>
+                                        </DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem className="cursor-pointer">
+                                            <User className="mr-2 h-4 w-4" /> {t("navbar.profile")}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer">
+                                            <Settings className="mr-2 h-4 w-4" /> {t("navbar.settings")}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem
+                                            className="text-destructive focus:bg-destructive/10 cursor-pointer"
+                                            onClick={() => logout()}
+                                        >
+                                            <LogOut className="mr-2 h-4 w-4 text-destructive" /> {t("navbar.logout")}
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </>
+                        ) : (
+                            //Login and register button
+                            <div className="flex items-center gap-2">
+                                <Link href="/login">
+                                    <Button className="cursor-pointer" variant="ghost">{t("navbar.login")}</Button>
+                                </Link>
+                                <Link href="/register">
+                                    <Button className="cursor-pointer">{t("navbar.get_started")}</Button>
+                                </Link>
+                            </div>
+                        )
+                        : <div className="flex items-center gap-3">
+                            <Skeleton className="h-9 w-9 rounded-full hidden md:block" />
+                            <Skeleton className="h-9 w-24 rounded-full hidden md:block" />
+                            <Skeleton className="h-10 w-10 rounded-full border" />
                         </div>
-                    )}
+                    }
                 </div>
             </div>
         </nav >
