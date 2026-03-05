@@ -5,17 +5,27 @@
         "about": "About",
         "contact": "Contact",
         "login": "Login",
-        "register": "Register"
+        "register": "Register",
+        "get_started": "Get Started"
+    },
+    "user_menu": {
+        "profile": "Profile",
+        "write": "Write",
+        "settings": "Settings",
+        "bookmarks": "Bookmarks",
+        "logout": "Logout"
     },
     "actions": {
         "save": "Save",
         "cancel": "Cancel",
         "delete": "Delete",
         "edit": "Edit",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "search_placeholder": "Search posts, authors..."
     },
     "languages": {
         "vi": "Vietnamese",
-        "en": "English"
+        "en": "English",
+        "switch": "Switch Language"
     }
 }

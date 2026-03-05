@@ -5,17 +5,27 @@
         "about": "Về chúng tôi",
         "contact": "Liên hệ",
         "login": "Đăng nhập",
-        "register": "Đăng ký"
+        "register": "Đăng ký",
+        "get_started": "Bắt đầu ngay"
+    },
+    "user_menu": {
+        "profile": "Trang cá nhân",
+        "write": "Viết bài",
+        "settings": "Cài đặt",
+        "bookmarks": "Đã lưu",
+        "logout": "Đăng xuất"
     },
     "actions": {
         "save": "Lưu",
         "cancel": "Hủy",
         "delete": "Xóa",
         "edit": "Sửa",
-        "loading": "Đang tải..."
+        "loading": "Đang tải...",
+        "search_placeholder": "Tìm kiếm bài viết, tác giả..."
     },
     "languages": {
         "vi": "Tiếng Việt",
-        "en": "Tiếng Anh"
+        "en": "English",
+        "switch": "Đổi ngôn ngữ"
     }
 }
