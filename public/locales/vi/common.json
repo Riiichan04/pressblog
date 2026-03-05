@@ -1,12 +1,16 @@
 {
-    "nav": {
+   "navbar": {
         "home": "Trang chủ",
         "categories": "Danh mục",
         "about": "Về chúng tôi",
         "contact": "Liên hệ",
         "login": "Đăng nhập",
         "register": "Đăng ký",
-        "get_started": "Bắt đầu ngay"
+        "get_started": "Bắt đầu ngay",
+        "write": "Viết bài",
+        "profile": "Trang cá nhân",
+        "settings": "Cài đặt",
+        "logout": "Đăng xuất"
     },
     "user_menu": {
         "profile": "Trang cá nhân",

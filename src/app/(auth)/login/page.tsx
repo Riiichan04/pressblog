@@ -8,10 +8,22 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { FieldSeparator } from "@/components/ui/field";
+import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { AuthResponse } from "@/common/types/auth";
+import { handleLogin } from "@/services/auth-service";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useAuth } from "@/context/auth-context";
 
 export default function LoginForm() {
     const { t } = useTranslation(["auth"]);
     const loginSchema = useLoginSchema();
+    const [isLoading, setIsLoading] = useState(false)
+    const router = useRouter()
+    const { login } = useAuth()
 
     const {
         register,
@@ -22,8 +34,35 @@ export default function LoginForm() {
         defaultValues: { email: "", password: "" },
     });
 
-    const onSubmit = (data: LoginValues) => {
-        console.log(data)
+    const onSubmit = async (data: LoginValues) => {
+        setIsLoading(true);
+        try {
+            const response: AuthResponse = await handleLogin(data);
+            if (response.result === true && response.authDto) {
+                login(response.authDto)
+
+                toast.success(t("login.success_title"));
+                setTimeout(() => {
+                    router.push("/")
+                }, 2000)
+            } else {
+                toast.error(t("errors.login_failed"), {
+                    description: t("errors.login_failed_reason")
+                });
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const serverMessage = error.response?.data?.message || t("errors.something_went_wrong");
+
+                toast.error(t("errors.login_failed"), {
+                    description: serverMessage,
+                });
+            } else {
+                toast.error("An unexpected error occurred");
+            }
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -65,8 +104,19 @@ export default function LoginForm() {
                     )}
                 </div>
 
-                <Button type="submit" className="w-full mt-4 cursor-pointer">
-                    {t("login.btn_submit")}
+                <Button
+                    type="submit"
+                    className="w-full mt-4 cursor-pointer"
+                    disabled={isLoading}
+                >
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            {t("login.processing")}
+                        </>
+                    ) : (
+                        t("login.btn_submit")
+                    )}
                 </Button>
 
                 <FieldSeparator className="my-4">{t("login.seperator")}</FieldSeparator>
@@ -82,9 +132,9 @@ export default function LoginForm() {
 
                 <p className="text-center text-sm text-gray-600">
                     {t("login.no_account")}
-                    <span className="ms-1 underline cursor-pointer hover:text-gray-800">
+                    <Link href="/register" className="ms-1 underline cursor-pointer hover:text-gray-800">
                         {t("login.no_account_action")}
-                    </span>
+                    </Link>
                 </p>
             </form>
         </div>

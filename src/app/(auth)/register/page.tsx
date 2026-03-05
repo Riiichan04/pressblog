@@ -13,11 +13,13 @@ import { AuthResponse } from "@/common/types/auth";
 import { handleRegister } from "@/services/auth-service";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
     const { t } = useTranslation(["auth"]);
     const registerSchema = useRegisterSchema();
     const [isLoading, setIsLoading] = useState(false)
+    const router = useRouter()
 
     const {
         register,
@@ -39,14 +41,16 @@ export default function RegisterForm() {
         setIsLoading(true);
         try {
             const response: AuthResponse = await handleRegister(data);
-
-            if (response.result && response.authDto) {
+            if (response.result === true) {
                 toast.success(t("register.success_title"), {
-                    description: response.message || t("register.success_msg"),
+                    description: t("register.success_msg"),
                 });
+                setTimeout(() => {
+                    router.push("/login")
+                }, 5000)
             } else {
                 toast.error(t("errors.register_failed"), {
-                    description: response.message,
+                    description: t("errors.something_went_wrong"),
                 });
             }
         } catch (error) {

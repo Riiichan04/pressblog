@@ -1,12 +1,16 @@
 {
-    "nav": {
+    "navbar": {
         "home": "Home",
         "categories": "Categories",
         "about": "About",
         "contact": "Contact",
         "login": "Login",
         "register": "Register",
-        "get_started": "Get Started"
+        "get_started": "Get Started",
+        "write": "Write",
+        "profile": "Profile",
+        "settings": "Settings",
+        "logout": "Logout"
     },
     "user_menu": {
         "profile": "Profile",
@@ -20,8 +24,8 @@
         "cancel": "Cancel",
         "delete": "Delete",
         "edit": "Edit",
-        "loading": "Loading...",
-        "search_placeholder": "Search posts, authors..."
+        "search_placeholder": "Search posts, authors...",
+        "loading": "Loading..."
     },
     "languages": {
         "vi": "Vietnamese",

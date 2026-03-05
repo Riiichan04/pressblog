@@ -3,7 +3,7 @@ import { LoginValues } from "@/schemas/login-schema"
 import { RegisterValues } from "@/schemas/register-schema"
 import axios from 'axios'
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "" + process.env.NEXT_PUBLIC_API_VERSION || ""
+const apiUrl = `${process.env.NEXT_PUBLIC_API_URL || ""}${process.env.NEXT_PUBLIC_API_VERSION || ""}`
 
 export const handleLogin = async (data: LoginValues) => {
     const { email, password } = data
