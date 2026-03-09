@@ -22,6 +22,8 @@ import { useAuth } from "@/context/auth-context";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Skeleton } from "./ui/skeleton";
+import { cn } from "@/lib/utils";
+import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -29,12 +31,23 @@ export default function Navbar() {
     const { setTheme, theme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
+    const [isScrolled, setIsScrolled] = useState(false);
+
     useEffect(() => {
-        //Put mounted in the second render
         const frame = requestAnimationFrame(() => {
             setMounted(true);
         });
-        return () => cancelAnimationFrame(frame);
+
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            cancelAnimationFrame(frame);
+            window.removeEventListener("scroll", handleScroll);
+        };
     }, []);
 
     const toggleLanguage = () => {
@@ -43,20 +56,16 @@ export default function Navbar() {
         localStorage.setItem("lng", newLang);
     };
 
-    const getFallback = (name: string) => {
-        return name.split(" ").map(n => n[0]).join("").toUpperCase().substring(0, 2);
-    };
-
-    const colors = [
-        "bg-red-500", "bg-orange-500", "bg-amber-500",
-        "bg-emerald-500", "bg-blue-500", "bg-indigo-500",
-        "bg-violet-500", "bg-rose-500"
-    ]
-    const colorIndex = (user?.username?.charCodeAt(0) || 0) % colors.length;
-
     return (
-        <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-            <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <nav
+            className={cn(
+                "fixed top-0 z-50 w-full transition-all duration-300",
+                isScrolled
+                    ? "border-b bg-background/80 backdrop-blur-md h-16"
+                    : "bg-transparent border-transparent h-20"
+            )}
+        >
+            <div className="container mx-auto flex h-full items-center justify-between px-4">
                 <div className="flex items-center gap-8">
                     <Link href="/" className="flex items-center gap-2 group hover:opacity-80">
                         <Image
@@ -68,18 +77,31 @@ export default function Navbar() {
                             priority
                             unoptimized
                         />
-                        <span className="text-xl font-bold tracking-tighter text-primary">
-                            PRESS<span className="text-foreground">BLOG</span>
+                        <span className={cn(
+                            "text-xl font-bold tracking-tighter transition-colors",
+                            isScrolled ? "text-primary" : "text-white"
+                        )}>
+                            PRESS<span className={isScrolled ? "text-foreground" : "text-white/90"}>BLOG</span>
                         </span>
                     </Link>
 
                     {/* Search bar */}
-                    <div className="relative hidden md:block w-80">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <div className="relative hidden md:block w-80 group">
+                        <Search className={cn(
+                            "absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition-all z-10",
+                            isScrolled
+                                ? "text-muted-foreground"
+                                : "text-white drop-shadow-md"
+                        )} />
                         <Input
                             type="search"
                             placeholder={t("actions.search_placeholder")}
-                            className="pl-9 bg-muted/50 border-none focus-visible:ring-1"
+                            className={cn(
+                                "pl-10 border-none transition-all",
+                                isScrolled
+                                    ? "bg-muted/50 focus-visible:ring-1"
+                                    : "bg-black/20 text-white placeholder:text-white/80 focus-visible:ring-white/30 backdrop-blur-md"
+                            )}
                         />
                     </div>
                 </div>
@@ -87,51 +109,58 @@ export default function Navbar() {
                 <div className="flex items-center gap-2 md:gap-4">
                     {/* Theme button */}
                     <Button
-                        className="cursor-pointer"
+                        className={cn("cursor-pointer transition-colors", !isScrolled && "text-white hover:bg-white/10")}
                         variant="ghost"
                         size="icon"
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                     >
                         {mounted && (
-                            <>
-                                <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                                <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                            </>
+                            <div className="relative h-5 w-5 flex items-center justify-center ">
+                                <Sun className="absolute h-full w-full rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                <Moon className="absolute h-full w-full rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                            </div>
                         )}
                     </Button>
 
                     {/* Language button */}
-                    <Button variant="ghost" size="sm" onClick={toggleLanguage} className="gap-2 px-2 cursor-pointer">
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={toggleLanguage}
+                        className={cn("gap-2 px-2 cursor-pointer transition-colors", !isScrolled && "text-white hover:bg-white/10")}
+                    >
                         <Languages className="h-5 w-5" />
                         <span className="uppercase text-xs font-bold">{i18n.language}</span>
                     </Button>
 
                     {mounted ?
                         user ? (
-                            // User button
                             <>
-                                {/* Notification */}
-                                <Button variant="ghost" size="icon" className="relative cursor-pointer">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className={cn("relative cursor-pointer transition-colors", !isScrolled && "text-white hover:bg-white/10")}
+                                >
                                     <Bell className="h-5 w-5" />
-                                    {/* <span className="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-destructive"></span> */}
                                 </Button>
 
-                                {/* Write */}
                                 <Link href="/write" className="hidden md:block">
-                                    <Button className="gap-2 rounded-full px-5 cursor-pointer">
+                                    <Button className={cn(
+                                        "gap-2 rounded-full px-5 cursor-pointer transition-all",
+                                        !isScrolled && "bg-white text-black hover:bg-white/90 shadow-lg"
+                                    )}>
                                         <PenSquare className="h-4 w-4" />
                                         {t("navbar.write")}
                                     </Button>
                                 </Link>
 
-                                {/* User Menu */}
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Button variant="ghost" className="relative h-10 w-10 rounded-full border cursor-pointer">
                                             <Avatar className="h-10 w-10">
                                                 <AvatarImage src={user.avatar || ""} alt={user.username} />
-                                                <AvatarFallback className={`${colors[colorIndex]} text-white`}>
-                                                    {user ? getFallback(user.displayName || user.username) : "U"}
+                                                <AvatarFallback className={`${fallBackColor(user.username)} text-white`}>
+                                                    {getFallback(user.displayName || user.username)}
                                                 </AvatarFallback>
                                             </Avatar>
                                         </Button>
@@ -141,8 +170,8 @@ export default function Navbar() {
                                             <div className="flex items-center gap-2">
                                                 <Avatar className="h-8 w-8 shrink-0">
                                                     <AvatarImage src={user.avatar || ""} alt={user.username} />
-                                                    <AvatarFallback className={`${colors[colorIndex]} text-white`}>
-                                                        {user ? getFallback(user.displayName || user.username) : "U"}
+                                                    <AvatarFallback className={`${fallBackColor(user.username)} text-white`}>
+                                                        {getFallback(user.displayName || user.username)}
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div className="flex flex-col space-y-1 min-w-0">
@@ -173,13 +202,22 @@ export default function Navbar() {
                                 </DropdownMenu>
                             </>
                         ) : (
-                            //Login and register button
                             <div className="flex items-center gap-2">
                                 <Link href="/login">
-                                    <Button className="cursor-pointer" variant="ghost">{t("navbar.login")}</Button>
+                                    <Button
+                                        className={cn("cursor-pointer transition-colors", !isScrolled && "text-white hover:bg-white/10")}
+                                        variant="ghost"
+                                    >
+                                        {t("navbar.login")}
+                                    </Button>
                                 </Link>
                                 <Link href="/register">
-                                    <Button className="cursor-pointer">{t("navbar.get_started")}</Button>
+                                    <Button className={cn(
+                                        "cursor-pointer transition-all",
+                                        !isScrolled && "bg-white text-black hover:bg-white/90"
+                                    )}>
+                                        {t("navbar.get_started")}
+                                    </Button>
                                 </Link>
                             </div>
                         )

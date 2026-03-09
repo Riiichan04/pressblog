@@ -1,5 +1,5 @@
 {
-   "navbar": {
+    "navbar": {
         "home": "Trang chủ",
         "categories": "Danh mục",
         "about": "Về chúng tôi",
@@ -31,5 +31,9 @@
         "vi": "Tiếng Việt",
         "en": "English",
         "switch": "Đổi ngôn ngữ"
+    },
+    "post": {
+        "read_time_singular": "phút đọc",
+        "read_time_plural": "phút đọc"
     }
 }

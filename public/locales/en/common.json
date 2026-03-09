@@ -31,5 +31,9 @@
         "vi": "Vietnamese",
         "en": "English",
         "switch": "Switch Language"
+    },
+    "post": {
+        "read_time_singular": "min",
+        "read_time_plural": "mins"
     }
 }
