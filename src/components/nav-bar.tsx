@@ -79,9 +79,9 @@ export default function Navbar() {
                         />
                         <span className={cn(
                             "text-xl font-bold tracking-tighter transition-colors",
-                            isScrolled ? "text-primary" : "text-white"
+                            isScrolled ? "text-primary" : "text-primary"
                         )}>
-                            PRESS<span className={isScrolled ? "text-foreground" : "text-white/90"}>BLOG</span>
+                            PRESS<span className={isScrolled ? "text-foreground" : "text-primary"}>BLOG</span>
                         </span>
                     </Link>
 
@@ -91,7 +91,7 @@ export default function Navbar() {
                             "absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition-all z-10",
                             isScrolled
                                 ? "text-muted-foreground"
-                                : "text-white drop-shadow-md"
+                                : "text-foreground dark:text-white drop-shadow-md" // Đã sửa
                         )} />
                         <Input
                             type="search"
@@ -100,7 +100,7 @@ export default function Navbar() {
                                 "pl-10 border-none transition-all",
                                 isScrolled
                                     ? "bg-muted/50 focus-visible:ring-1"
-                                    : "bg-black/20 text-white placeholder:text-white/80 focus-visible:ring-white/30 backdrop-blur-md"
+                                    : "bg-black/5 dark:bg-black/20 text-foreground dark:text-white placeholder:text-foreground/70 dark:placeholder:text-white/80 focus-visible:ring-black/30 dark:focus-visible:ring-white/30 backdrop-blur-md" // Đã sửa
                             )}
                         />
                     </div>
@@ -109,7 +109,10 @@ export default function Navbar() {
                 <div className="flex items-center gap-2 md:gap-4">
                     {/* Theme button */}
                     <Button
-                        className={cn("cursor-pointer transition-colors", !isScrolled && "text-white hover:bg-white/10")}
+                        className={cn(
+                            "cursor-pointer transition-colors",
+                            !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa & gỡ bỏ theme === "light"
+                        )}
                         variant="ghost"
                         size="icon"
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -127,7 +130,10 @@ export default function Navbar() {
                         variant="ghost"
                         size="sm"
                         onClick={toggleLanguage}
-                        className={cn("gap-2 px-2 cursor-pointer transition-colors", !isScrolled && "text-white hover:bg-white/10")}
+                        className={cn(
+                            "gap-2 px-2 cursor-pointer transition-colors",
+                            !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa
+                        )}
                     >
                         <Languages className="h-5 w-5" />
                         <span className="uppercase text-xs font-bold">{i18n.language}</span>
@@ -139,7 +145,10 @@ export default function Navbar() {
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className={cn("relative cursor-pointer transition-colors", !isScrolled && "text-white hover:bg-white/10")}
+                                    className={cn(
+                                        "relative cursor-pointer transition-colors",
+                                        !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa
+                                    )}
                                 >
                                     <Bell className="h-5 w-5" />
                                 </Button>
@@ -147,7 +156,7 @@ export default function Navbar() {
                                 <Link href="/write" className="hidden md:block">
                                     <Button className={cn(
                                         "gap-2 rounded-full px-5 cursor-pointer transition-all",
-                                        !isScrolled && "bg-white text-black hover:bg-white/90 shadow-lg"
+                                        !isScrolled && "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg dark:bg-white dark:text-black dark:hover:bg-white/90" // Đã tinh chỉnh để nổi bật cả 2 mode
                                     )}>
                                         <PenSquare className="h-4 w-4" />
                                         {t("navbar.write")}
@@ -205,7 +214,10 @@ export default function Navbar() {
                             <div className="flex items-center gap-2">
                                 <Link href="/login">
                                     <Button
-                                        className={cn("cursor-pointer transition-colors", !isScrolled && "text-white hover:bg-white/10")}
+                                        className={cn(
+                                            "cursor-pointer transition-colors",
+                                            !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa
+                                        )}
                                         variant="ghost"
                                     >
                                         {t("navbar.login")}
@@ -214,7 +226,7 @@ export default function Navbar() {
                                 <Link href="/register">
                                     <Button className={cn(
                                         "cursor-pointer transition-all",
-                                        !isScrolled && "bg-white text-black hover:bg-white/90"
+                                        !isScrolled && "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg dark:bg-white dark:text-black dark:hover:bg-white/90" // Đã tinh chỉnh
                                     )}>
                                         {t("navbar.get_started")}
                                     </Button>

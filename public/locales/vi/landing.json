@@ -1,8 +1,19 @@
 {
     "main": {
-        "read_more_action": "Đọc thêm"
+        "read_more_action": "Đọc thêm",
+        "retry_action": "Thử lại ngay"
     },
     "feature": {
-        "newest": "Bài viết mới nhất"
+        "newest": "Bài viết mới nhất",
+        "featured": "Bài viết nổi bật"
+    },
+    "post": {
+        "read_time_singular": "phút đọc",
+        "read_time_plural": "phút đọc",
+        "published_at": "Đăng ngày"
+    },
+    "empty": {
+        "title": "Chưa có bài viết nào",
+        "description": "Có vẻ như nội dung đang được cập nhật hoặc có sự cố kết nối. Thử tải lại trang xem sao nhé!"
     }
 }

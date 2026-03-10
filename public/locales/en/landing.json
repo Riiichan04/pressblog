@@ -1,8 +1,19 @@
 {
     "main": {
-        "read_more_action": "Read more"
+        "read_more_action": "Read more",
+        "retry_action": "Retry now"
     },
     "feature": {
-        "newest": "Newest blog"
+        "newest": "Newest blog",
+        "featured": "Featured story"
+    },
+    "post": {
+        "read_time_singular": "minute read",
+        "read_time_plural": "minutes read",
+        "published_at": "Published at"
+    },
+    "empty": {
+        "title": "No posts found",
+        "description": "It seems the content is being updated or there's a connection issue. Please try refreshing the page!"
     }
 }
