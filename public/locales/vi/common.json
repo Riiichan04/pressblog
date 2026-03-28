@@ -35,5 +35,12 @@
     "post": {
         "read_time_singular": "phút đọc",
         "read_time_plural": "phút đọc"
+    },
+    "editor": {
+        "draft": "Bản nháp",
+        "saved_just_now": "Đã lưu vài giây trước",
+        "saving": "Đang lưu...",
+        "preview": "Xem trước",
+        "publish": "Xuất bản"
     }
 }
