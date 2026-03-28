@@ -1,0 +1,95 @@
+{
+    "layout": {
+        "add_cover": "Add cover",
+        "change_cover": "Change cover",
+        "title_placeholder": "Tiêu đề bài viết",
+        "category": "Danh mục",
+        "category_placeholder": "Chưa chọn danh mục",
+        "tags": "Thẻ bài viết",
+        "tags_placeholder": "react, tips, trick...",
+        "slug": "Slug",
+        "slug_placeholder": "bai-viet-khong-ten",
+        "excerpt": "Mô tả",
+        "excerpt_placeholder": "Tóm tắt ngắn gọn bài viết..."
+    },
+    "editor": {
+        "command_not_found": "Không tìm thấy lệnh",
+        "link_title": "Tiêu đề link"
+    },
+    "extensions": {
+        "placeholder": "Nhập nội dung bài viết hoặc nhấn '/' để chọn lệnh..."
+    },
+    "slash_command": {
+        "h1": {
+            "title": "Tiêu đề 1",
+            "desc": "Tiêu đề lớn nhất"
+        },
+        "h2": {
+            "title": "Tiêu đề 2",
+            "desc": "Tiêu đề lớn vừa"
+        },
+        "h3": {
+            "title": "Tiêu đề 3",
+            "desc": "Tiêu đề trung bình"
+        },
+        "h4": {
+            "title": "Tiêu đề 4",
+            "desc": "Tiêu đề nhỏ"
+        },
+        "h5": {
+            "title": "Tiêu đề 5",
+            "desc": "Tiêu đề rất nhỏ"
+        },
+        "h6": {
+            "title": "Tiêu đề 6",
+            "desc": "Tiêu đề nhỏ nhất"
+        },
+        "bullet_list": {
+            "title": "Danh sách dấu chấm",
+            "desc": "Tạo danh sách dấu chấm"
+        },
+        "ordered_list": {
+            "title": "Danh sách đánh số",
+            "desc": "Tạo danh sách có thứ tự"
+        },
+        "task_list": {
+            "title": "Việc cần làm",
+            "desc": "Tạo danh sách công việc"
+        },
+        "quote": {
+            "title": "Trích dẫn",
+            "desc": "Tạo đoạn trích dẫn"
+        },
+        "code_block": {
+            "title": "Khối mã (Code Block)",
+            "desc": "Chèn khối mã lập trình"
+        },
+        "image": {
+            "title": "Thêm Hình Ảnh",
+            "desc": "Chèn cú pháp ảnh Markdown"
+        },
+        "link": {
+            "title": "Thêm Link",
+            "desc": "Chèn cú pháp link Markdown"
+        },
+        "bold": {
+            "title": "In đậm",
+            "desc": "Làm đậm văn bản"
+        },
+        "italic": {
+            "title": "In nghiêng",
+            "desc": "Làm nghiêng văn bản"
+        },
+        "underline": {
+            "title": "Gạch chân",
+            "desc": "Gạch chân văn bản"
+        },
+        "strike": {
+            "title": "Gạch ngang",
+            "desc": "Gạch ngang văn bản"
+        }
+    },
+    "navbar": {
+        "back": "Trở về trang trước"
+    }
+}

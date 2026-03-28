@@ -56,8 +56,7 @@ export default function EditorNavbar() {
                         onClick={() => router.back()}
                     >
                         <ChevronLeft className="size-4!" />
-                        {/* Temp */}
-                        Trở về trang trước
+                        {t("navbar.back_previous")}
                     </Button>
 
                     <div className="flex items-center gap-2">

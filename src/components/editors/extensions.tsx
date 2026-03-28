@@ -13,15 +13,12 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Underline from '@tiptap/extension-underline';
 import { cx } from "class-variance-authority";
+import { TFunction } from "i18next";
 
 const horizontalRule = HorizontalRule.configure({
     HTMLAttributes: {
         class: cx("mt-4 mb-6 border-t border-stone-300"),
     },
-});
-
-const placeholder = Placeholder.configure({
-    placeholder: "Nhập nội dung bài viết hoặc nhấn '/' để chọn lệnh...",
 });
 
 const tiptapLink = Link
@@ -140,14 +137,11 @@ const resetFormatOnEnter = Extension.create({
     },
 });
 
-// StarterKit bao gồm: Bold, Italic, Heading, History, v.v.
 const starterKit = StarterKit.configure({
     bulletList: {},
     orderedList: {},
     listItem: {},
-    blockquote: {
-
-    },
+    blockquote: {},
     codeBlock: {
         HTMLAttributes: {
             class: cx("rounded-sm bg-stone-100 p-5 font-mono font-medium text-stone-800"),
@@ -162,9 +156,11 @@ const starterKit = StarterKit.configure({
     gapcursor: false,
 });
 
-export const defaultExtensions = [
+export const getDefaultExtensions = (t: TFunction) => [
     starterKit,
-    placeholder,
+    Placeholder.configure({
+        placeholder: t("extensions.placeholder"),
+    }),
     codeExtension as never,
     tiptapLink as never,
     tiptapImage,

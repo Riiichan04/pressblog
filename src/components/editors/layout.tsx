@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import dynamic from "next/dynamic";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,10 +18,9 @@ const TextEditor = dynamic(() => import("@/components/editors/editor"), {
 });
 
 export default function WritePostComponent() {
-    // const { t } = useTranslation(["landing", "common"]);
+    const { t } = useTranslation(["editor", "common"]);
 
     const [title, setTitle] = useState("");
-    // const [content, setContent] = useState("");
     const [coverImage, setCoverImage] = useState<string | null>(null);
 
     const [category, setCategory] = useState("");
@@ -34,7 +33,6 @@ export default function WritePostComponent() {
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            // Demo: Just for local
             const imageUrl = URL.createObjectURL(file);
             setCoverImage(imageUrl);
         }
@@ -52,7 +50,7 @@ export default function WritePostComponent() {
                             onClick={() => fileInputRef.current?.click()}
                         >
                             <ImagePlus className="h-4 w-4 mr-2" />
-                            Add cover
+                            {t("layout.add_cover", { ns: "editor" })}
                         </Button>
                     ) : (
                         <div className="relative w-full h-48 md:h-64 rounded-xl overflow-hidden mb-8 border border-border/50">
@@ -69,7 +67,7 @@ export default function WritePostComponent() {
                                     className="bg-background/80 backdrop-blur-sm hover:bg-background"
                                     onClick={() => fileInputRef.current?.click()}
                                 >
-                                    Change cover
+                                    {t("layout.change_cover", { ns: "editor" })}
                                 </Button>
                                 <Button
                                     variant="secondary"
@@ -93,7 +91,7 @@ export default function WritePostComponent() {
 
                 {/* Title Input */}
                 <textarea
-                    placeholder="Tiêu đề bài viết"
+                    placeholder={t("layout.title_placeholder", { ns: "editor" })}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className="w-full bg-transparent border-none text-3xl md:text-4xl font-bold focus:outline-none resize-none placeholder:text-muted-foreground/40 leading-tight mb-4"
@@ -106,48 +104,48 @@ export default function WritePostComponent() {
                 <div className="flex flex-col gap-1 border-b border-border/40 pb-2 mt-4">
                     <div className="flex items-center min-h-8.5 text-sm group/prop">
                         <div className="w-32 flex items-center gap-2 text-foreground">
-                            <FolderTree className="h-4 w-4" /> Danh mục
+                            <FolderTree className="h-4 w-4" /> {t("layout.category", { ns: "editor" })}
                         </div>
                         <Input
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            placeholder="Chưa chọn danh mục"
+                            placeholder={t("layout.category_placeholder", { ns: "editor" })}
                             className="h-8 border-none shadow-none focus-visible:ring-1 focus-visible:ring-muted bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2"
                         />
                     </div>
 
                     <div className="flex items-center min-h-8.5 text-sm group/prop">
                         <div className="w-32 flex items-center gap-2 text-foreground">
-                            <Tags className="h-4 w-4" /> Thẻ bài viết
+                            <Tags className="h-4 w-4" /> {t("layout.tags", { ns: "editor" })}
                         </div>
                         <Input
                             value={tags}
                             onChange={(e) => setTags(e.target.value)}
-                            placeholder="react, tips, trick..."
+                            placeholder={t("layout.tags_placeholder", { ns: "editor" })}
                             className="h-8 border-none shadow-none focus-visible:ring-1 focus-visible:ring-muted bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2"
                         />
                     </div>
 
                     <div className="flex items-center min-h-8.5 text-sm group/prop">
                         <div className="w-32 flex items-center gap-2 text-foreground">
-                            <LinkIcon className="h-4 w-4" /> Slug
+                            <LinkIcon className="h-4 w-4" /> {t("layout.slug", { ns: "editor" })}
                         </div>
                         <Input
                             value={slug}
                             onChange={(e) => setSlug(e.target.value)}
-                            placeholder="bai-viet-khong-ten"
+                            placeholder={t("layout.slug_placeholder", { ns: "editor" })}
                             className="h-8 border-none shadow-none focus-visible:ring-1 focus-visible:ring-muted bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2 text-muted-foreground"
                         />
                     </div>
 
                     <div className="flex items-start min-h-8.5 text-sm group/prop mt-1">
                         <div className="w-32 flex items-center gap-2 text-foreground pt-1.5">
-                            <AlignLeft className="h-4 w-4" /> Mô tả
+                            <AlignLeft className="h-4 w-4" /> {t("layout.excerpt", { ns: "editor" })}
                         </div>
                         <textarea
                             value={excerpt}
                             onChange={(e) => setExcerpt(e.target.value)}
-                            placeholder="Tóm tắt ngắn gọn bài viết..."
+                            placeholder={t("layout.excerpt_placeholder", { ns: "editor" })}
                             className="flex-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-muted hover:bg-muted/50 transition-colors rounded-sm px-2 py-1.5 resize-none min-h-15"
                         />
                     </div>

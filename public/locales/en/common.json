@@ -10,7 +10,8 @@
         "write": "Write",
         "profile": "Profile",
         "settings": "Settings",
-        "logout": "Logout"
+        "logout": "Logout",
+        "back_previous": "Back to previous"
     },
     "user_menu": {
         "profile": "Profile",

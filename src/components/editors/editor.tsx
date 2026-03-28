@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
     EditorRoot,
     EditorContent,
@@ -15,13 +16,12 @@ import {
 
 import { handleCommandNavigation } from "novel";
 import { BoldIcon, ItalicIcon, UnderlineIcon, CodeIcon, LinkIcon, Strikethrough } from "lucide-react";
-import { defaultExtensions } from "./extensions";
-import { CommandProps, slashCommand, suggestionItems } from "./slash-command";
+import { getDefaultExtensions } from "./extensions";
+import { CommandProps, getSlashCommand, getSuggestionItems } from "./slash-command";
 import { ClassicToolbar } from "./tool-bar";
 import { EditorTool, setFullState } from "@/store/slices/editor-slice";
 import { useDispatch } from "react-redux";
-
-const extensions = [...defaultExtensions, slashCommand];
+import type { TFunction } from "i18next";
 
 interface BlogEditorProps {
     initialValue?: JSONContent;
@@ -29,9 +29,32 @@ interface BlogEditorProps {
 }
 
 const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
-    const [editorInstance, setEditorInstance] = useState<EditorInstance | null>(null);
+    const { t, i18n } = useTranslation(["editor"]);
 
+    const [editorInstance, setEditorInstance] = useState<EditorInstance | null>(null);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (editorInstance) {
+            const placeholderExtension = editorInstance.extensionManager.extensions.find(
+                (e) => e.name === "placeholder"
+            );
+            if (placeholderExtension) {
+                placeholderExtension.options.placeholder = t("extensions.placeholder");
+                editorInstance.view.dispatch(editorInstance.state.tr);
+            }
+        }
+    }, [t, editorInstance]);
+
+    const [extensions] = useState(() => {
+        const dynamicTranslate = ((key: string) => i18n.t(key, { ns: "editor" })) as unknown as TFunction;
+        return [
+            ...getDefaultExtensions(t),
+            getSlashCommand(() => getSuggestionItems(dynamicTranslate))
+        ];
+    });
+
+    const currentSuggestionItems = getSuggestionItems(t);
 
     const syncToolbar = (editor: EditorInstance) => {
         const tools: EditorTool[] = [
@@ -115,7 +138,6 @@ const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
                             class: "prose prose-lg dark:prose-invert focus:outline-none max-w-full",
                         },
                     }}
-
                 >
                     {/* Bubble Menu */}
                     <EditorBubble className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-border bg-background shadow-xl">
@@ -162,7 +184,7 @@ const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
                                     editor.chain().focus().insertContent([
                                         {
                                             type: "text",
-                                            text: "Tiêu đề link",
+                                            text: t("editor.link_title"),
                                             marks: [{ type: "link", attrs: { href: "https://" } }]
                                         }
                                     ]).run();
@@ -177,8 +199,10 @@ const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
 
                     {/* Slash command */}
                     <EditorCommand className="z-50 h-auto max-h-82.5 w-72 overflow-y-auto rounded-md border border-border bg-background px-1 py-2 shadow-md">
-                        <EditorCommandEmpty className="px-2 text-muted-foreground text-sm py-2">Không tìm thấy lệnh</EditorCommandEmpty>
-                        {suggestionItems.map((item) => (
+                        <EditorCommandEmpty className="px-2 text-muted-foreground text-sm py-2">
+                            {t("editor.command_not_found")}
+                        </EditorCommandEmpty>
+                        {currentSuggestionItems.map((item) => (
                             <EditorCommandItem
                                 value={item.title}
                                 onCommand={(val) => item.command(val as unknown as CommandProps)}

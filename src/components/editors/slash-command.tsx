@@ -5,7 +5,9 @@ import {
     BoldIcon, ItalicIcon, UnderlineIcon, Strikethrough,
     Image as ImageIcon, LinkIcon
 } from "lucide-react";
-import { Range, Editor } from "@tiptap/core";
+import { Range, Editor, type JSONContent } from "@tiptap/core";
+import type { TFunction } from "i18next";
+import type { ReactNode } from "react";
 
 interface SafeChainedCommands {
     deleteRange: (range: Range) => SafeChainedCommands;
@@ -21,7 +23,7 @@ interface SafeChainedCommands {
     toggleItalic: () => SafeChainedCommands;
     toggleUnderline: () => SafeChainedCommands;
     toggleStrike: () => SafeChainedCommands;
-    insertContent: (content: string) => SafeChainedCommands; // Hàm chèn text/markdown
+    insertContent: (content: string | JSONContent | JSONContent[]) => SafeChainedCommands;
 }
 
 export interface CommandProps {
@@ -31,10 +33,18 @@ export interface CommandProps {
     range: Range;
 }
 
-export const suggestionItems = [
+export interface SuggestionItem {
+    title: string;
+    description: string;
+    searchTerms: string[];
+    icon: ReactNode;
+    command: (props: CommandProps) => void;
+}
+
+export const getSuggestionItems = (t: TFunction): SuggestionItem[] => [
     {
-        title: "Tiêu đề 1",
-        description: "Tiêu đề lớn nhất",
+        title: t("slash_command.h1.title"),
+        description: t("slash_command.h1.desc"),
         searchTerms: ["h1", "heading", "tieude"],
         icon: <Heading1 size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -42,8 +52,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Tiêu đề 2",
-        description: "Tiêu đề lớn vừa",
+        title: t("slash_command.h2.title"),
+        description: t("slash_command.h2.desc"),
         searchTerms: ["h2", "heading", "tieude"],
         icon: <Heading2 size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -51,8 +61,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Tiêu đề 3",
-        description: "Tiêu đề trung bình",
+        title: t("slash_command.h3.title"),
+        description: t("slash_command.h3.desc"),
         searchTerms: ["h3", "heading", "tieude"],
         icon: <Heading3 size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -60,8 +70,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Tiêu đề 4",
-        description: "Tiêu đề nhỏ",
+        title: t("slash_command.h4.title"),
+        description: t("slash_command.h4.desc"),
         searchTerms: ["h4", "heading", "tieude"],
         icon: <Heading4 size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -69,8 +79,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Tiêu đề 5",
-        description: "Tiêu đề rất nhỏ",
+        title: t("slash_command.h5.title"),
+        description: t("slash_command.h5.desc"),
         searchTerms: ["h5", "heading", "tieude"],
         icon: <Heading5 size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -78,8 +88,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Tiêu đề 6",
-        description: "Tiêu đề nhỏ nhất",
+        title: t("slash_command.h6.title"),
+        description: t("slash_command.h6.desc"),
         searchTerms: ["h6", "heading", "tieude"],
         icon: <Heading6 size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -87,8 +97,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Danh sách dấu chấm",
-        description: "Tạo danh sách dấu chấm",
+        title: t("slash_command.bullet_list.title"),
+        description: t("slash_command.bullet_list.desc"),
         searchTerms: ["list", "bullet", "danhsach"],
         icon: <List size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -96,8 +106,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Danh sách đánh số",
-        description: "Tạo danh sách có thứ tự",
+        title: t("slash_command.ordered_list.title"),
+        description: t("slash_command.ordered_list.desc"),
         searchTerms: ["list", "ordered", "danhsach"],
         icon: <ListOrdered size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -105,8 +115,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Việc cần làm",
-        description: "Tạo danh sách công việc",
+        title: t("slash_command.task_list.title"),
+        description: t("slash_command.task_list.desc"),
         searchTerms: ["todo", "task", "congviec"],
         icon: <CheckSquare size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -114,8 +124,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Trích dẫn",
-        description: "Tạo đoạn trích dẫn",
+        title: t("slash_command.quote.title"),
+        description: t("slash_command.quote.desc"),
         searchTerms: ["quote", "trichdan"],
         icon: <TextQuote size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -123,8 +133,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Khối mã (Code Block)",
-        description: "Chèn khối mã lập trình",
+        title: t("slash_command.code_block.title"),
+        description: t("slash_command.code_block.desc"),
         searchTerms: ["code", "block", "ma"],
         icon: <CodeIcon size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -132,28 +142,26 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Thêm Hình Ảnh",
-        description: "Chèn cú pháp ảnh Markdown",
+        title: t("slash_command.image.title"),
+        description: t("slash_command.image.desc"),
         searchTerms: ["image", "anh", "hinh"],
         icon: <ImageIcon size={18} />,
         command: ({ editor, range }: CommandProps) => {
-            // Thay vì dùng prompt, chèn thẳng Markdown snippet
             editor.chain().focus().deleteRange(range).insertContent("![Mô tả ảnh](https://)").run();
         },
     },
     {
-        title: "Thêm Link",
-        description: "Chèn cú pháp link Markdown",
+        title: t("slash_command.link.title"),
+        description: t("slash_command.link.desc"),
         searchTerms: ["link", "lienket"],
         icon: <LinkIcon size={18} />,
         command: ({ editor, range }: CommandProps) => {
-            // Thay vì dùng prompt, chèn thẳng Markdown snippet
             editor.chain().focus().deleteRange(range).insertContent("[Tiêu đề link](https://)").run();
         },
     },
     {
-        title: "In đậm",
-        description: "Làm đậm văn bản",
+        title: t("slash_command.bold.title"),
+        description: t("slash_command.bold.desc"),
         searchTerms: ["bold", "dam"],
         icon: <BoldIcon size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -161,8 +169,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "In nghiêng",
-        description: "Làm nghiêng văn bản",
+        title: t("slash_command.italic.title"),
+        description: t("slash_command.italic.desc"),
         searchTerms: ["italic", "nghieng"],
         icon: <ItalicIcon size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -170,8 +178,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Gạch chân",
-        description: "Gạch chân văn bản",
+        title: t("slash_command.underline.title"),
+        description: t("slash_command.underline.desc"),
         searchTerms: ["underline", "gachchan"],
         icon: <UnderlineIcon size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -179,8 +187,8 @@ export const suggestionItems = [
         },
     },
     {
-        title: "Gạch ngang",
-        description: "Gạch ngang văn bản",
+        title: t("slash_command.strike.title"),
+        description: t("slash_command.strike.desc"),
         searchTerms: ["strike", "gach"],
         icon: <Strikethrough size={18} />,
         command: ({ editor, range }: CommandProps) => {
@@ -189,9 +197,9 @@ export const suggestionItems = [
     }
 ];
 
-export const slashCommand = Command.configure({
+export const getSlashCommand = (getItems: () => SuggestionItem[]) => Command.configure({
     suggestion: {
-        items: () => suggestionItems,
+        items: getItems,
         render: renderItems,
     },
 });

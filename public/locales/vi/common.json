@@ -10,7 +10,8 @@
         "write": "Viết bài",
         "profile": "Trang cá nhân",
         "settings": "Cài đặt",
-        "logout": "Đăng xuất"
+        "logout": "Đăng xuất",
+        "back_previous": "Trở về trang trước"
     },
     "user_menu": {
         "profile": "Trang cá nhân",
