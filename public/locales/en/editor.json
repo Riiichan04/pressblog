@@ -6,7 +6,7 @@
         "category": "Category",
         "category_placeholder": "No category selected",
         "tags": "Tags",
-        "tags_placeholder": "react, tips, trick...",
+        "tags_placeholder": "tips, trick...",
         "slug": "Slug",
         "slug_placeholder": "untitled-post",
         "excerpt": "Excerpt",

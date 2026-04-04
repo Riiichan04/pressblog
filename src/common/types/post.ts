@@ -27,3 +27,12 @@ export interface PostDetail {
     viewCount: number;
     updatedAt: string;
 }
+
+export interface PostRequest {
+    name: string,
+    content: string,
+    email: string,
+    categoryName: string,
+    listTag: string[]
+    language: "VI" | "EN" //Convert to global provider later
+}

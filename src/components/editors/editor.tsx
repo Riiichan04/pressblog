@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import {
     EditorRoot,
     EditorContent,
-    type JSONContent,
     EditorCommand,
     EditorCommandItem,
     EditorCommandEmpty,
@@ -24,8 +23,8 @@ import { useDispatch } from "react-redux";
 import type { TFunction } from "i18next";
 
 interface BlogEditorProps {
-    initialValue?: JSONContent;
-    onChange: (value: JSONContent) => void;
+    initialValue?: string;
+    onChange: (value: string) => void;
 }
 
 const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
@@ -82,7 +81,7 @@ const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
                 <ClassicToolbar editor={editorInstance} />
 
                 <EditorContent
-                    initialContent={initialValue}
+                    initialContent={initialValue ? undefined : undefined}
                     extensions={extensions}
                     className="relative min-h-100 w-full bg-transparent p-4 pb-24"
                     onCreate={({ editor }) => {
@@ -90,8 +89,8 @@ const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
                     }}
                     onUpdate={({ editor }) => {
                         setEditorInstance(editor);
-                        onChange(editor.getJSON());
-                        syncToolbar(editor)
+                        onChange(editor.getHTML());
+                        syncToolbar(editor);
                     }}
                     onSelectionUpdate={({ editor }) => {
                         syncToolbar(editor)

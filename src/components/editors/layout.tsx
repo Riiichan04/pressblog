@@ -1,17 +1,23 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import {
     ImagePlus,
-    FolderTree, Tags, Link as LinkIcon, AlignLeft, X
+    FolderTree, Tags, Link as AlignLeft, X
 } from "lucide-react";
 import Image from "next/image";
 import "@/components/styles/post-editor.css"
 import { FieldSeparator } from "../ui/field";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { getCurrentCategory } from "@/services/post-metadata-service";
+import { Category } from "@/common/types/post-metadata";
+import { uploadPost } from "@/services/post-service";
+import { useAuth } from "@/context/auth-context";
 
 const TextEditor = dynamic(() => import("@/components/editors/editor"), {
     ssr: false,
@@ -25,18 +31,49 @@ export default function WritePostComponent() {
 
     const [category, setCategory] = useState("");
     const [tags, setTags] = useState("");
-    const [slug, setSlug] = useState("");
     const [excerpt, setExcerpt] = useState("");
+    const [content, setContent] = useState<string | null>(null);
+
+    const [listCategory, setListCategory] = useState<Category[]>([])
 
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const { user } = useAuth()
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
+            //Upload to server here
             setCoverImage(imageUrl);
         }
     };
+
+    const handleUpload = () => {
+        if (!user || !content) return
+
+        try {
+            const response = uploadPost({
+                name: title,
+                categoryName: category,
+                content: content,
+                email: user?.email,
+                language: "VI", //Temp
+                listTag: tags.split(",").map(tag => tag.trim())
+            })
+            //Handle later
+        }
+        catch { }
+    }
+
+    useEffect(() => {
+        const fetchCategory = async () => {
+            const categoryResponse = await getCurrentCategory()
+            const listCategory = categoryResponse.content
+            setListCategory(listCategory)
+        }
+        fetchCategory()
+    }, [listCategory])
 
     return (
         <div className="min-h-screen bg-background text-foreground pb-20">
@@ -106,12 +143,23 @@ export default function WritePostComponent() {
                         <div className="w-32 flex items-center gap-2 text-foreground">
                             <FolderTree className="h-4 w-4" /> {t("layout.category", { ns: "editor" })}
                         </div>
-                        <Input
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            placeholder={t("layout.category_placeholder", { ns: "editor" })}
-                            className="h-8 border-none shadow-none focus-visible:ring-1 focus-visible:ring-muted bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2"
-                        />
+                        <Select value={category} onValueChange={setCategory}>
+                            <SelectTrigger className="h-8 border-none shadow-none focus:ring-1 focus:ring-muted focus:ring-offset-0 bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2 data-placeholder:text-muted-foreground">
+                                <SelectValue placeholder={t("layout.category_placeholder", { ns: "editor" })} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {
+                                    listCategory.map(category =>
+                                        <SelectItem
+                                            key={category.slug}
+                                            value={category.slug}
+                                        >
+                                            {category.name}
+                                        </SelectItem>
+                                    )
+                                }
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     <div className="flex items-center min-h-8.5 text-sm group/prop">
@@ -123,18 +171,6 @@ export default function WritePostComponent() {
                             onChange={(e) => setTags(e.target.value)}
                             placeholder={t("layout.tags_placeholder", { ns: "editor" })}
                             className="h-8 border-none shadow-none focus-visible:ring-1 focus-visible:ring-muted bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2"
-                        />
-                    </div>
-
-                    <div className="flex items-center min-h-8.5 text-sm group/prop">
-                        <div className="w-32 flex items-center gap-2 text-foreground">
-                            <LinkIcon className="h-4 w-4" /> {t("layout.slug", { ns: "editor" })}
-                        </div>
-                        <Input
-                            value={slug}
-                            onChange={(e) => setSlug(e.target.value)}
-                            placeholder={t("layout.slug_placeholder", { ns: "editor" })}
-                            className="h-8 border-none shadow-none focus-visible:ring-1 focus-visible:ring-muted bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2 text-muted-foreground"
                         />
                     </div>
 
@@ -155,7 +191,9 @@ export default function WritePostComponent() {
 
                 {/* Markdown Editor */}
                 <TextEditor
-                    onChange={(data) => console.log(data)}
+                    onChange={(data) => {
+                        setContent(data);
+                    }}
                 />
             </main>
         </div>

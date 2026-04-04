@@ -1,12 +1,12 @@
 {
     "layout": {
-        "add_cover": "Add cover",
-        "change_cover": "Change cover",
+        "add_cover": "Thêm ảnh bìa",
+        "change_cover": "Thay đổi ảnh bìa",
         "title_placeholder": "Tiêu đề bài viết",
         "category": "Danh mục",
         "category_placeholder": "Chưa chọn danh mục",
         "tags": "Thẻ bài viết",
-        "tags_placeholder": "react, tips, trick...",
+        "tags_placeholder": "tips, trick...",
         "slug": "Slug",
         "slug_placeholder": "bai-viet-khong-ten",
         "excerpt": "Mô tả",
