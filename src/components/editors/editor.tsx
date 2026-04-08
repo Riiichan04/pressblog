@@ -28,9 +28,10 @@ interface BlogEditorProps {
     initialValue?: string;
     onChange: (html: string, length: number) => void
     onImageUpload?: (file: File) => Promise<string | null>;
+    onEditorCreate?: (editor: EditorInstance) => void
 }
 
-const BlogEditor = ({ initialValue, onChange, onImageUpload }: BlogEditorProps) => {
+const BlogEditor = ({ initialValue, onChange, onImageUpload, onEditorCreate }: BlogEditorProps) => {
     const { t, i18n } = useTranslation(["editor"]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [editorInstance, setEditorInstance] = useState<EditorInstance | null>(null);
@@ -111,7 +112,10 @@ const BlogEditor = ({ initialValue, onChange, onImageUpload }: BlogEditorProps) 
                     extensions={extensions}
                     className="relative min-h-100 w-full bg-transparent p-4 pb-24"
                     onCreate={({ editor }) => {
-                        setEditorInstance(editor);
+                        if (onEditorCreate) {
+                            onEditorCreate(editor); // Truyền instance ra ngoài cho layout.tsx
+                            setEditorInstance(editor)
+                        }
                     }}
                     onUpdate={({ editor }) => {
                         onChange(editor.getHTML(), editor.getText().trim().length);

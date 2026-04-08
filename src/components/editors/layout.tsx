@@ -1,5 +1,6 @@
 "use client";
 
+import MarkdownIt from 'markdown-it';
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
@@ -25,6 +26,7 @@ import { uploadImageToCloudinary } from "@/services/upload-service";
 import { uploadPost } from "@/services/post-service";
 import { RootState } from "@/store/store";
 import { debounce } from "lodash";
+import { EditorInstance } from "novel";
 
 const TextEditor = dynamic(() => import("@/components/editors/editor"), {
     ssr: false,
@@ -51,6 +53,14 @@ export default function WritePostComponent() {
     const { user } = useAuth()
     const dispatcher = useDispatch()
     const isPublishRequested = useSelector((state: RootState) => state.post.isPublishRequested);
+
+    const [editorInstance, setEditorInstance] = useState<EditorInstance | null>(null);
+
+    const mdParser = useMemo(() => new MarkdownIt({
+        html: true,
+        breaks: true,
+        linkify: true // Tự động biến URL thành link luôn cho tiện
+    }), [])
 
     //FIXME: Merge 2 function below into 1
     //Upload image in editor
@@ -114,6 +124,38 @@ export default function WritePostComponent() {
             toast.error(t("editor.save.error"));
         }
     }, [user, contentRef, titleRef, category, tags, dispatcher, t, coverImage]);
+
+
+    //Handle import markdown
+    const handleImportMarkdown = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const markdownText = event.target?.result as string;
+
+            try {
+                const htmlContent = mdParser.render(markdownText);
+                console.log(htmlContent)
+                if (editorInstance) {
+                    editorInstance.commands.setContent(htmlContent);
+                }
+
+                const textLength = htmlContent.replace(/<[^>]*>/g, "").trim().length;
+                handleEditorChange(htmlContent, textLength);
+
+                toast.success(t("import.success"));
+            } catch {
+                toast.error(t("import.error"));
+            }
+        };
+        reader.readAsText(file);
+
+        e.target.value = "";
+    }, [editorInstance, handleEditorChange, t, mdParser]);
+
+
 
     //For validate Publish button
     useEffect(() => {
@@ -310,8 +352,18 @@ export default function WritePostComponent() {
 
                 {/* Markdown Editor */}
                 <TextEditor
+                    onEditorCreate={(editor) => setEditorInstance(editor)}
                     onChange={handleEditorChange}
                     onImageUpload={onImageDroppedInEditor}
+                />
+
+                {/* For import feature */}
+                <input
+                    type="file"
+                    id="hidden-markdown-import"
+                    onChange={handleImportMarkdown}
+                    className="hidden"
+                    accept=".md, .markdown"
                 />
             </main>
         </div>

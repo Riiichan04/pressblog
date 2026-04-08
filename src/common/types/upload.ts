@@ -1,8 +1,8 @@
 export interface CloudinaryPresignedResponse {
-    publicId: string
+    public_id: string;
     signature: string;
     timestamp: number;
-    apiKey: string;
-    cloudName: string;
+    api_key: string;
+    cloud_name: string;
     folder?: string;
 }

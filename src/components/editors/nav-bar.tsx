@@ -2,7 +2,8 @@
 
 import {
     ChevronLeft, Send, Settings, Eye,
-    Languages, Bell, User, LogOut
+    Languages, Bell, User, LogOut,
+    Import
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -103,6 +104,16 @@ export default function EditorNavbar() {
                     <Button variant="ghost" size="sm" className="h-9 text-muted-foreground hover:text-foreground hidden lg:flex gap-2">
                         <Eye className="h-4 w-4" />
                         {t("editor.preview", "Preview")}
+                    </Button>
+
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => document.getElementById("hidden-markdown-import")?.click()}
+                        className="h-9 text-muted-foreground hover:text-foreground hidden lg:flex gap-2"
+                    >
+                        <Import className="h-4 w-4 mr-2" />
+                        Import
                     </Button>
 
                     {/* <Button
