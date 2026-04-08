@@ -21,6 +21,10 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context";
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { requestPublish } from "@/store/slices/post-slice";
+import { cx } from "class-variance-authority";
 
 export default function EditorNavbar() {
     const { user, logout } = useAuth();
@@ -28,6 +32,10 @@ export default function EditorNavbar() {
     const { setTheme, theme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const router = useRouter()
+
+    const dispatch = useDispatch();
+    const isPublishRequested = useSelector((state: RootState) => state.post.isPublishRequested);
+    const canPublish = useSelector((state: RootState) => state.post.canPublish);
 
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
@@ -97,9 +105,25 @@ export default function EditorNavbar() {
                         {t("editor.preview", "Preview")}
                     </Button>
 
-                    <Button className="h-9 rounded-md px-4 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-all font-semibold">
+                    {/* <Button
+                        className="h-9 rounded-md px-4 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-all font-semibold"
+                        onClick={() => dispatch(requestPublish())}
+                        disabled={isPublishRequested}
+                    >
                         <Send className="h-4 w-4 mr-2" />
-                        {t("editor.publish", "Publish")}
+                        {isPublishRequested ? t("editor.publishing") : t("editor.publish")}
+                    </Button> */}
+
+                    <Button
+                        disabled={!canPublish || isPublishRequested}
+                        onClick={() => dispatch(requestPublish())}
+                        className={cx(
+                            "h-9 rounded-md px-4 font-semibold transition-all",
+                            !canPublish ? "opacity-50 cursor-not-allowed bg-muted text-muted-foreground" : "bg-primary text-primary-foreground hover:bg-primary/90"
+                        )}
+                    >
+                        <Send className="h-4 w-4 mr-2" />
+                        {isPublishRequested ? t("editor.publishing") : t("editor.publish")}
                     </Button>
 
                     {user && (

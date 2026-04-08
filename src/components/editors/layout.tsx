@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -16,8 +16,15 @@ import { FieldSeparator } from "../ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { getCurrentCategory } from "@/services/post-metadata-service";
 import { Category } from "@/common/types/post-metadata";
-import { uploadPost } from "@/services/post-service";
 import { useAuth } from "@/context/auth-context";
+import { useDispatch, useSelector } from "react-redux";
+import { resetPublishRequest, savePost, setCanPublish } from "@/store/slices/post-slice";
+import { PostRequest } from "@/common/types/post";
+import { toast } from "sonner";
+import { uploadImageToCloudinary } from "@/services/upload-service";
+import { uploadPost } from "@/services/post-service";
+import { RootState } from "@/store/store";
+import { debounce } from "lodash";
 
 const TextEditor = dynamic(() => import("@/components/editors/editor"), {
     ssr: false,
@@ -26,54 +33,165 @@ const TextEditor = dynamic(() => import("@/components/editors/editor"), {
 export default function WritePostComponent() {
     const { t } = useTranslation(["editor", "common"]);
 
-    const [title, setTitle] = useState("");
+    const titleRef = useRef<HTMLTextAreaElement>(null);
     const [coverImage, setCoverImage] = useState<string | null>(null);
 
     const [category, setCategory] = useState("");
     const [tags, setTags] = useState("");
     const [excerpt, setExcerpt] = useState("");
-    const [content, setContent] = useState<string | null>(null);
+    const [isPublishable, setIsPublishable] = useState(false);
+
+    const contentRef = useRef<string>("");
+    const contentLengthRef = useRef<number>(0);
 
     const [listCategory, setListCategory] = useState<Category[]>([])
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-
+    const uploadedImagesRef = useRef<string[]>([]);
     const { user } = useAuth()
+    const dispatcher = useDispatch()
+    const isPublishRequested = useSelector((state: RootState) => state.post.isPublishRequested);
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //FIXME: Merge 2 function below into 1
+    //Upload image in editor
+    const onImageDroppedInEditor = async (file: File) => {
+        const { url, publicId } = await uploadImageToCloudinary(file, "/temp");
+        uploadedImagesRef.current.push(publicId);
+        return url;
+    };
+
+    //Upload thumbnail
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            //Upload to server here
-            setCoverImage(imageUrl);
+            try {
+                const { url } = await uploadImageToCloudinary(file, "pressblog/thumbnails");
+                setCoverImage(url);
+            } catch {
+                toast.error(t("editor.upload_error"));
+            }
         }
     };
 
-    const handleUpload = () => {
-        if (!user || !content) return
+    //Validate for Publish button
+    const uploadValidation = useMemo(
+        () => debounce(() => {
+            const currentTitle = titleRef.current?.value || "";
+
+            const hasTitle = currentTitle.trim().length >= 10;
+            const hasCategory = category !== "";
+            const hasContent = contentLengthRef.current > 100;
+
+            setIsPublishable(hasTitle && hasCategory && hasContent);
+        }, 500),
+        [category]
+    );
+
+    //Handle editor's content
+    const handleEditorChange = useCallback((html: string, length: number) => {
+        contentRef.current = html;
+        contentLengthRef.current = length;
+        uploadValidation();
+    }, [uploadValidation]);
+
+    //Save current post (currently saved into a store)
+    const handleSaveCurrentPost = useCallback(() => {
+        if (!user || !contentRef || !titleRef.current) return;
 
         try {
-            const response = uploadPost({
-                name: title,
+            const post: PostRequest = {
+                name: titleRef.current.value,
                 categoryName: category,
-                content: content,
+                content: contentRef.current,
                 email: user?.email,
-                language: "VI", //Temp
+                language: "VI",
+                thumbnail: coverImage,
                 listTag: tags.split(",").map(tag => tag.trim())
-            })
-            //Handle later
+            };
+            dispatcher(savePost({ post, updatedAt: Date.now() }));
+            toast.success(t("editor.save.success"));
+        } catch {
+            toast.error(t("editor.save.error"));
         }
-        catch { }
-    }
+    }, [user, contentRef, titleRef, category, tags, dispatcher, t, coverImage]);
 
+    //For validate Publish button
+    useEffect(() => {
+        uploadValidation();
+    }, [category, uploadValidation]);
+
+    useEffect(() => {
+        return () => {
+            uploadValidation.cancel();
+        };
+    }, [uploadValidation]);
+
+    //For CTRL + S
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+                event.preventDefault();
+                handleSaveCurrentPost();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [handleSaveCurrentPost]);
+
+    //For fetching category
     useEffect(() => {
         const fetchCategory = async () => {
             const categoryResponse = await getCurrentCategory()
-            const listCategory = categoryResponse.content
-            setListCategory(listCategory)
+            const categories = categoryResponse
+            if (categories && categories.length > 0) setListCategory(categories)
         }
         fetchCategory()
-    }, [listCategory])
+    }, [])
+
+    useEffect(() => {
+        dispatcher(setCanPublish(isPublishable));
+    }, [isPublishable, dispatcher]);
+
+    //For publish
+    useEffect(() => {
+        const doPublish = async () => {
+            if (!titleRef.current?.value.trim() || !contentRef || !user) {
+                toast.error(t("upload.validate_error"));
+                dispatcher(resetPublishRequest());
+                return;
+            }
+
+            try {
+                const postData: PostRequest = {
+                    name: titleRef.current.value || "",
+                    categoryName: category,
+                    content: contentRef.current,
+                    email: user.email,
+                    language: "VI",
+                    listTag: tags.split(",").map(tag => tag.trim()),
+                    thumbnail: coverImage
+                };
+
+                const res = await uploadPost(postData);
+                if (res.result) {
+                    toast.success(t("upload.success"));
+                }
+            } catch {
+                toast.error(t("upload.error"));
+            } finally {
+                dispatcher(resetPublishRequest());
+            }
+        };
+
+        if (isPublishRequested) {
+            doPublish();
+        }
+    }, [isPublishRequested, titleRef, contentRef, category, tags, coverImage, user, dispatcher, t]);
+
 
     return (
         <div className="min-h-screen bg-background text-foreground pb-20">
@@ -128,9 +246,10 @@ export default function WritePostComponent() {
 
                 {/* Title Input */}
                 <textarea
+                    ref={titleRef}
                     placeholder={t("layout.title_placeholder", { ns: "editor" })}
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    defaultValue=""
+                    onChange={() => uploadValidation()}
                     className="w-full bg-transparent border-none text-3xl md:text-4xl font-bold focus:outline-none resize-none placeholder:text-muted-foreground/40 leading-tight mb-4"
                     rows={1}
                 />
@@ -149,7 +268,7 @@ export default function WritePostComponent() {
                             </SelectTrigger>
                             <SelectContent>
                                 {
-                                    listCategory.map(category =>
+                                    listCategory.length > 0 && listCategory.map(category =>
                                         <SelectItem
                                             key={category.slug}
                                             value={category.slug}
@@ -191,9 +310,8 @@ export default function WritePostComponent() {
 
                 {/* Markdown Editor */}
                 <TextEditor
-                    onChange={(data) => {
-                        setContent(data);
-                    }}
+                    onChange={handleEditorChange}
+                    onImageUpload={onImageDroppedInEditor}
                 />
             </main>
         </div>

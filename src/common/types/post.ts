@@ -33,6 +33,7 @@ export interface PostRequest {
     content: string,
     email: string,
     categoryName: string,
-    listTag: string[]
+    listTag: string[],
+    thumbnail: string | null,
     language: "VI" | "EN" //Convert to global provider later
 }

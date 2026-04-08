@@ -58,8 +58,8 @@ export const ClassicToolbar = ({ editor }: { editor: EditorInstance | null }) =>
             <div className="w-px h-6 bg-border mx-1" />
 
             <button type="button" onClick={() => exec(() => editor.chain().focus().insertContent("[Link](https://)").run())} className="p-2 rounded-md text-muted-foreground hover:bg-muted"><LinkIcon size={16} /></button>
-            <button type="button" onClick={() => exec(() => editor.chain().focus().insertContent("![Image](https://)").run())} className="p-2 rounded-md text-muted-foreground hover:bg-muted"><ImageIcon size={16} /></button>
-
+            <button type="button" onClick={() => document.getElementById("editor-image-upload")?.click()} className="p-2 rounded-md text-muted-foreground hover:bg-muted"><ImageIcon size={16} /></button>
+            
             <div className="w-px h-6 bg-border mx-1" />
 
             <button type="button" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} className="p-2 rounded-md text-muted-foreground hover:bg-muted transition-colors disabled:opacity-30"><Undo size={16} /></button>

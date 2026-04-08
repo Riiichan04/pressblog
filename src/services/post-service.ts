@@ -9,7 +9,10 @@ export const uploadPost = async (data: PostRequest) => {
         return response.data
     }
     catch {
-        return null
+        return {
+            result: false,
+            msg: "Error"
+        }
     }
 }
 

@@ -91,5 +91,14 @@
     },
     "navbar": {
         "back": "Trở về trang trước"
+    },
+    "save": {
+        "success": "Lưu thành công",
+        "error": "Lưu thất bại"
+    },
+    "upload": {
+        "success": "Đăng bài thành công",
+        "error": "Có lỗi xảy ra khi đăng bài",
+        "validate_error": "Nội dung còn trống"
     }
 }

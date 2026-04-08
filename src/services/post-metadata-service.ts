@@ -4,7 +4,7 @@ import { Category, Tag } from "@/common/types/post-metadata"
 import axios from "axios"
 
 export const getCurrentCategory = () => {
-    return axios.get<PageResponse<Category>>(`${apiUrl}/post/metadata/category`).then(res => res.data)
+    return axios.get<Category[]>(`${apiUrl}/post/metadata/category`).then(res => res.data)
 }
 
 export const getCurrentTag = () => {

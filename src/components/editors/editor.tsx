@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
     EditorRoot,
@@ -21,17 +21,39 @@ import { ClassicToolbar } from "./tool-bar";
 import { EditorTool, setFullState } from "@/store/slices/editor-slice";
 import { useDispatch } from "react-redux";
 import type { TFunction } from "i18next";
+import { toast } from "sonner";
+import { throttle } from "lodash";
 
 interface BlogEditorProps {
     initialValue?: string;
-    onChange: (value: string) => void;
+    onChange: (html: string, length: number) => void
+    onImageUpload?: (file: File) => Promise<string | null>;
 }
 
-const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
+const BlogEditor = ({ initialValue, onChange, onImageUpload }: BlogEditorProps) => {
     const { t, i18n } = useTranslation(["editor"]);
-
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [editorInstance, setEditorInstance] = useState<EditorInstance | null>(null);
     const dispatch = useDispatch();
+
+    //For select files
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+
+        if (!editorInstance?.getText().trim() && !initialValue) {
+            toast.error("editor.missing_content");
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            return;
+        }
+
+        if (!file || !onImageUpload || !editorInstance) return;
+
+        const url = await onImageUpload(file);
+        if (url) {
+            editorInstance.chain().focus().setImage({ src: url }).run();
+        }
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    };
 
     useEffect(() => {
         if (editorInstance) {
@@ -55,31 +77,35 @@ const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
 
     const currentSuggestionItems = getSuggestionItems(t);
 
-    const syncToolbar = (editor: EditorInstance) => {
+    //Throttle to optimize performance
+    const syncToolbar = useMemo(() => throttle((editor: EditorInstance) => {
         const tools: EditorTool[] = [
             'bold', 'italic', 'underline', 'strike',
             'bulletList', 'orderedList', 'blockquote', 'codeBlock', 'link'
         ];
 
         const newState: Partial<Record<EditorTool, boolean>> = {};
-
         tools.forEach(tool => {
-            newState[tool] = editor.isActive(tool);
+            newState[tool] = tool.startsWith('heading')
+                ? editor.isActive('heading', { level: parseInt(tool.replace('heading', '')) })
+                : editor.isActive(tool === 'bulletList' ? 'bulletList' : tool === 'orderedList' ? 'orderedList' : tool);
         });
 
-        for (let i = 1; i <= 6; i++) {
-            const key = `heading${i}` as EditorTool;
-            newState[key] = editor.isActive('heading', { level: i });
-        }
-
         dispatch(setFullState(newState));
-    };
+    }, 100), [dispatch]);
 
     return (
         <EditorRoot>
             <div className="w-full max-w-5xl mx-auto bg-background">
                 <ClassicToolbar editor={editorInstance} />
-
+                <input
+                    type="file"
+                    id="editor-image-upload"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
                 <EditorContent
                     initialContent={initialValue ? undefined : undefined}
                     extensions={extensions}
@@ -88,8 +114,7 @@ const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
                         setEditorInstance(editor);
                     }}
                     onUpdate={({ editor }) => {
-                        setEditorInstance(editor);
-                        onChange(editor.getHTML());
+                        onChange(editor.getHTML(), editor.getText().trim().length);
                         syncToolbar(editor);
                     }}
                     onSelectionUpdate={({ editor }) => {
@@ -224,4 +249,4 @@ const BlogEditor = ({ initialValue, onChange }: BlogEditorProps) => {
     );
 };
 
-export default BlogEditor;
+export default React.memo(BlogEditor);

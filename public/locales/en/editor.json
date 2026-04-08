@@ -91,5 +91,14 @@
     },
     "navbar": {
         "back": "Back to previous page"
+    },
+    "save": {
+        "success": "Save successfully",
+        "error": "Error ocurred when saving your work"
+    },
+    "upload": {
+        "success": "Upload successful",
+        "error": "Error ocurred when uploading",
+        "validate_error": "Missing content"
     }
 }
