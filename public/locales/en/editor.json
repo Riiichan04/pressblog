@@ -1,0 +1,104 @@
+{
+    "layout": {
+        "add_cover": "Add cover",
+        "change_cover": "Change cover",
+        "title_placeholder": "Post title",
+        "category": "Category",
+        "category_placeholder": "No category selected",
+        "tags": "Tags",
+        "tags_placeholder": "tips, trick...",
+        "slug": "Slug",
+        "slug_placeholder": "untitled-post",
+        "excerpt": "Excerpt",
+        "excerpt_placeholder": "Short summary of the post..."
+    },
+    "editor": {
+        "command_not_found": "No command found",
+        "link_title": "Link title"
+    },
+    "extensions": {
+        "placeholder": "Type content or press '/' for commands..."
+    },
+    "slash_command": {
+        "h1": {
+            "title": "Heading 1",
+            "desc": "Largest heading"
+        },
+        "h2": {
+            "title": "Heading 2",
+            "desc": "Medium-large heading"
+        },
+        "h3": {
+            "title": "Heading 3",
+            "desc": "Medium heading"
+        },
+        "h4": {
+            "title": "Heading 4",
+            "desc": "Small heading"
+        },
+        "h5": {
+            "title": "Heading 5",
+            "desc": "Very small heading"
+        },
+        "h6": {
+            "title": "Heading 6",
+            "desc": "Smallest heading"
+        },
+        "bullet_list": {
+            "title": "Bullet List",
+            "desc": "Create a bulleted list"
+        },
+        "ordered_list": {
+            "title": "Numbered List",
+            "desc": "Create an ordered list"
+        },
+        "task_list": {
+            "title": "To-do List",
+            "desc": "Create a task list"
+        },
+        "quote": {
+            "title": "Blockquote",
+            "desc": "Create a blockquote"
+        },
+        "code_block": {
+            "title": "Code Block",
+            "desc": "Insert a code block"
+        },
+        "image": {
+            "title": "Add Image",
+            "desc": "Insert Markdown image syntax"
+        },
+        "link": {
+            "title": "Add Link",
+            "desc": "Insert Markdown link syntax"
+        },
+        "bold": {
+            "title": "Bold",
+            "desc": "Make text bold"
+        },
+        "italic": {
+            "title": "Italic",
+            "desc": "Make text italic"
+        },
+        "underline": {
+            "title": "Underline",
+            "desc": "Underline text"
+        },
+        "strike": {
+            "title": "Strikethrough",
+            "desc": "Strike through text"
+        }
+    },
+    "navbar": {
+        "back": "Back to previous page"
+    },
+    "save": {
+        "success": "Save successfully",
+        "error": "Error ocurred when saving your work"
+    },
+    "upload": {
+        "success": "Upload successful",
+        "error": "Error ocurred when uploading",
+        "validate_error": "Missing content"
+    }
+}

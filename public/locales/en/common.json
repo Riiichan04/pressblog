@@ -10,7 +10,8 @@
         "write": "Write",
         "profile": "Profile",
         "settings": "Settings",
-        "logout": "Logout"
+        "logout": "Logout",
+        "back_previous": "Back to previous"
     },
     "user_menu": {
         "profile": "Profile",
@@ -35,5 +36,13 @@
     "post": {
         "read_time_singular": "min",
         "read_time_plural": "mins"
+    },
+    "editor": {
+        "draft": "Draft",
+        "saved_just_now": "Saved a few seconds ago",
+        "saving": "Saving...",
+        "preview": "Preview",
+        "publish": "Publish",
+        "publishing": "Publishing..."
     }
 }
