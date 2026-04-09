@@ -1,5 +1,6 @@
 "use client";
 
+import Cookies from 'js-cookie';
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import {
@@ -24,15 +25,17 @@ import Image from "next/image";
 import { Skeleton } from "./ui/skeleton";
 import { cn } from "@/lib/utils";
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
     const { user, logout } = useAuth();
     const { t, i18n } = useTranslation(["common"]);
     const { setTheme, theme } = useTheme();
     const [mounted, setMounted] = useState(false);
-
     const [isScrolled, setIsScrolled] = useState(false);
-
+    
+    const router = useRouter()
+    
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
             setMounted(true);
@@ -54,6 +57,8 @@ export default function Navbar() {
         const newLang = i18n.language === "vi" ? "en" : "vi";
         i18n.changeLanguage(newLang);
         localStorage.setItem("lng", newLang);
+        Cookies.set('i18nextLng', newLang, { expires: 365 });
+        router.refresh();
     };
 
     return (

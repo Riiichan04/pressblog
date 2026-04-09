@@ -6,7 +6,7 @@ import { getPostBySlug } from "@/services/post-service"
 import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from 'next/navigation';
-import { useTranslation } from "react-i18next";
+import { getServerTranslation } from "@/common/utils/server-translation";
 
 interface Props {
     params: Promise<{ slug: string; locale: string }>;
@@ -39,8 +39,9 @@ export default async function BlogDetail({ params }: Props) {
 
 
     const post = await getPostBySlug(slug)
+    if (!post) return notFound()
 
-    if (post === null) return notFound()
+    const { t } = await getServerTranslation('blog');
     const processedHtml = processHtmlContent(post.content)
     const headings = getHeadings(processedHtml);
 
@@ -63,7 +64,7 @@ export default async function BlogDetail({ params }: Props) {
                     </div>
                     <h1 className="text-4xl font-extrabold mb-4">{post.name}</h1>
                     <div className="text-end text-gray-500 gap-2">
-                        <p className="text-sm">Ngày đăng/chỉnh sửa: {new Date(post.updatedAt).toLocaleDateString('vi-VN')}</p>
+                        <p className="text-sm">{t("layout.upload_date")}: {new Date(post.updatedAt).toLocaleDateString('vi-VN')}</p>
                     </div>
                     <div className="mt-4 flex items-center gap-2">
                         <Avatar className="h-8 w-8 shrink-0">
