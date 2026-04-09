@@ -35,3 +35,13 @@ export const getNewestPost = async (page: number = 0, size: number = 5) => {
         return null
     }
 }
+
+export const getPostBySlug = async (slug: string) => {
+    try {
+        const response = await axios.get<PostDetail>(`${apiUrl}/post/slug/${slug}`)
+        return response.data
+    }
+    catch {
+        return null
+    }
+}
