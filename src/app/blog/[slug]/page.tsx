@@ -1,82 +1,96 @@
-import { cn } from "@/lib/utils";
+import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
+import { getHeadings, processHtmlContent } from "@/common/utils/blog-toc";
+import TableOfContents from "@/components/table-of-content";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getPostBySlug } from "@/services/post-service"
-import MarkdownIt from "markdown-it";
+import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from 'next/navigation';
+import { useTranslation } from "react-i18next";
 
-export default async function BlogDetail({ params }: { params: Promise<{ slug: string }> }) {
+interface Props {
+    params: Promise<{ slug: string; locale: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { slug } = await params;
+
+    const post = await getPostBySlug(slug);
+
+    if (!post) {
+        return {
+            title: 'Post Not Found | PressBlog',
+        };
+    }
+
+    return {
+        title: `${post.name} | PressBlog`,
+        description: `Đọc bài viết ${post.name} trên PressBlog`,
+        openGraph: {
+            title: post.name,
+            description: `Đọc bài viết ${post.name} trên PressBlog`,
+            images: [post.thumbnail || '/default-banner.jpg'],
+        },
+    };
+}
+
+export default async function BlogDetail({ params }: Props) {
     const { slug } = await params
+
+
     const post = await getPostBySlug(slug)
 
-    const mdParser = new MarkdownIt({
-        html: true,
-        breaks: true,
-        linkify: true
-    })
-
     if (post === null) return notFound()
-    const htmlContent = mdParser.render(post.content);
+    const processedHtml = processHtmlContent(post.content)
+    const headings = getHeadings(processedHtml);
+
     return (
-        <div className="mt-20 w-full flex justify-center">
-            <article className="max-w-4xl mx-x-auto py-10">
-                <div className="w-full">
-                    {post.thumbnail &&
-                        <div className="relative w-full h-48 md:h-64 rounded-xl overflow-hidden mb-8 border border-border/50">
-                            <Image
-                                src={post.thumbnail}
-                                alt="Cover"
-                                fill
-                                className="object-cover"
-                            />
+        <main className="container flex justify-center mx-auto py-10 px-4 mt-10">
+            <div className="flex flex-col lg:flex-row gap-12 max-w-6xl">
+                {/* Nội dung chính bên trái */}
+                <article className="flex-1 min-w-0">
+                    <div className="w-full">
+                        {post.thumbnail &&
+                            <div className="relative w-full h-48 md:h-64 rounded-xl overflow-hidden mb-8 border border-border/50">
+                                <Image
+                                    src={post.thumbnail}
+                                    alt="Cover"
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                        }
+                    </div>
+                    <h1 className="text-4xl font-extrabold mb-4">{post.name}</h1>
+                    <div className="text-end text-gray-500 gap-2">
+                        <p className="text-sm">Ngày đăng/chỉnh sửa: {new Date(post.updatedAt).toLocaleDateString('vi-VN')}</p>
+                    </div>
+                    <div className="mt-4 flex items-center gap-2">
+                        <Avatar className="h-8 w-8 shrink-0">
+                            <AvatarImage src={post.author.avatar || ""} alt={post.author.username} />
+                            <AvatarFallback className={`${fallBackColor(post.author.username)} text-white`}>
+                                {getFallback(post.author.username)}
+                            </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col space-y-1 min-w-0">
+                            <p className="text-sm font-medium leading-tight truncate">
+                                {post.author.displayName || post.author.username}
+                            </p>
+                            <p className="text-xs leading-tight text-muted-foreground truncate">
+                                {post.author.email}
+                            </p>
                         </div>
-                    }
-                </div>
-                <h1 className="text-4xl font-bold">{post.name}</h1>
-                <div className="mt-4 text-gray-500">
-                    Ngày đăng/chỉnh sửa: {new Date(post.updatedAt).toLocaleDateString('vi-VN')}
-                </div>
+                    </div>
+                    <div
+                        className="prose dark:prose-invert max-w-none"
+                        dangerouslySetInnerHTML={{ __html: processedHtml }}
+                    />
+                </article>
 
-                <div
-                    className={cn(
-                        "prose prose-lg max-w-none",
-                        "dark:prose-invert",
-
-                        // Headings (H1 -> H6)
-                        "prose-headings:scroll-mt-20 prose-headings:font-bold prose-headings:tracking-tight",
-                        "prose-h1:text-4xl prose-h1:mb-8",
-                        "prose-h2:text-3xl prose-h2:border-b dark:prose-h2:border-border pb-2 mt-10",
-                        "prose-h3:text-2xl",
-                        "prose-h4:text-xl",
-
-                        // Link & Bold
-                        "prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium",
-                        "prose-strong:text-foreground prose-strong:font-bold",
-
-                        // Code & Code Blocks 
-                        "prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-medium",
-                        "prose-code:before:content-[''] prose-code:after:content-['']",
-                        "prose-pre:bg-[#0d1117] prose-pre:border prose-pre:border-border prose-pre:shadow-sm",
-
-                        // Blockquotes
-                        "prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:italic prose-blockquote:bg-muted/30 prose-blockquote:py-1 prose-blockquote:px-6",
-
-                        // Lists & Tasklists
-                        "prose-li:marker:text-primary",
-                        "prose-ul:list-disc prose-ol:list-decimal",
-
-                        // Tables 
-                        "prose-th:text-foreground prose-th:bg-muted/50 prose-th:p-3 prose-th:border prose-th:border-border",
-                        "prose-td:p-3 prose-td:border prose-td:border-border",
-
-                        // Images & Figures
-                        "prose-img:rounded-xl prose-img:shadow-lg prose-img:mx-auto",
-
-                        // Horizontal Rules
-                        "prose-hr:border-border"
-                    )}
-                    dangerouslySetInnerHTML={{ __html: htmlContent }}
-                />
-            </article>
-        </div>
+                <aside className="hidden lg:block w-72 shrink-0">
+                    <TableOfContents headings={headings} />
+                </aside>
+            </div>
+        </main>
     )
 }

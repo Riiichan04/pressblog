@@ -100,5 +100,9 @@
         "success": "Đăng bài thành công",
         "error": "Có lỗi xảy ra khi đăng bài",
         "validate_error": "Nội dung còn trống"
+    },
+    "import": {
+        "successs": "Nhập file thành công",
+        "error": "Nhập file thất bại"
     }
 }

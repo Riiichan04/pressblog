@@ -7,11 +7,12 @@ export enum PostStatus {
 
 export interface Author {
     id: number;
-    name: string;
+    email: string;
+    displayName: string;
     username: string;
     avatar: string | null;
-    bio: string;
-    role: "ADMIN" | "USER";
+    description: string;
+    // role: "ADMIN" | "USER";
 }
 
 export interface PostDetail {

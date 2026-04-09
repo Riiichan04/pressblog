@@ -12,7 +12,7 @@ import {
     FolderTree, Tags, Link as AlignLeft, X
 } from "lucide-react";
 import Image from "next/image";
-import "@/components/styles/post-editor.css"
+// import "@/components/styles/post-editor.css"
 import { FieldSeparator } from "../ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { getCurrentCategory } from "@/services/post-metadata-service";

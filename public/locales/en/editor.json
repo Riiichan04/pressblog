@@ -100,5 +100,9 @@
         "success": "Upload successful",
         "error": "Error ocurred when uploading",
         "validate_error": "Missing content"
+    },
+    "import": {
+        "successs": "Import successful",
+        "error": "Error ocurred when importing your file"
     }
 }
