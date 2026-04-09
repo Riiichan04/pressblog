@@ -12,7 +12,7 @@ import {
     FolderTree, Tags, Link as AlignLeft, X
 } from "lucide-react";
 import Image from "next/image";
-import "@/components/styles/post-editor.css"
+// import "@/components/styles/post-editor.css"
 import { FieldSeparator } from "../ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { getCurrentCategory } from "@/services/post-metadata-service";
@@ -59,7 +59,7 @@ export default function WritePostComponent() {
     const mdParser = useMemo(() => new MarkdownIt({
         html: true,
         breaks: true,
-        linkify: true // Tự động biến URL thành link luôn cho tiện
+        linkify: true 
     }), [])
 
     //FIXME: Merge 2 function below into 1
@@ -137,7 +137,6 @@ export default function WritePostComponent() {
 
             try {
                 const htmlContent = mdParser.render(markdownText);
-                console.log(htmlContent)
                 if (editorInstance) {
                     editorInstance.commands.setContent(htmlContent);
                 }
