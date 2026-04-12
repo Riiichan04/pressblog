@@ -1,8 +1,8 @@
 export enum PostStatus {
-    DRAFT = 'DRAFT',
-    PUBLISHED = 'PUBLISHED',
-    PRIVATE = 'PRIVATE',
-    SCHEDULED = 'SCHEDULED',
+    DRAFT = 0,
+    PUBLISHED = 1,
+    PRIVATE = 2,
+    DELETED = 3
 }
 
 export interface Author {
@@ -36,5 +36,15 @@ export interface PostRequest {
     categoryName: string,
     listTag: string[],
     thumbnail: string | null,
+    excerpt: string,
     language: "VI" | "EN" //Convert to global provider later
+}
+
+export interface PostFormData {
+    id: number;
+    name: string;
+    excerpt: string;
+    content: string;
+    tags: string[];
+    status: PostStatus;
 }
