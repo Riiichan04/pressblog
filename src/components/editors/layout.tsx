@@ -90,7 +90,7 @@ export default function WritePostComponent() {
     const uploadValidation = useMemo(
         () => debounce(() => {
             const currentTitle = titleRef.current?.value || "";
-            const currentExcerpt = excerptRef.current?.value || ""; // Lấy từ ref
+            const currentExcerpt = excerptRef.current?.value || "";
 
             const hasTitle = currentTitle.trim().length >= 10;
             const hasCategory = category !== "";
@@ -98,7 +98,6 @@ export default function WritePostComponent() {
 
             setIsPublishable(hasTitle && hasCategory && hasContent);
 
-            // Cập nhật Redux Store (Autosave chuẩn)
             const post: PostRequest = {
                 name: currentTitle,
                 excerpt: currentExcerpt,
@@ -107,10 +106,10 @@ export default function WritePostComponent() {
                 email: user?.email || "",
                 language: "VI",
                 thumbnail: coverImage,
-                listTag: listTags // List này vẫn dùng state vì nó là mảng, không gõ liên tục vào đây được
+                listTag: listTags
             };
             dispatcher(savePost({ post, updatedAt: Date.now() }));
-        }, 1000), // Tăng thời gian lên 1s để mượt hơn
+        }, 1000),
         [category, listTags, coverImage, user, dispatcher]
     );
 
@@ -183,9 +182,8 @@ export default function WritePostComponent() {
             if (!listTags.includes(val)) {
                 setListTags(prev => [...prev, val]);
             }
-            tagsRef.current.value = ""; // Clear input mà không re-render
+            tagsRef.current.value = "";
         } else if (e.key === 'Backspace' && !val && listTags.length > 0) {
-            // Xóa tag cuối khi nhấn Backspace trong ô trống
             setListTags(prev => prev.slice(0, -1));
         }
     };
@@ -193,6 +191,17 @@ export default function WritePostComponent() {
     const removeTag = (indexToRemove: number) => {
         setListTags(prev => prev.filter((_, index) => index !== indexToRemove));
     };
+
+    const handleAutosave = useCallback(async (data: PostRequest) => {
+        try {
+            const res = await uploadPost(data);
+            if (res.result) {
+                console.log("Autosaved at", new Date().toLocaleTimeString());
+            }
+        } catch (error) {
+            console.error("Failed to autosave", error);
+        }
+    }, []);
 
     //For validate Publish button
     useEffect(() => {
