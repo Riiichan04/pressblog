@@ -13,12 +13,15 @@ import { calculateReadingTime } from "@/common/utils/post-reading";
 import { getFeaturedPost, getNewestPost } from "@/services/post-service";
 import { Button } from "./ui/button";
 import { purifyBlogContent } from "@/common/utils/html-purifier";
+import Link from "next/link";
 
 export function LandingPage() {
     const [newestPost, setNewestPosts] = useState<PostDetail[]>([]);
     const [featuredPost, setFeaturedPost] = useState<PostDetail | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const { t, i18n } = useTranslation("landing");
+
+    const timeLocale = i18n.language
 
     const fetchPosts = useCallback(async () => {
         setIsLoading(true);
@@ -83,14 +86,17 @@ export function LandingPage() {
                                                 {featuredPost.name}
                                             </h3>
                                             <div className="text-gray-100 max-w-xl line-clamp-3 drop-shadow-sm">
-                                                <FeaturedBlogContent content={featuredPost.content} />
+                                                <div dangerouslySetInnerHTML={{ __html: purifyBlogContent(featuredPost.content) }}></div>
                                             </div>
                                         </div>
 
-                                        <button className="group flex items-center gap-2 text-white font-medium hover:gap-4 transition-all cursor-pointer">
+                                        <Link
+                                            className="group flex items-center gap-2 text-white font-medium hover:gap-4 transition-all cursor-pointer"
+                                            href={`/blog/${featuredPost.slug}`}
+                                        >
                                             <span>{t("main.read_more_action")}</span>
                                             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                                        </button>
+                                        </Link>
                                     </div>
 
                                     <div className="flex items-center gap-4 bg-black/20 backdrop-blur-md p-3 rounded-2xl border border-white/20">
@@ -99,7 +105,7 @@ export function LandingPage() {
                                             <div className="flex gap-2 justify-end">
                                                 <div className="flex items-center gap-1.5 opacity-90">
                                                     <Calendar className="text-white" size={14} />
-                                                    <p className="text-white text-xs">{featuredPost.updatedAt}</p>
+                                                    <p className="text-white text-xs">{new Date(featuredPost.updatedAt).toLocaleDateString(timeLocale) || ""}</p>
                                                 </div>
                                                 <div className="bg-white/40 w-px h-3 my-auto"></div>
                                                 <div className="flex items-center gap-1.5 opacity-90">

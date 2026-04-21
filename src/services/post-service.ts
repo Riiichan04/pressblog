@@ -26,9 +26,9 @@ export const getFeaturedPost = async () => {
     }
 }
 
-export const getNewestPost = async (page: number = 0, size: number = 5) => {
+export const getNewestPost = async () => {
     try {
-        const response = await axios.post<PostDetail[]>(`${apiUrl}/post/newest-post`, { page, size })
+        const response = await axios.get<PostDetail[]>(`${apiUrl}/newest`)
         return response.data
     }
     catch {
