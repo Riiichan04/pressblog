@@ -18,7 +18,7 @@ export const uploadPost = async (data: PostRequest) => {
 
 export const getFeaturedPost = async () => {
     try {
-        const response = await axios.post<PostDetail>(`${apiUrl}/post/featured-post`)
+        const response = await axios.get<PostDetail>(`${apiUrl}/featured`)
         return response.data
     }
     catch {

@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { calculateReadingTime } from "@/common/utils/post-reading";
 import { getFeaturedPost, getNewestPost } from "@/services/post-service";
 import { Button } from "./ui/button";
+import { purifyBlogContent } from "@/common/utils/html-purifier";
 
 export function LandingPage() {
     const [newestPost, setNewestPosts] = useState<PostDetail[]>([]);
@@ -55,7 +56,7 @@ export function LandingPage() {
                 <>
                     {featuredPost && (
                         <section className="relative h-screen w-full">
-                            <div className="absolute inset-0 -z-10">
+                            <div className="absolute inset-0 z-0">
                                 <Image
                                     src={featuredPost.thumbnail}
                                     alt="Background"
@@ -66,7 +67,7 @@ export function LandingPage() {
                                 <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/30 to-transparent" />
                             </div>
 
-                            <div className="container mx-auto h-full flex flex-col justify-end pb-12 px-6">
+                            <div className="absolute inset-0 container mx-auto h-full flex flex-col justify-end pb-12 px-6 bg-transparent z-1">
                                 <div className="flex flex-col md:flex-row items-end justify-between gap-8">
                                     <div className="w-full md:w-3/5 space-y-6">
                                         <div className="flex flex-wrap gap-2">
@@ -81,9 +82,9 @@ export function LandingPage() {
                                             <h3 className="text-white font-bold text-3xl md:text-5xl leading-tight drop-shadow-sm">
                                                 {featuredPost.name}
                                             </h3>
-                                            <p className="text-gray-100 max-w-xl line-clamp-3 drop-shadow-sm">
-                                                {featuredPost.content}
-                                            </p>
+                                            <div className="text-gray-100 max-w-xl line-clamp-3 drop-shadow-sm">
+                                                <FeaturedBlogContent content={featuredPost.content} />
+                                            </div>
                                         </div>
 
                                         <button className="group flex items-center gap-2 text-white font-medium hover:gap-4 transition-all cursor-pointer">
@@ -94,7 +95,7 @@ export function LandingPage() {
 
                                     <div className="flex items-center gap-4 bg-black/20 backdrop-blur-md p-3 rounded-2xl border border-white/20">
                                         <div className="text-right">
-                                            <p className="text-white font-semibold">{featuredPost.author.name}</p>
+                                            <p className="text-white font-semibold">{featuredPost.author.displayName}</p>
                                             <div className="flex gap-2 justify-end">
                                                 <div className="flex items-center gap-1.5 opacity-90">
                                                     <Calendar className="text-white" size={14} />
@@ -112,7 +113,7 @@ export function LandingPage() {
                                         <Avatar className="h-12 w-12 ring-2 ring-white/30">
                                             <AvatarImage src={featuredPost.author.avatar || ""} />
                                             <AvatarFallback className={`${fallBackColor(featuredPost.author.username)} text-white`}>
-                                                {getFallback(featuredPost.author.name)}
+                                                {getFallback(featuredPost.author.displayName)}
                                             </AvatarFallback>
                                         </Avatar>
                                     </div>
@@ -179,4 +180,10 @@ function EmptyPostState({ onRetry }: { onRetry: () => void }) {
             </Button>
         </div>
     );
+}
+
+function FeaturedBlogContent({ content }: { content: string }) {
+    return (
+        <div dangerouslySetInnerHTML={{ __html: purifyBlogContent(content) }}></div>
+    )
 }
