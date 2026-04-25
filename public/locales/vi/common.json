@@ -44,5 +44,28 @@
         "preview": "Xem trước",
         "publish": "Xuất bản",
         "publishing": "Đang xuất bản..."
+    },
+    "footer": {
+        "brand": {
+            "description": "Nơi những kiến thức mới giao thoa cùng nhịp sống. Chia sẻ hành trình khám phá công nghệ, trải nghiệm cá nhân và những góc nhìn mới mẻ về thế giới xung quanh."
+        },
+        "sections": {
+            "explore": "Khám phá",
+            "resources": "Tài nguyên",
+            "legal": "Chính sách",
+            "social": "Kết nối"
+        },
+        "links": {
+            "home": "Trang chủ",
+            "articles": "Bài viết",
+            "projects": "Dự án",
+            "about": "Giới thiệu",
+            "contact": "Liên hệ",
+            "documentation": "Tài liệu",
+            "privacy": "Chính sách bảo mật",
+            "terms": "Điều khoản sử dụng",
+            "rss": "RSS Feed"
+        },
+        "copy": "© 2026 PressBlog. Thiết kế và phát triển bởi Đội ngũ PressBlog."
     }
 }

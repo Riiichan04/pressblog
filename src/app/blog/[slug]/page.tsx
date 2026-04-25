@@ -1,5 +1,4 @@
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
-import { getHeadings, processHtmlContent } from "@/common/utils/blog-toc";
 import TableOfContents from "@/components/table-of-content";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getPostBySlug } from "@/services/post-service"
@@ -7,6 +6,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from 'next/navigation';
 import { getServerTranslation } from "@/common/utils/server-translation";
+import { processContentAndGetHeadings } from "@/common/utils/blog-toc";
 
 interface Props {
     params: Promise<{ slug: string; locale: string }>;
@@ -42,13 +42,11 @@ export default async function BlogDetail({ params }: Props) {
     if (!post) return notFound()
 
     const { t } = await getServerTranslation('blog');
-    const processedHtml = processHtmlContent(post.content)
-    const headings = getHeadings(processedHtml);
+    const { processedHtml, headings } = processContentAndGetHeadings(post.content);
 
     return (
         <main className="container flex justify-center mx-auto py-10 px-4 mt-10">
             <div className="flex flex-col lg:flex-row gap-12 max-w-6xl">
-                {/* Nội dung chính bên trái */}
                 <article className="flex-1 min-w-0">
                     <div className="w-full">
                         {post.thumbnail &&

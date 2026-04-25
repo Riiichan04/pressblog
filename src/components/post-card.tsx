@@ -4,9 +4,14 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { PostDetail } from "@/common/types/post";
-import { getFallback } from "@/common/utils/avatar-loader";
+import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
+import { useTranslation } from "react-i18next";
+import { purifyBlogContent } from "@/common/utils/html-purifier";
 
 export function PostCard({ post }: { post: PostDetail }) {
+    const { t, i18n } = useTranslation("landing");
+    const timeLocale = i18n.language
+
     return (
         <div className="group flex flex-col space-y-4 rounded-2xl border bg-card p-3 transition-all hover:shadow-xl hover:-translate-y-1">
             {/* Thumbnail */}
@@ -33,19 +38,19 @@ export function PostCard({ post }: { post: PostDetail }) {
                     </div>
                     <div className="flex items-center gap-1">
                         <Clock size={14} />
-                        <span>4 ngày trước</span>
+                        <span>{new Date(post.updatedAt).toLocaleDateString(timeLocale) || ""}</span>
                     </div>
                 </div>
 
-                <Link href={`/post/${post.slug}`} className="group/title">
+                <Link href={`/blog/${post.slug}`} className="group/title">
                     <h3 className="line-clamp-2 text-lg font-bold leading-tight tracking-tight group-hover/title:text-primary transition-colors">
                         {post.name}
                     </h3>
                 </Link>
 
-                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                    {post.content}
-                </p>
+                <div className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                    <div dangerouslySetInnerHTML={{ __html: purifyBlogContent(post.content) }}></div>
+                </div>
 
                 {/* Tags */}
                 <div className="mt-3 flex flex-wrap gap-1">
@@ -61,15 +66,15 @@ export function PostCard({ post }: { post: PostDetail }) {
                     <div className="flex items-center gap-2">
                         <Avatar className="h-7 w-7 ring-2 ring-background">
                             <AvatarImage src={post.author.avatar || ""} />
-                            <AvatarFallback className={`${getFallback(post.author.username)} text-[10px] text-white`}>
-                                {getFallback(post.author.name)}
+                            <AvatarFallback className={`${fallBackColor(post.author.username)} text-white`}>
+                                {getFallback(post.author.displayName || post.author.username)}
                             </AvatarFallback>
                         </Avatar>
-                        <span className="text-xs font-semibold">{post.author.name}</span>
+                        <span className="text-xs font-semibold">{post.author.displayName}</span>
                     </div>
 
                     <Link
-                        href={`/post/${post.slug}`}
+                        href={`/blog/${post.slug}`}
                         className="rounded-full p-1.5 bg-secondary hover:bg-primary hover:text-primary-foreground transition-all"
                     >
                         <ArrowUpRight size={16} />

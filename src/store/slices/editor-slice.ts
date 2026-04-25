@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Định nghĩa các key hợp lệ để tránh 'any'
 export type EditorTool =
     | 'bold' | 'italic' | 'underline' | 'strike'
     | 'heading1' | 'heading2' | 'heading3' | 'heading4' | 'heading5' | 'heading6'

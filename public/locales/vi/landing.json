@@ -5,7 +5,9 @@
     },
     "feature": {
         "newest": "Bài viết mới nhất",
-        "featured": "Bài viết nổi bật"
+        "featured": "Bài viết nổi bật",
+        "recommend": "Bài viết đề xuất",
+        "categories": "Danh mục bài viết"
     },
     "post": {
         "read_time_singular": "phút đọc",
