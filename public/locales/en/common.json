@@ -44,5 +44,28 @@
         "preview": "Preview",
         "publish": "Publish",
         "publishing": "Publishing..."
+    },
+    "footer": {
+        "brand": {
+            "description": "Where knowledge meets life. Sharing a journey through technology, personal experiences, and fresh perspectives on the world around us."
+        },
+        "sections": {
+            "explore": "Explore",
+            "resources": "Resources",
+            "legal": "Policy",
+            "social": "Follow Us"
+        },
+        "links": {
+            "home": "Home",
+            "articles": "Articles",
+            "projects": "Projects",
+            "about": "About",
+            "contact": "Contact",
+            "documentation": "Documentation",
+            "privacy": "Privacy Policy",
+            "terms": "Terms of Service",
+            "rss": "RSS Feed"
+        },
+        "copy": "© 2026 PressBlog. Designed and developed by PressBlog Team."
     }
 }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { PostDetail } from "@/common/types/post";
-import { getFallback } from "@/common/utils/avatar-loader";
+import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 import { useTranslation } from "react-i18next";
 import { purifyBlogContent } from "@/common/utils/html-purifier";
 
@@ -66,8 +66,8 @@ export function PostCard({ post }: { post: PostDetail }) {
                     <div className="flex items-center gap-2">
                         <Avatar className="h-7 w-7 ring-2 ring-background">
                             <AvatarImage src={post.author.avatar || ""} />
-                            <AvatarFallback className={`${getFallback(post.author.username)} text-[10px] text-white`}>
-                                {getFallback(post.author.displayName)}
+                            <AvatarFallback className={`${fallBackColor(post.author.username)} text-white`}>
+                                {getFallback(post.author.displayName || post.author.username)}
                             </AvatarFallback>
                         </Avatar>
                         <span className="text-xs font-semibold">{post.author.displayName}</span>

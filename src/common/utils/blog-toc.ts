@@ -1,31 +1,35 @@
 import * as cheerio from 'cheerio';
 
-export const processHtmlContent = (html: string) => {
-    const $ = cheerio.load(html);
-
-    $('h1, h2, h3').each((_, el) => {
-        const text = $(el).text();
-        const id = text
-            .toLowerCase()
-            .trim()
-            .replace(/\s+/g, '-')
-            .replace(/[^\w-]+/g, '')
-            .replace(/--+/g, '-');
-
-        $(el).attr('id', id);
-    });
-
-    return $.html();
+const slugify = (text: string) => {
+    return text
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/--+/g, '-');
 };
 
-export const getHeadings = (html: string) => {
+export const processContentAndGetHeadings = (html: string) => {
     const $ = cheerio.load(html);
     const headings: { id: string; text: string; level: number }[] = [];
+    const idCounts: Record<string, number> = {};
 
     $('h1, h2, h3').each((_, el) => {
         const $el = $(el);
         const text = $el.text();
-        const id = $el.attr('id') || text.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-');
+        let id = slugify(text);
+
+        // Xử lý trùng lặp ID
+        if (idCounts[id] !== undefined) {
+            idCounts[id]++;
+            id = `${id}-${idCounts[id]}`;
+        } else {
+            idCounts[id] = 0;
+        }
+
+        $el.attr('id', id);
 
         headings.push({
             id,
@@ -34,5 +38,8 @@ export const getHeadings = (html: string) => {
         });
     });
 
-    return headings;
+    return {
+        processedHtml: $.html(),
+        headings
+    };
 };

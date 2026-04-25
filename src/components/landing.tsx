@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ArrowRight, Calendar, Clock, RefreshCcw, SearchX } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Folder, Laptop, RefreshCcw, SearchX } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { PostCard } from "./post-card";
@@ -14,10 +14,15 @@ import { getFeaturedPost, getNewestPost } from "@/services/post-service";
 import { Button } from "./ui/button";
 import { purifyBlogContent } from "@/common/utils/html-purifier";
 import Link from "next/link";
+import { Card, CardContent } from "./ui/card";
+import { Category } from "@/common/types/post-metadata";
+import { getCurrentCategory } from "@/services/post-metadata-service";
+import { categoryIconMap } from "@/common/constants/category-icon-map";
 
 export function LandingPage() {
     const [newestPost, setNewestPosts] = useState<PostDetail[]>([]);
     const [featuredPost, setFeaturedPost] = useState<PostDetail | null>(null);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const { t, i18n } = useTranslation("landing");
 
@@ -26,12 +31,14 @@ export function LandingPage() {
     const fetchPosts = useCallback(async () => {
         setIsLoading(true);
         try {
-            const [newest, featured] = await Promise.all([
+            const [newest, featured, cats] = await Promise.all([
                 getNewestPost(),
-                getFeaturedPost()
+                getFeaturedPost(),
+                getCurrentCategory()
             ]);
             setNewestPosts(newest || []);
             setFeaturedPost(featured);
+            setCategories(cats || []);
         } catch (error) {
             console.error("Failed to fetch posts:", error);
         } finally {
@@ -50,13 +57,14 @@ export function LandingPage() {
     const hasNoPosts = newestPost.length === 0 && !featuredPost;
 
     return (
-        <div className="relative w-full overflow-x-hidden bg-background">
+        <div className="relative w-full overflow-x-hidden bg-background pb-8">
             {hasNoPosts ? (
                 <div className="min-h-screen flex items-center justify-center">
                     <EmptyPostState onRetry={fetchPosts} />
                 </div>
             ) : (
                 <>
+                    {/* Featured Blog */}
                     {featuredPost && (
                         <section className="relative h-screen w-full">
                             <div className="absolute inset-0 z-0">
@@ -128,7 +136,13 @@ export function LandingPage() {
                         </section>
                     )}
 
-                    <section className="container mx-auto py-24 px-4 bg-background">
+                    {/* Category Blog */}
+                    {categories.length > 0 && (
+                        <CategorySection categories={categories} />
+                    )}
+
+                    {/* Newest Blog */}
+                    <section className="container mx-auto pt-24 px-4 bg-background">
                         <div className="mb-12">
                             <h2 className="text-3xl font-bold tracking-tight mb-2 text-foreground">{t("feature.newest")}</h2>
                             <div className="h-1.5 w-20 bg-primary rounded-full" />
@@ -142,13 +156,29 @@ export function LandingPage() {
                                 ))}
                         </div>
                     </section>
+
+                    {/* Recommend Blog */}
+                    <section className="container mx-auto pt-24 px-4 bg-background">
+                        <div className="mb-12">
+                            <h2 className="text-3xl font-bold tracking-tight mb-2 text-foreground">{t("feature.recommend")}</h2>
+                            <div className="h-1.5 w-20 bg-primary rounded-full" />
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {/* FIXME: Update to recommend blog */}
+                            {newestPost
+                                .filter(post => post.id !== featuredPost?.id)
+                                .map((post) => (
+                                    <PostCard key={post.id} post={post} />
+                                ))}
+                        </div>
+                    </section>
                 </>
             )}
         </div>
     );
 }
 
-// Sửa Skeleton để chạy tốt cả Light/Dark mode
 function LandingPageSkeleton() {
     return (
         <div className="w-full h-screen bg-background flex flex-col justify-end p-12">
@@ -188,8 +218,40 @@ function EmptyPostState({ onRetry }: { onRetry: () => void }) {
     );
 }
 
-function FeaturedBlogContent({ content }: { content: string }) {
+function CategorySection({ categories }: { categories: Category[] }) {
+    const { t } = useTranslation("landing");
+
     return (
-        <div dangerouslySetInnerHTML={{ __html: purifyBlogContent(content) }}></div>
-    )
+        <section className="container mx-auto pt-24 px-4 bg-background">
+            <div className="mb-12">
+                <h2 className="text-3xl font-bold tracking-tight mb-2 text-foreground">
+                    {t("feature.categories")}
+                </h2>
+                <div className="h-1.5 w-20 bg-primary rounded-full" />
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                {categories.map((cat) => {
+                    const config = categoryIconMap[cat.slug] || { icon: Laptop, color: "text-primary", bgColor: "bg-primary-500/10" };
+                    const Icon = config.icon;
+
+                    return (
+                        <Link href={`/category/${cat.slug}`} key={cat.id} className="group">
+                            <div className="relative flex flex-col items-center gap-4 p-6 rounded-3xl bg-secondary/5 border border-transparent hover:border-primary/20 hover:bg-secondary/10 transition-all duration-300">
+
+                                <div className={`p-4 rounded-2xl ${config.bgColor} ${config.color} group-hover:scale-110 transition-transform`}>
+                                    <Icon size={28} strokeWidth={1.5} />
+                                </div>
+
+                                <span className="font-bold text-sm tracking-tight text-center">
+                                    {t(`categories.${cat.slug}`, cat.name)}
+                                </span>
+                                <div className={`h-1 w-1 rounded-full ${config.bgColor} opacity-0 group-hover:opacity-100 transition-opacity`} />
+                            </div>
+                        </Link>
+                    );
+                })}
+            </div>
+        </section>
+    );
 }

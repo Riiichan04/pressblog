@@ -5,7 +5,9 @@
     },
     "feature": {
         "newest": "Newest blog",
-        "featured": "Featured story"
+        "featured": "Featured blog",
+        "recommend": "Recommend blog",
+        "categories": "Category"
     },
     "post": {
         "read_time_singular": "minute read",
