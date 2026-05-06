@@ -42,3 +42,6 @@ next-env.d.ts
 
 
 data.ts
+
+# Temp file
+src/asset/temp_blog.md

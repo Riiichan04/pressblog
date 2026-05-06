@@ -5,7 +5,6 @@ import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 import {
     ImagePlus,
@@ -36,11 +35,15 @@ export default function WritePostComponent() {
     const { t } = useTranslation(["editor", "common"]);
 
     const titleRef = useRef<HTMLTextAreaElement>(null);
+    const excerptRef = useRef<HTMLTextAreaElement>(null);
+    const tagsRef = useRef<HTMLInputElement>(null);
+    const [listTags, setListTags] = useState<string[]>([]);
+
     const [coverImage, setCoverImage] = useState<string | null>(null);
 
     const [category, setCategory] = useState("");
-    const [tags, setTags] = useState("");
-    const [excerpt, setExcerpt] = useState("");
+    // const [tags, setTags] = useState("");
+    // const [excerpt, setExcerpt] = useState("");
     const [isPublishable, setIsPublishable] = useState(false);
 
     const contentRef = useRef<string>("");
@@ -59,7 +62,7 @@ export default function WritePostComponent() {
     const mdParser = useMemo(() => new MarkdownIt({
         html: true,
         breaks: true,
-        linkify: true 
+        linkify: true
     }), [])
 
     //FIXME: Merge 2 function below into 1
@@ -87,14 +90,27 @@ export default function WritePostComponent() {
     const uploadValidation = useMemo(
         () => debounce(() => {
             const currentTitle = titleRef.current?.value || "";
+            const currentExcerpt = excerptRef.current?.value || "";
 
             const hasTitle = currentTitle.trim().length >= 10;
             const hasCategory = category !== "";
             const hasContent = contentLengthRef.current > 100;
 
             setIsPublishable(hasTitle && hasCategory && hasContent);
-        }, 500),
-        [category]
+
+            const post: PostRequest = {
+                name: currentTitle,
+                excerpt: currentExcerpt,
+                categoryName: category,
+                content: contentRef.current,
+                email: user?.email || "",
+                language: "VI",
+                thumbnail: coverImage,
+                listTag: listTags
+            };
+            dispatcher(savePost({ post, updatedAt: Date.now() }));
+        }, 1000),
+        [category, listTags, coverImage, user, dispatcher]
     );
 
     //Handle editor's content
@@ -116,14 +132,15 @@ export default function WritePostComponent() {
                 email: user?.email,
                 language: "VI",
                 thumbnail: coverImage,
-                listTag: tags.split(",").map(tag => tag.trim())
+                excerpt: excerptRef.current?.value || "",
+                listTag: listTags
             };
             dispatcher(savePost({ post, updatedAt: Date.now() }));
             toast.success(t("editor.save.success"));
         } catch {
             toast.error(t("editor.save.error"));
         }
-    }, [user, contentRef, titleRef, category, tags, dispatcher, t, coverImage]);
+    }, [user, contentRef, titleRef, category, listTags, dispatcher, t, coverImage]);
 
 
     //Handle import markdown
@@ -154,7 +171,37 @@ export default function WritePostComponent() {
         e.target.value = "";
     }, [editorInstance, handleEditorChange, t, mdParser]);
 
+    const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!tagsRef.current) return;
 
+        const val = tagsRef.current.value.trim();
+
+        if ((e.key === ' ' || e.key === 'Enter') && val) {
+            e.preventDefault();
+            // Ngăn trùng lặp tag
+            if (!listTags.includes(val)) {
+                setListTags(prev => [...prev, val]);
+            }
+            tagsRef.current.value = "";
+        } else if (e.key === 'Backspace' && !val && listTags.length > 0) {
+            setListTags(prev => prev.slice(0, -1));
+        }
+    };
+
+    const removeTag = (indexToRemove: number) => {
+        setListTags(prev => prev.filter((_, index) => index !== indexToRemove));
+    };
+
+    const handleAutosave = useCallback(async (data: PostRequest) => {
+        try {
+            const res = await uploadPost(data);
+            if (res.result) {
+                console.log("Autosaved at", new Date().toLocaleTimeString());
+            }
+        } catch (error) {
+            console.error("Failed to autosave", error);
+        }
+    }, []);
 
     //For validate Publish button
     useEffect(() => {
@@ -213,7 +260,8 @@ export default function WritePostComponent() {
                     content: contentRef.current,
                     email: user.email,
                     language: "VI",
-                    listTag: tags.split(",").map(tag => tag.trim()),
+                    listTag: listTags,
+                    excerpt: excerptRef.current?.value || "",
                     thumbnail: coverImage
                 };
 
@@ -231,7 +279,7 @@ export default function WritePostComponent() {
         if (isPublishRequested) {
             doPublish();
         }
-    }, [isPublishRequested, titleRef, contentRef, category, tags, coverImage, user, dispatcher, t]);
+    }, [isPublishRequested, titleRef, contentRef, category, listTags, coverImage, user, dispatcher, t]);
 
 
     return (
@@ -326,12 +374,20 @@ export default function WritePostComponent() {
                         <div className="w-32 flex items-center gap-2 text-foreground">
                             <Tags className="h-4 w-4" /> {t("layout.tags", { ns: "editor" })}
                         </div>
-                        <Input
-                            value={tags}
-                            onChange={(e) => setTags(e.target.value)}
-                            placeholder={t("layout.tags_placeholder", { ns: "editor" })}
-                            className="h-8 border-none shadow-none focus-visible:ring-1 focus-visible:ring-muted bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2"
-                        />
+                        <div className="flex-1 flex flex-wrap gap-2 p-1.5 border border-transparent focus-within:border-muted focus-within:bg-muted/30 transition-all rounded-sm">
+                            {listTags.map((tag, index) => (
+                                <div key={index} className="flex items-center gap-1 bg-muted px-2 py-0.5 rounded-md text-xs border border-border">
+                                    {tag}
+                                    <X className="h-3 w-3 cursor-pointer hover:text-destructive" onClick={() => removeTag(index)} />
+                                </div>
+                            ))}
+                            <input
+                                ref={tagsRef}
+                                onKeyDown={handleTagKeyDown}
+                                placeholder={listTags.length === 0 ? t("layout.tags_placeholder", { ns: "editor" }) : ""}
+                                className="flex-1 bg-transparent border-none outline-none min-w-30"
+                            />
+                        </div>
                     </div>
 
                     <div className="flex items-start min-h-8.5 text-sm group/prop mt-1">
@@ -339,10 +395,11 @@ export default function WritePostComponent() {
                             <AlignLeft className="h-4 w-4" /> {t("layout.excerpt", { ns: "editor" })}
                         </div>
                         <textarea
-                            value={excerpt}
-                            onChange={(e) => setExcerpt(e.target.value)}
+                            ref={excerptRef}
                             placeholder={t("layout.excerpt_placeholder", { ns: "editor" })}
-                            className="flex-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-muted hover:bg-muted/50 transition-colors rounded-sm px-2 py-1.5 resize-none min-h-15"
+                            defaultValue=""
+                            rows={2}
+                            className="flex-1 bg-transparent border border-transparent focus:outline-none focus:border-muted focus:bg-muted/30 transition-all rounded-sm px-2 py-1.5 resize-none min-h-15"
                         />
                     </div>
                 </div>
