@@ -27,15 +27,15 @@ import { cn } from "@/lib/utils";
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 import { useRouter } from 'next/navigation';
 
-export default function Navbar() {
+export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean }) {
     const { user, logout } = useAuth();
     const { t, i18n } = useTranslation(["common"]);
     const { setTheme, theme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    
+
     const router = useRouter()
-    
+
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
             setMounted(true);
@@ -65,7 +65,7 @@ export default function Navbar() {
         <nav
             className={cn(
                 "fixed top-0 z-50 w-full transition-all duration-300",
-                isScrolled
+                isScrolled && !isEnableScroll
                     ? "border-b bg-background/80 backdrop-blur-md h-16"
                     : "bg-transparent border-transparent h-20"
             )}
@@ -84,9 +84,9 @@ export default function Navbar() {
                         />
                         <span className={cn(
                             "text-xl font-bold tracking-tighter transition-colors",
-                            isScrolled ? "text-primary" : "text-primary"
+                            isScrolled && !isEnableScroll ? "text-primary" : "text-primary"
                         )}>
-                            PRESS<span className={isScrolled ? "text-foreground" : "text-primary"}>BLOG</span>
+                            PRESS<span className={isScrolled && !isEnableScroll ? "text-foreground" : "text-primary"}>BLOG</span>
                         </span>
                     </Link>
 
@@ -94,7 +94,7 @@ export default function Navbar() {
                     <div className="relative hidden md:block w-80 group">
                         <Search className={cn(
                             "absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition-all z-10",
-                            isScrolled
+                            isScrolled && !isEnableScroll
                                 ? "text-muted-foreground"
                                 : "text-foreground dark:text-white drop-shadow-md" // Đã sửa
                         )} />
@@ -103,7 +103,7 @@ export default function Navbar() {
                             placeholder={t("actions.search_placeholder")}
                             className={cn(
                                 "pl-10 border-none transition-all",
-                                isScrolled
+                                isScrolled && !isEnableScroll
                                     ? "bg-muted/50 focus-visible:ring-1"
                                     : "bg-black/5 dark:bg-black/20 text-foreground dark:text-white placeholder:text-foreground/70 dark:placeholder:text-white/80 focus-visible:ring-black/30 dark:focus-visible:ring-white/30 backdrop-blur-md" // Đã sửa
                             )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ArrowRight, Calendar, Clock, Folder, Laptop, RefreshCcw, SearchX } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Laptop, RefreshCcw, SearchX } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { PostCard } from "./post-card";
@@ -14,7 +14,6 @@ import { getFeaturedPost, getNewestPost } from "@/services/post-service";
 import { Button } from "./ui/button";
 import { purifyBlogContent } from "@/common/utils/html-purifier";
 import Link from "next/link";
-import { Card, CardContent } from "./ui/card";
 import { Category } from "@/common/types/post-metadata";
 import { getCurrentCategory } from "@/services/post-metadata-service";
 import { categoryIconMap } from "@/common/constants/category-icon-map";
