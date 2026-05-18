@@ -50,7 +50,7 @@ export const getPostBySlug = async (slug: string) => {
 
 
 
-export const getMyPosts = async (userId: string, page = 0, size = 50): Promise<PostTableItem[]> => {
+export const getMyPosts = async (userId: string, page = 0, size = 50): Promise<PageResponse<PostTableItem>> => {
     const response = await apiClient.get<PageResponse<PostDetail>>(`/post/get/${userId}?page=${page}&size=${size}`, {
         headers: {
             "Content-Type": "application/json",
@@ -61,8 +61,9 @@ export const getMyPosts = async (userId: string, page = 0, size = 50): Promise<P
         throw new Error("Lỗi khi tải danh sách bài viết");
     }
 
-    const data = response.data.content
-    return data.map((post: PostDetail) => ({
+    const pageData = response.data;
+
+    const mappedContent: PostTableItem[] = pageData.content.map((post) => ({
         id: post.id,
         slug: post.slug,
         title: post.name,
@@ -72,4 +73,9 @@ export const getMyPosts = async (userId: string, page = 0, size = 50): Promise<P
             ? new Date(post.updatedAt).toLocaleDateString('vi-VN')
             : "N/A"
     }));
+
+    return {
+        ...pageData,
+        content: mappedContent
+    };
 };
