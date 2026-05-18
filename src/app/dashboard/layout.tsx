@@ -6,17 +6,27 @@ import Navbar from "@/components/nav-bar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 import { useAuth } from "@/context/auth-context";
+import { usePathname } from "next/navigation";
+
+const sidebarLinks = [
+    { href: "/dashboard", icon: LayoutDashboard, label: "Tổng quan" },
+    { href: "/dashboard/posts", icon: FileText, label: "Bài viết" },
+    { href: "/dashboard/profile", icon: User, label: "Hồ sơ" },
+    { href: "/dashboard/settings", icon: Settings, label: "Cài đặt" },
+];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const { user } = useAuth();
+    const pathname = usePathname();
 
-    if (!user) return null; // Nên return null thay vì return không có gì
+    if (!user) return null;
 
     return (
         <div className="flex min-h-screen flex-col">
             <Navbar isEnableScroll={true} />
             <div className="flex flex-1 pt-20 bg-muted/40">
-                <aside className="sticky top-20 hidden w-64 flex-col gap-6 border-r px-4 py-6 md:flex h-[calc(100vh-5rem)] overflow-y-auto">
+                <aside className="sticky top-20 hidden w-64 flex-col gap-6 border-r bg-background px-4 py-6 md:flex h-[calc(100vh-5rem)] overflow-y-auto">
+                    {/* Phần Avatar giữ nguyên */}
                     <div className="flex items-center gap-2">
                         <Avatar className="h-8 w-8 shrink-0">
                             <AvatarImage src={user.avatar || ""} alt={user.username} />
@@ -34,23 +44,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         </div>
                     </div>
 
+                    {/* Phần Menu render bằng .map() */}
                     <nav className="flex flex-col gap-2">
-                        <Link href="/dashboard" className="text-sm flex items-center gap-2 rounded-lg bg-primary/10 px-3 py-2 text-primary transition-all hover:text-primary">
-                            <LayoutDashboard size={"1rem"} />
-                            Tổng quan
-                        </Link>
-                        <Link href="/dashboard/posts" className="text-sm flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                            <FileText size={"1rem"} />
-                            Bài viết
-                        </Link>
-                        <Link href="/dashboard/profile" className="text-sm flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                            <User size={"1rem"} />
-                            Hồ sơ
-                        </Link>
-                        <Link href="/dashboard/settings" className="text-sm flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                            <Settings size={"1rem"} />
-                            Cài đặt
-                        </Link>
+                        {sidebarLinks.map((link) => {
+                            const Icon = link.icon;
+                            // So sánh đường dẫn hiện tại với link.href
+                            // Lưu ý: dùng === để "/dashboard" không bị dính vào "/dashboard/posts"
+                            const isActive = pathname === link.href;
+
+                            return (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={`text-sm flex items-center gap-2 rounded-lg px-3 py-2 transition-all ${isActive
+                                        ? "bg-primary/10 text-primary font-medium" // Đang chọn thì sáng lên
+                                        : "text-muted-foreground hover:text-primary hover:bg-primary/5" // Chưa chọn thì mờ
+                                        }`}
+                                >
+                                    <Icon size={"1rem"} />
+                                    {link.label}
+                                </Link>
+                            );
+                        })}
                     </nav>
                 </aside>
 

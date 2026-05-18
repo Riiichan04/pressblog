@@ -3,10 +3,21 @@
 import { DailyViewStat } from "@/common/types/dashboard";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-export function OverviewChart(props: {data: DailyViewStat[]}) {
+export function OverviewChart(props: { data: DailyViewStat[] }) {
+    const chartData = (props.data || []).map(item => {
+        const dateObj = new Date(item.date);
+        const day = dateObj.getDate().toString().padStart(2, '0');
+        const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+
+        return {
+            name: `${day}/${month}`,
+            views: item.views
+        };
+    });
+
     return (
         <ResponsiveContainer width="100%" height={350}>
-            <AreaChart data={props.data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                     <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#1e40af" stopOpacity={0.4} />

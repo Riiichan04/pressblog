@@ -1,7 +1,9 @@
 import { apiUrl } from "@/common/constants/api-url"
-import { PostDetail, PostRequest } from "@/common/types/post"
+import { PostDetail, PostRequest, PostStatus } from "@/common/types/post"
 import axios from "axios"
 import apiClient from "./api-client"
+import { PostTableItem } from "@/components/dashboard/post-columns"
+import { PageResponse } from "@/common/types/page-response"
 
 export const uploadPost = async (data: PostRequest) => {
     try {
@@ -45,3 +47,29 @@ export const getPostBySlug = async (slug: string) => {
         return null
     }
 }
+
+
+
+export const getMyPosts = async (userId: string, page = 0, size = 50): Promise<PostTableItem[]> => {
+    const response = await apiClient.get<PageResponse<PostDetail>>(`/post/get/${userId}?page=${page}&size=${size}`, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (response.status !== 200) {
+        throw new Error("Lỗi khi tải danh sách bài viết");
+    }
+
+    const data = response.data.content
+    return data.map((post: PostDetail) => ({
+        id: post.id,
+        slug: post.slug,
+        title: post.name,
+        status: post.status || PostStatus.PRIVATE,
+        views: post.viewCount || 0,
+        updatedAt: post.updatedAt
+            ? new Date(post.updatedAt).toLocaleDateString('vi-VN')
+            : "N/A"
+    }));
+};

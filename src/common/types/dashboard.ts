@@ -18,6 +18,6 @@ export interface DashboardStatResponse {
     totalPosts: number;
     totalViews: number;
     totalComments: number;
-    weekTrending: DailyViewStat[];
+    viewTrends: DailyViewStat[];
     trendingPosts: TrendingPostDto[];
 }

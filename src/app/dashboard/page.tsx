@@ -17,6 +17,7 @@ export default function DashboardPage() {
         const fetchStats = async () => {
             try {
                 const data = await getDashboardStats();
+                console.log(data)
                 setStats(data);
             } catch (err) {
                 setError((err as Error).message);
@@ -24,7 +25,6 @@ export default function DashboardPage() {
                 setLoading(false);
             }
         };
-
         fetchStats();
     }, []);
 
@@ -81,7 +81,7 @@ export default function DashboardPage() {
                     </CardHeader>
                     <CardContent className="pl-0">
                         {/* Truyền mảng weekTrending vào prop của Component Chart */}
-                        <OverviewChart data={stats.weekTrending} />
+                        <OverviewChart data={stats.viewTrends} />
                     </CardContent>
                 </Card>
 
