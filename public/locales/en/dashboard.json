@@ -1,0 +1,96 @@
+{
+    "nav": {
+        "overview": "Overview",
+        "posts": "Posts",
+        "profile": "Profile",
+        "settings": "Settings",
+        "notifications": "Notifications",
+        "about": "About Us"
+    },
+    "common": {
+        "loading": "Loading data...",
+        "error": "Error: "
+    },
+    "overview": {
+        "title": "Overview",
+        "totalPosts": "Total Posts",
+        "totalViews": "Total Views",
+        "totalComments": "Total Comments",
+        "traffic": "Traffic Flow",
+        "trendingPosts": "Trending Posts"
+    },
+    "posts": {
+        "title": "My Posts",
+        "desc": "Manage your blog posts.",
+        "loadingPosts": "Loading posts list...",
+        "colTitle": "Title",
+        "colStatus": "Status",
+        "colViews": "Views",
+        "colUpdatedAt": "Last Updated",
+        "noPosts": "No posts found.",
+        "page": "Page",
+        "prev": "Prev",
+        "next": "Next",
+        "fetchError": "Failed to load posts list"
+    },
+    "profile": {
+        "title": "Personal Profile",
+        "desc": "Manage your public profile information.",
+        "avatarTitle": "Avatar",
+        "avatarDesc": "This image will be displayed on your posts.",
+        "uploadBtn": "Upload new image",
+        "avatarHint": "Use a square image (1:1), supports JPG, PNG, WebP. Max 2MB.",
+        "basicInfo": "Basic Information",
+        "displayName": "Display Name",
+        "displayNamePlaceholder": "E.g. John Doe",
+        "usernameSlug": "Username (Slug)",
+        "email": "Contact Email",
+        "bio": "Bio",
+        "bioPlaceholder": "Write a few words about yourself...",
+        "chars": "characters",
+        "saving": "Saving...",
+        "saveChanges": "Save Changes",
+        "updateSuccess": "Profile updated successfully!",
+        "updateError": "Error updating profile",
+        "validation": {
+            "nameMin": "Display name must be at least 2 characters.",
+            "nameMax": "Display name cannot exceed 50 characters.",
+            "bioMax": "Bio cannot exceed 250 characters."
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "desc": "Manage account security, notifications, and system info.",
+        "protectAccount": "Protect your account",
+        "protectAccountDesc": "Use a strong password combining letters, numbers, and special characters. Update it regularly for maximum safety.",
+        "changePassword": "Change Password",
+        "changePasswordDesc": "Ensure your account is using a secure password.",
+        "oldPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm New Password",
+        "updateBtn": "Update Password",
+        "updateSuccess": "Password changed successfully!",
+        "updateError": "Failed to change password!",
+        "dangerZone": "Danger Zone (In Development)",
+        "dangerZoneDesc": "Actions here cannot be undone.",
+        "deleteAccount": "Permanently delete account",
+        "deleteAccountDesc": "All your posts, comments, and data will be wiped out.",
+        "deleteBtn": "Delete Account",
+        "emailConfig": "Email Configuration",
+        "emailConfigDesc": "Choose the notifications you want to receive via email.",
+        "newComments": "New Comments",
+        "newCommentsDesc": "Receive an email when someone comments on your post.",
+        "sysNews": "System News",
+        "sysNewsDesc": "Get the latest feature updates from PressBlog.",
+        "aboutTitle": "About PressBlog",
+        "aboutDesc": "Content Management System for Personal Blogs.",
+        "aboutIntro": " is an open-source CMS highly optimized for developers and content creators. It focuses on minimal user experience while ensuring maximum security and performance.",
+        "version": "Current version:",
+        "validation": {
+            "oldPassReq": "Please enter your current password.",
+            "newPassMin": "New password must be at least 6 characters.",
+            "confirmPassReq": "Please confirm your new password.",
+            "passMismatch": "Password confirmation does not match."
+        }
+    }
+}

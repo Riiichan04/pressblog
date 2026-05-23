@@ -8,6 +8,7 @@ interface AuthContextType {
     user: AuthDto | null;
     login: (userData: AuthDto) => void;
     logout: () => void;
+    updateUser: (updatedData: Partial<AuthDto>) => void;
     isLoading: boolean;
 }
 
@@ -46,8 +47,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         window.location.href = "/";
     };
 
+    const updateUser = (updatedData: Partial<AuthDto>) => {
+        setAuthState((prev) => {
+            if (!prev.user) return prev;
+
+            // Gộp data cũ và data mới lại
+            const newUser = { ...prev.user, ...updatedData };
+
+            // Cập nhật lại localStorage để F5 không bị mất
+            localStorage.setItem("user_data", JSON.stringify(newUser));
+
+            return { ...prev, user: newUser };
+        });
+    };
+
     return (
-        <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+        <AuthContext.Provider value={{ user, login, logout, updateUser, isLoading }}>
             {children}
         </AuthContext.Provider>
     );

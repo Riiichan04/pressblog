@@ -9,62 +9,61 @@ import { getMyPosts } from "@/services/post-service"
 import { toast } from "sonner"
 import { PostTableItem } from "@/components/dashboard/post-columns"
 import { PageResponse } from "@/common/types/page-response"
+import { useTranslation } from "react-i18next"
 
 export default function PostsPage() {
     const { user } = useAuth();
+    const { t } = useTranslation("dashboard");
     const [pageData, setPageData] = useState<PageResponse<PostTableItem> | null>(null);
     const [loading, setLoading] = useState(true);
-
     const [pageIndex, setPageIndex] = useState(0);
 
     useEffect(() => {
         const fetchPosts = async () => {
             if (!user?.id) return;
-
             try {
                 setLoading(true);
                 const data = await getMyPosts(user.id.toString(), pageIndex, 10);
                 setPageData(data);
             } catch (error: unknown) {
-                toast.error((error as Error).message || "Không thể tải danh sách bài viết");
+                toast.error((error as Error).message || t("posts.fetchError"));
             } finally {
                 setLoading(false);
             }
         };
-
         fetchPosts();
-    }, [user?.id, pageIndex]);
+    }, [user?.id, pageIndex, t]);
 
     return (
         <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Bài viết của tôi</h1>
-                    <p className="text-muted-foreground mt-1">Quản lý các bài viết trên blog của bạn.</p>
+                    <h1 className="text-3xl font-bold tracking-tight">{t("posts.title")}</h1>
+                    <p className="text-muted-foreground mt-1">{t("posts.desc")}</p>
                 </div>
             </div>
 
             {loading && !pageData ? (
                 <div className="flex flex-col items-center justify-center h-64 border rounded-md bg-card text-muted-foreground">
                     <Loader2 className="h-8 w-8 animate-spin mb-4 text-primary" />
-                    <p>Đang tải danh sách bài viết...</p>
+                    <p>{t("posts.loadingPosts")}</p>
                 </div>
             ) : (
                 <div className="border rounded-md">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Tiêu đề</TableHead>
-                                <TableHead className="w-30">Trạng thái</TableHead>
-                                <TableHead className="w-25 text-right">Lượt xem</TableHead>
-                                <TableHead className="w-37.5 text-right">Cập nhật lúc</TableHead>
+                                <TableHead>{t("posts.colTitle")}</TableHead>
+                                <TableHead className="w-30">{t("posts.colStatus")}</TableHead>
+                                <TableHead className="w-25 text-right">{t("posts.colViews")}</TableHead>
+                                <TableHead className="w-37.5 text-right">{t("posts.colUpdatedAt")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {pageData?.content.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={4} className="h-24 text-center">
-                                        Chưa có bài viết nào.
+                                        {t("posts.noPosts")}
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -83,7 +82,7 @@ export default function PostsPage() {
                     {pageData && pageData.totalPages > 1 && (
                         <div className="flex items-center justify-between px-4 py-4 border-t">
                             <div className="text-sm text-muted-foreground">
-                                Trang {pageData.number + 1} / {pageData.totalPages}
+                                {t("posts.page")} {pageData.number + 1} / {pageData.totalPages}
                             </div>
                             <div className="flex gap-2">
                                 <Button
@@ -93,7 +92,7 @@ export default function PostsPage() {
                                     disabled={pageData.number === 0 || loading}
                                 >
                                     <ChevronLeft className="h-4 w-4 mr-1" />
-                                    Trước
+                                    {t("posts.prev")}
                                 </Button>
                                 <Button
                                     variant="outline"
@@ -101,7 +100,7 @@ export default function PostsPage() {
                                     onClick={() => setPageIndex(p => Math.min(pageData.totalPages - 1, p + 1))}
                                     disabled={pageData.number === pageData.totalPages - 1 || loading}
                                 >
-                                    Sau
+                                    {t("posts.next")}
                                     <ChevronRight className="h-4 w-4 ml-1" />
                                 </Button>
                             </div>
