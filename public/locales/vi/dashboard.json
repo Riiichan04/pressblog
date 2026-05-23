@@ -1,0 +1,96 @@
+{
+    "nav": {
+        "overview": "Tổng quan",
+        "posts": "Bài viết",
+        "profile": "Hồ sơ",
+        "settings": "Cài đặt",
+        "notifications": "Thông báo",
+        "about": "Về chúng tôi"
+    },
+    "common": {
+        "loading": "Đang tải dữ liệu...",
+        "error": "Lỗi: "
+    },
+    "overview": {
+        "title": "Tổng quan",
+        "totalPosts": "Tổng bài viết",
+        "totalViews": "Tổng lượt xem",
+        "totalComments": "Tổng bình luận",
+        "traffic": "Lưu lượng truy cập",
+        "trendingPosts": "Bài viết nổi bật"
+    },
+    "posts": {
+        "title": "Bài viết của tôi",
+        "desc": "Quản lý các bài viết trên blog của bạn.",
+        "loadingPosts": "Đang tải danh sách bài viết...",
+        "colTitle": "Tiêu đề",
+        "colStatus": "Trạng thái",
+        "colViews": "Lượt xem",
+        "colUpdatedAt": "Cập nhật lúc",
+        "noPosts": "Chưa có bài viết nào.",
+        "page": "Trang",
+        "prev": "Trước",
+        "next": "Sau",
+        "fetchError": "Không thể tải danh sách bài viết"
+    },
+    "profile": {
+        "title": "Hồ sơ cá nhân",
+        "desc": "Quản lý thông tin hiển thị công khai của bạn.",
+        "avatarTitle": "Ảnh đại diện",
+        "avatarDesc": "Ảnh này sẽ hiển thị trên các bài viết của bạn.",
+        "uploadBtn": "Tải ảnh mới",
+        "avatarHint": "Nên dùng ảnh vuông (tỷ lệ 1:1), hỗ trợ JPG, PNG, WebP. Tối đa 2MB.",
+        "basicInfo": "Thông tin cơ bản",
+        "displayName": "Tên hiển thị",
+        "displayNamePlaceholder": "Vd: Nguyễn Văn A",
+        "usernameSlug": "Username (Slug)",
+        "email": "Email liên hệ",
+        "bio": "Tiểu sử (Bio)",
+        "bioPlaceholder": "Viết vài dòng giới thiệu về bản thân...",
+        "chars": "ký tự",
+        "saving": "Đang lưu...",
+        "saveChanges": "Lưu thay đổi",
+        "updateSuccess": "Đã cập nhật hồ sơ thành công!",
+        "updateError": "Lỗi khi cập nhật hồ sơ",
+        "validation": {
+            "nameMin": "Tên hiển thị phải có ít nhất 2 ký tự.",
+            "nameMax": "Tên hiển thị không được vượt quá 50 ký tự.",
+            "bioMax": "Tiểu sử không được dài quá 250 ký tự."
+        }
+    },
+    "settings": {
+        "title": "Cài đặt",
+        "desc": "Quản lý bảo mật tài khoản, thông báo và thông tin hệ thống.",
+        "protectAccount": "Bảo vệ tài khoản của bạn",
+        "protectAccountDesc": "Hãy sử dụng mật khẩu dài, kết hợp chữ cái, số và ký tự đặc biệt. Đừng quên cập nhật định kỳ để đảm bảo an toàn.",
+        "changePassword": "Đổi mật khẩu",
+        "changePasswordDesc": "Đảm bảo tài khoản của bạn đang sử dụng một mật khẩu an toàn.",
+        "oldPassword": "Mật khẩu hiện tại",
+        "newPassword": "Mật khẩu mới",
+        "confirmPassword": "Xác nhận mật khẩu mới",
+        "updateBtn": "Cập nhật mật khẩu",
+        "updateSuccess": "Đổi mật khẩu thành công!",
+        "updateError": "Lỗi khi đổi mật khẩu!",
+        "dangerZone": "Khu vực nguy hiểm (Đang phát triển)",
+        "dangerZoneDesc": "Các thao tác không thể hoàn tác sau khi thực hiện.",
+        "deleteAccount": "Xóa tài khoản vĩnh viễn",
+        "deleteAccountDesc": "Toàn bộ bài viết, bình luận và dữ liệu của bạn sẽ bị xóa sạch.",
+        "deleteBtn": "Xóa tài khoản",
+        "emailConfig": "Cấu hình email",
+        "emailConfigDesc": "Chọn những loại thông báo bạn muốn nhận qua email.",
+        "newComments": "Bình luận mới",
+        "newCommentsDesc": "Nhận email khi có ai đó bình luận vào bài viết của bạn.",
+        "sysNews": "Tin tức hệ thống",
+        "sysNewsDesc": "Nhận các bản cập nhật tính năng mới từ PressBlog.",
+        "aboutTitle": "Về PressBlog",
+        "aboutDesc": "Hệ thống Quản trị Nội dung và Phát triển Blog cá nhân.",
+        "aboutIntro": " là một nền tảng CMS mã nguồn mở được tối ưu hóa cao cho các lập trình viên và người sáng tạo nội dung. Dự án tập trung vào việc tối giản trải nghiệm người dùng nhưng vẫn đảm bảo tính bảo mật và hiệu suất tối đa.",
+        "version": "Phiên bản hiện tại:",
+        "validation": {
+            "oldPassReq": "Vui lòng nhập mật khẩu hiện tại.",
+            "newPassMin": "Mật khẩu mới phải có ít nhất 6 ký tự.",
+            "confirmPassReq": "Vui lòng xác nhận mật khẩu mới.",
+            "passMismatch": "Mật khẩu xác nhận không khớp."
+        }
+    }
+}
