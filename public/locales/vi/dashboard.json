@@ -56,7 +56,10 @@
             "nameMin": "Tên hiển thị phải có ít nhất 2 ký tự.",
             "nameMax": "Tên hiển thị không được vượt quá 50 ký tự.",
             "bioMax": "Tiểu sử không được dài quá 250 ký tự."
-        }
+        },
+        "uploading": "Đang tải lên...",
+        "uploadSuccess": "Tải ảnh lên thành công. Hãy bấm Lưu thay đổi!",
+        "uploadError": "Lỗi tải ảnh lên"
     },
     "settings": {
         "title": "Cài đặt",

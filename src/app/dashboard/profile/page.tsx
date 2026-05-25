@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -18,6 +18,7 @@ import { fallBackColor, getFallback } from "@/common/utils/avatar-loader"
 import { toast } from "sonner"
 import { updateMyProfile } from "@/services/profile-service"
 import { useTranslation } from "react-i18next"
+import { uploadImageToCloudinary } from "@/services/upload-service"
 
 const profileSchema = z.object({
     displayName: z.string()
@@ -34,8 +35,10 @@ export default function ProfilePage() {
     const { user, updateUser } = useAuth()
     const { t } = useTranslation("dashboard");
     const [isSaving, setIsSaving] = useState(false)
+    const [isUploading, setIsUploading] = useState(false)
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<ProfileFormValues>({
+    const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm<ProfileFormValues>({
         resolver: zodResolver(profileSchema),
         defaultValues: { displayName: "", bio: "", avatar: "" },
     })
@@ -51,6 +54,29 @@ export default function ProfilePage() {
     }, [user, reset])
 
     if (!user) return null
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        if (file.size > 2 * 1024 * 1024) {
+            toast.error(t("profile.avatarHint"))
+            return
+        }
+
+        try {
+            setIsUploading(true)
+            const response = await uploadImageToCloudinary(file, "avatars")
+
+            setValue("avatar", response.url, { shouldDirty: true })
+            toast.success(t("profile.uploadSuccess"))
+        } catch (error: unknown) {
+            toast.error((error as Error).message || t("profile.uploadError"))
+        } finally {
+            setIsUploading(false)
+            if (fileInputRef.current) fileInputRef.current.value = ""
+        }
+    }
 
     const onSubmit = async (values: ProfileFormValues) => {
         try {
@@ -87,20 +113,44 @@ export default function ProfilePage() {
                         <CardDescription>{t("profile.avatarDesc")}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex items-center gap-6">
-                        <div className="relative group cursor-pointer">
+                        <div
+                            className={`relative group cursor-pointer ${isUploading ? 'pointer-events-none' : ''}`}
+                            onClick={() => fileInputRef.current?.click()}
+                        >
                             <Avatar className="h-24 w-24 border-2 border-primary/10">
                                 <AvatarImage src={watch("avatar") || user.avatar || ""} alt={user.username} className="object-cover" />
                                 <AvatarFallback className={`${fallBackColor(user.username)} text-white text-2xl`}>
                                     {getFallback(user.displayName || user.username)}
                                 </AvatarFallback>
                             </Avatar>
-                            <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <Camera className="h-6 w-6 text-white" />
-                            </div>
+                            {isUploading ? (
+                                <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center transition-opacity">
+                                    <Loader2 className="h-6 w-6 text-white animate-spin" />
+                                </div>
+                            ) : (
+                                <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Camera className="h-6 w-6 text-white" />
+                                </div>
+                            )}
                         </div>
+
                         <div className="space-y-2">
-                            <Button type="button" variant="outline" size="sm">
-                                {t("profile.uploadBtn")}
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="hidden"
+                                accept="image/jpeg, image/png, image/webp"
+                                onChange={handleFileChange}
+                            />
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={isUploading}
+                            >
+                                {isUploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                                {isUploading ? t("profile.uploading") : t("profile.uploadBtn")}
                             </Button>
                             <p className="text-xs text-muted-foreground">{t("profile.avatarHint")}</p>
                         </div>
@@ -147,7 +197,7 @@ export default function ProfilePage() {
                         </div>
                     </CardContent>
                     <CardFooter className="flex justify-end border-t p-4 bg-muted/20">
-                        <Button type="submit" disabled={isSaving} className="gap-2">
+                        <Button type="submit" disabled={isSaving || isUploading} className="gap-2">
                             {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                             {isSaving ? t("profile.saving") : t("profile.saveChanges")}
                         </Button>
