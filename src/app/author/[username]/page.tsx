@@ -128,7 +128,7 @@ export default function AuthorPublicPage({ params }: AuthorPageProps) {
 
                                     <CardHeader className="p-4 space-y-1.5 flex-1">
                                         <CardTitle className="text-base font-bold line-clamp-2 leading-snug group-hover:text-primary transition-colors">
-                                            <Link href={`/posts/${post.slug}`}>
+                                            <Link href={`/blog/${post.slug}`}>
                                                 {post.title}
                                             </Link>
                                         </CardTitle>
@@ -147,7 +147,7 @@ export default function AuthorPublicPage({ params }: AuthorPageProps) {
                                                 {post.viewCount} {t("author.views")}
                                             </span>
                                         </div>
-                                        <Link href={`/posts/${post.slug}`} className="text-primary font-semibold hover:underline">
+                                        <Link href={`/blog/${post.slug}`} className="text-primary font-semibold hover:underline">
                                             {t("author.readMore")} →
                                         </Link>
                                     </CardFooter>
