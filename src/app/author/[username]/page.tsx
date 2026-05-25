@@ -14,6 +14,7 @@ import { getPublicProfile, getPublicUserPosts } from "@/services/public-user-ser
 import { PublicUserProfileResponse, PublicPostResponse } from "@/common/types/public-user"
 import { PageResponse } from "@/common/types/page-response"
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader"
+import { notFound } from "next/navigation"
 
 interface AuthorPageProps {
     params: Promise<{ username: string }>
@@ -62,7 +63,7 @@ export default function AuthorPublicPage({ params }: AuthorPageProps) {
         )
     }
 
-    if (!profile) return null
+    if (!profile) return notFound()
 
     return (
         <div className="min-h-screen bg-muted/20 py-10 px-4 md:px-8">

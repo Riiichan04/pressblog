@@ -3,15 +3,17 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import HttpApi from 'i18next-http-backend';
 
-// if (typeof window !== 'undefined') {
 i18n
     .use(HttpApi)
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
         initImmediate: false,
-        fallbackLng: 'vi',
+        supportedLngs: ['vi', 'en'],
         load: 'languageOnly',
+        fallbackLng: 'en',
+        nonExplicitSupportedLngs: true,
+
         ns: ['auth', 'common'],
         defaultNS: 'auth',
         debug: false,
@@ -25,5 +27,5 @@ i18n
             useSuspense: false,
         },
     });
-// }
+
 export default i18n;

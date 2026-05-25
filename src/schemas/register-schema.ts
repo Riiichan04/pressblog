@@ -14,7 +14,8 @@ export const useRegisterSchema = () => {
             username: z
                 .string()
                 .min(3, { message: String(t("errors.username_length_error")) })
-                .max(20, { message: String(t("errors.username_length_error")) }),
+                .max(20, { message: String(t("errors.username_length_error")) })
+                .regex(/^[a-zA-Z0-9_]+$/, { message: String(t("errors.username_format_error")) }),
 
             password: z
                 .string()

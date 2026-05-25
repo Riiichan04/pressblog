@@ -141,7 +141,9 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         )}
                     >
                         <Languages className="h-5 w-5" />
-                        <span className="uppercase text-xs font-bold">{i18n.language}</span>
+                        <span className="uppercase text-xs font-bold">
+                            {mounted ? i18n.resolvedLanguage : "..."}
+                        </span>
                     </Button>
 
                     {mounted ?
