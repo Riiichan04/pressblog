@@ -71,14 +71,16 @@ export default async function BlogDetail({ params }: Props) {
                                 {getFallback(post.author.username)}
                             </AvatarFallback>
                         </Avatar>
-                        <div className="flex flex-col space-y-1 min-w-0">
-                            <p className="text-sm font-medium leading-tight truncate">
-                                {post.author.displayName || post.author.username}
-                            </p>
-                            <p className="text-xs leading-tight text-muted-foreground truncate">
-                                {post.author.email}
-                            </p>
-                        </div>
+                        <a href={`/author/${post.author.username}`}>
+                            <div className="flex flex-col space-y-1 min-w-0">
+                                <p className="text-sm font-medium leading-tight truncate">
+                                    {post.author.displayName || post.author.username}
+                                </p>
+                                <p className="text-xs leading-tight text-muted-foreground truncate">
+                                    {post.author.email}
+                                </p>
+                            </div>
+                        </a>
                     </div>
                     <div
                         className="prose dark:prose-invert max-w-none"

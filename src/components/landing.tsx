@@ -106,30 +106,32 @@ export function LandingPage() {
                                         </Link>
                                     </div>
 
-                                    <div className="flex items-center gap-4 bg-black/20 backdrop-blur-md p-3 rounded-2xl border border-white/20">
-                                        <div className="text-right">
-                                            <p className="text-white font-semibold">{featuredPost.author.displayName}</p>
-                                            <div className="flex gap-2 justify-end">
-                                                <div className="flex items-center gap-1.5 opacity-90">
-                                                    <Calendar className="text-white" size={14} />
-                                                    <p className="text-white text-xs">{new Date(featuredPost.updatedAt).toLocaleDateString(timeLocale) || ""}</p>
-                                                </div>
-                                                <div className="bg-white/40 w-px h-3 my-auto"></div>
-                                                <div className="flex items-center gap-1.5 opacity-90">
-                                                    <Clock className="text-white" size={14} />
-                                                    <p className="text-white text-xs lowercase">
-                                                        {calculateReadingTime(featuredPost.content)} {t(calculateReadingTime(featuredPost.content) > 1 ? "post.read_time_plural" : "post.read_time_singular")}
-                                                    </p>
+                                    <a href={`/author/${featuredPost.author.username}`}>
+                                        <div className="flex items-center gap-4 bg-black/20 backdrop-blur-md p-3 rounded-2xl border border-white/20">
+                                            <div className="text-right">
+                                                <p className="text-white font-semibold">{featuredPost.author.displayName}</p>
+                                                <div className="flex gap-2 justify-end">
+                                                    <div className="flex items-center gap-1.5 opacity-90">
+                                                        <Calendar className="text-white" size={14} />
+                                                        <p className="text-white text-xs">{new Date(featuredPost.updatedAt).toLocaleDateString(timeLocale) || ""}</p>
+                                                    </div>
+                                                    <div className="bg-white/40 w-px h-3 my-auto"></div>
+                                                    <div className="flex items-center gap-1.5 opacity-90">
+                                                        <Clock className="text-white" size={14} />
+                                                        <p className="text-white text-xs lowercase">
+                                                            {calculateReadingTime(featuredPost.content)} {t(calculateReadingTime(featuredPost.content) > 1 ? "post.read_time_plural" : "post.read_time_singular")}
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <Avatar className="h-12 w-12 ring-2 ring-white/30">
+                                                <AvatarImage src={featuredPost.author.avatar || ""} />
+                                                <AvatarFallback className={`${fallBackColor(featuredPost.author.username)} text-white`}>
+                                                    {getFallback(featuredPost.author.displayName)}
+                                                </AvatarFallback>
+                                            </Avatar>
                                         </div>
-                                        <Avatar className="h-12 w-12 ring-2 ring-white/30">
-                                            <AvatarImage src={featuredPost.author.avatar || ""} />
-                                            <AvatarFallback className={`${fallBackColor(featuredPost.author.username)} text-white`}>
-                                                {getFallback(featuredPost.author.displayName)}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </section>

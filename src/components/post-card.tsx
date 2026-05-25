@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { purifyBlogContent } from "@/common/utils/html-purifier";
 
 export function PostCard({ post }: { post: PostDetail }) {
-    const { t, i18n } = useTranslation("landing");
+    const { i18n } = useTranslation("landing");
     const timeLocale = i18n.language
 
     return (
@@ -63,15 +63,17 @@ export function PostCard({ post }: { post: PostDetail }) {
 
                 {/* Author Footer */}
                 <div className="mt-auto pt-5 flex items-center justify-between border-t border-border/50">
-                    <div className="flex items-center gap-2">
-                        <Avatar className="h-7 w-7 ring-2 ring-background">
-                            <AvatarImage src={post.author.avatar || ""} />
-                            <AvatarFallback className={`${fallBackColor(post.author.username)} text-white`}>
-                                {getFallback(post.author.displayName || post.author.username)}
-                            </AvatarFallback>
-                        </Avatar>
-                        <span className="text-xs font-semibold">{post.author.displayName}</span>
-                    </div>
+                    <a href={`/author/${post.author.username}`}>
+                        <div className="flex items-center gap-2">
+                            <Avatar className="h-7 w-7 ring-2 ring-background">
+                                <AvatarImage src={post.author.avatar || ""} />
+                                <AvatarFallback className={`${fallBackColor(post.author.username)} text-white`}>
+                                    {getFallback(post.author.displayName || post.author.username)}
+                                </AvatarFallback>
+                            </Avatar>
+                            <span className="text-xs font-semibold">{post.author.displayName}</span>
+                        </div>
+                    </a>
 
                     <Link
                         href={`/blog/${post.slug}`}

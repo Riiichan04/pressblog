@@ -1,0 +1,13 @@
+{
+    "author": {
+        "joined": "Thành viên từ",
+        "postsTitle": "Bài viết đã đăng",
+        "noPosts": "Tác giả này chưa xuất bản bài viết nào.",
+        "views": "lượt xem",
+        "readMore": "Đọc bài viết",
+        "prev": "Trước",
+        "next": "Sau",
+        "page": "Trang",
+        "fetchError": "Không thể tải thông tin tác giả"
+    }
+}

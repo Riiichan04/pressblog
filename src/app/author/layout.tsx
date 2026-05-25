@@ -1,7 +1,7 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/nav-bar";
 
-export default function UserLayout({ children }: { children: React.ReactNode }) {
+export default function UserDetailLayout({ children }: { children: React.ReactNode }) {
     return (
         <div>
             <Navbar />
