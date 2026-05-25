@@ -94,6 +94,8 @@
             "newPassMin": "Mật khẩu mới phải có ít nhất 6 ký tự.",
             "confirmPassReq": "Vui lòng xác nhận mật khẩu mới.",
             "passMismatch": "Mật khẩu xác nhận không khớp."
-        }
+        },
+        "inDevelopment": "Chức năng đang phát triển",
+        "inDevelopmentDesc": "Hãy chờ cập nhật để sử dụng tính năng này."
     }
 }

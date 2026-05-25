@@ -94,6 +94,8 @@
             "newPassMin": "New password must be at least 6 characters.",
             "confirmPassReq": "Please confirm your new password.",
             "passMismatch": "Password confirmation does not match."
-        }
+        },
+        "inDevelopment": "This feature in development",
+        "inDevelopmentDesc": "Please wait update to use this feature"
     }
 }

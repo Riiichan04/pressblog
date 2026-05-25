@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
-import { KeyRound, Save, Loader2, ShieldAlert, Bell, Trash2, User, Info } from "lucide-react"
+import { KeyRound, Save, Loader2, ShieldAlert, Bell, Trash2, User, Info, Construction } from "lucide-react"
 import { toast } from "sonner"
 import { updatePassword } from "@/services/profile-service"
 import { useAuth } from "@/context/auth-context"
@@ -170,6 +170,14 @@ export default function SettingsPage() {
 
                     {activeSection === "notifications" && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                            <div className="bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 p-4 rounded-lg flex items-start gap-3">
+                                <Construction className="h-5 w-5 mt-0.5 shrink-0" />
+                                <div className="text-sm">
+                                    <p className="font-semibold mb-1">{t("settings.inDevelopment")}</p>
+                                    <p>{t("settings.inDevelopmentDesc")}</p>
+                                </div>
+                            </div>
+
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">

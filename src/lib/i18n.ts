@@ -11,6 +11,7 @@ i18n
     .init({
         initImmediate: false,
         fallbackLng: 'vi',
+        load: 'languageOnly',
         ns: ['auth', 'common'],
         defaultNS: 'auth',
         debug: false,

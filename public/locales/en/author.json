@@ -1,0 +1,13 @@
+{
+    "author": {
+        "joined": "Joined since",
+        "postsTitle": "Published Posts",
+        "noPosts": "This author hasn't published any posts yet.",
+        "views": "views",
+        "readMore": "Read post",
+        "prev": "Prev",
+        "next": "Next",
+        "page": "Page",
+        "fetchError": "Failed to load author profile"
+    }
+}
