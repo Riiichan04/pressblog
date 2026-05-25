@@ -50,7 +50,7 @@ export default function RegisterForm() {
                 }, 5000)
             } else {
                 toast.error(t("errors.register_failed"), {
-                    description: t("errors.something_went_wrong"),
+                    description: t(`errors.${response.message}`, { defaultValue: t("errors.something_went_wrong") }),
                 });
             }
         } catch (error) {
