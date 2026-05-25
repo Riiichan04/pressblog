@@ -72,10 +72,13 @@
         "title": "Kết quả tìm kiếm",
         "searching": "Đang tìm kiếm...",
         "results_found": "Tìm thấy <bold>{{count}}</bold> bài viết cho từ khóa <highlight>\"{{query}}\"</highlight>",
-        "no_results": "Không tìm thấy kết quả nào",
+        "no_results_post": "Không tìm thấy bài viết nào",
+        "no_results_user": "Không tìm thấy người dùng nào",
         "try_again": "Hãy thử tìm với một từ khóa khác ngắn gọn hơn.",
         "no_summary": "Không có mô tả.",
         "read_more": "Đọc thêm",
-        "view_count": "lượt xem"
+        "view_count": "lượt xem",
+        "post_tab": "Bài viết",
+        "user_tab": "Người dùng"
     }
 }
