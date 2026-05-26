@@ -67,5 +67,18 @@
             "rss": "RSS Feed"
         },
         "copy": "© 2026 PressBlog. Thiết kế và phát triển bởi Đội ngũ PressBlog."
+    },
+    "search": {
+        "title": "Kết quả tìm kiếm",
+        "searching": "Đang tìm kiếm...",
+        "results_found": "Tìm thấy <bold>{{count}}</bold> bài viết cho từ khóa <highlight>\"{{query}}\"</highlight>",
+        "no_results_post": "Không tìm thấy bài viết nào",
+        "no_results_user": "Không tìm thấy người dùng nào",
+        "try_again": "Hãy thử tìm với một từ khóa khác ngắn gọn hơn.",
+        "no_summary": "Không có mô tả.",
+        "read_more": "Đọc thêm",
+        "view_count": "lượt xem",
+        "post_tab": "Bài viết",
+        "user_tab": "Người dùng"
     }
 }

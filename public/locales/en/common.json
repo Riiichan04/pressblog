@@ -67,5 +67,18 @@
             "rss": "RSS Feed"
         },
         "copy": "© 2026 PressBlog. Designed and developed by PressBlog Team."
+    },
+    "search": {
+        "title": "Search Results",
+        "searching": "Searching...",
+        "results_found": "Found <bold>{{count}}</bold> posts for keyword <highlight>\"{{query}}\"</highlight>",
+        "no_results_post": "No blog found",
+        "no_results_user": "No user found",
+        "try_again": "Try searching with a different or shorter keyword.",
+        "no_summary": "No description available.",
+        "read_more": "Read more",
+        "view_count": "views",
+        "post_tab": "Blogs",
+        "user_tab": "Users"
     }
 }

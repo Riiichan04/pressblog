@@ -33,8 +33,8 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
     const { setTheme, theme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-
-    const router = useRouter()
+    const router = useRouter();
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
@@ -59,6 +59,13 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
         localStorage.setItem("lng", newLang);
         Cookies.set('i18nextLng', newLang, { expires: 365 });
         router.refresh();
+    };
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        }
     };
 
     return (
@@ -91,7 +98,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                     </Link>
 
                     {/* Search bar */}
-                    <div className="relative hidden md:block w-80 group">
+                    <form onSubmit={handleSearch} className="relative hidden md:block w-80 group">
                         <Search className={cn(
                             "absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition-all z-10",
                             isScrolled && !isEnableScroll
@@ -101,6 +108,8 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         <Input
                             type="search"
                             placeholder={t("actions.search_placeholder")}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             className={cn(
                                 "pl-10 border-none transition-all",
                                 isScrolled && !isEnableScroll
@@ -108,7 +117,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                     : "bg-black/5 dark:bg-black/20 text-foreground dark:text-white placeholder:text-foreground/70 dark:placeholder:text-white/80 focus-visible:ring-black/30 dark:focus-visible:ring-white/30 backdrop-blur-md" // Đã sửa
                             )}
                         />
-                    </div>
+                    </form>
                 </div>
 
                 <div className="flex items-center gap-2 md:gap-4">
