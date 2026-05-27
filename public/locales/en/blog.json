@@ -4,5 +4,21 @@
     },
     "toc": {
         "title": "TABLE OF CONTENT"
+    },
+    "comments": {
+        "title": "Comments",
+        "no_comments": "No comments yet. Be the first to share your thoughts!",
+        "reply": "Reply",
+        "hide_replies": "Hide replies",
+        "view_replies": "View {{count}} replies",
+        "loading": "Loading...",
+        "form_placeholder": "Share your thoughts...",
+        "submit": "Post comment",
+        "submitting": "Posting...",
+        "login_required": "Please log in or verify your account to leave a comment",
+        "login_button": "Log in now"
+    },
+     "metadada": {   
+        "description": "Reading a blog at PressBlog"
     }
 }

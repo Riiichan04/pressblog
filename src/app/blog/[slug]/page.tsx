@@ -7,6 +7,7 @@ import Image from "next/image";
 import { notFound } from 'next/navigation';
 import { getServerTranslation } from "@/common/utils/server-translation";
 import { processContentAndGetHeadings } from "@/common/utils/blog-toc";
+import CommentSection from "@/components/comments/comment";
 
 interface Props {
     params: Promise<{ slug: string; locale: string }>;
@@ -14,6 +15,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
+    const { t } = await getServerTranslation('blog');
 
     const post = await getPostBySlug(slug);
 
@@ -25,10 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     return {
         title: `${post.name} | PressBlog`,
-        description: `Đọc bài viết ${post.name} trên PressBlog`,
+        description: t("metadata.description"),
         openGraph: {
             title: post.name,
-            description: `Đọc bài viết ${post.name} trên PressBlog`,
+            description: t("metadata.description"),
             images: [post.thumbnail || '/default-banner.jpg'],
         },
     };
@@ -86,6 +88,7 @@ export default async function BlogDetail({ params }: Props) {
                         className="prose dark:prose-invert max-w-none"
                         dangerouslySetInnerHTML={{ __html: processedHtml }}
                     />
+                    <CommentSection postId={post.id} />
                 </article>
 
                 <aside className="hidden lg:block w-72 shrink-0">
