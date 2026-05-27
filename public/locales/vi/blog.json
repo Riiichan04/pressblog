@@ -4,5 +4,21 @@
     },
     "toc": {
         "title": "MỤC LỤC BÀI VIẾT"
+    },
+    "comments": {
+        "title": "Bình luận",
+        "no_comments": "Chưa có bình luận nào. Hãy là người đầu tiên chia sẻ góc nhìn của bạn!",
+        "reply": "Phản hồi",
+        "hide_replies": "Ẩn câu trả lời",
+        "view_replies": "Xem {{count}} câu trả lời",
+        "loading": "Đang tải...",
+        "form_placeholder": "Chia sẻ suy nghĩ của bạn...",
+        "submit": "Gửi bình luận",
+        "submitting": "Đang gửi...",
+        "login_required": "Vui lòng đăng nhập hoặc xác thực tài khoản để bình luận",
+        "login_button": "Đăng nhập ngay"
+    },
+    "metadada": {   
+        "description": "Đọc bài viết trên PressBlog"
     }
 }
