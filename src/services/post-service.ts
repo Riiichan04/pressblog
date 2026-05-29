@@ -51,14 +51,14 @@ export const getPostBySlug = async (slug: string) => {
 
 
 export const getMyPosts = async (userId: string, page = 0, size = 50): Promise<PageResponse<PostTableItem>> => {
-    const response = await apiClient.get<PageResponse<PostDetail>>(`/post/get/${userId}?page=${page}&size=${size}`, {
+    const response = await apiClient.get<PageResponse<PostDetail>>(`/post/author/${userId}?page=${page}&size=${size}`, {
         headers: {
             "Content-Type": "application/json",
         },
     });
 
     if (response.status !== 200) {
-        throw new Error("Lỗi khi tải danh sách bài viết");
+        throw new Error("Error when load your blogs");
     }
 
     const pageData = response.data;

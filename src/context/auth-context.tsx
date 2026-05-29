@@ -50,11 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const updateUser = (updatedData: Partial<AuthDto>) => {
         setAuthState((prev) => {
             if (!prev.user) return prev;
-
-            // Gộp data cũ và data mới lại
             const newUser = { ...prev.user, ...updatedData };
-
-            // Cập nhật lại localStorage để F5 không bị mất
             localStorage.setItem("user_data", JSON.stringify(newUser));
 
             return { ...prev, user: newUser };

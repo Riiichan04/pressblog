@@ -17,7 +17,7 @@ export const updateMyProfile = async (data: UpdateProfileRequest): Promise<UserP
 };
 
 export const updatePassword = async (data: UpdatePasswordRequest): Promise<AuthResponse> => {
-    const response = await apiClient.put<AuthResponse>('/user/update/password', data, {
+    const response = await apiClient.put<AuthResponse>('/user/password', data, {
         headers: {"Content-Type": "application/json"}
     })
     return response.data
