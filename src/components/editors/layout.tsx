@@ -116,6 +116,7 @@ export default function WritePostComponent() {
                 email: user?.email,
                 language: "VI",
                 thumbnail: coverImage,
+                excerpt: excerpt,
                 listTag: tags.split(",").map(tag => tag.trim())
             };
             dispatcher(savePost({ post, updatedAt: Date.now() }));
@@ -123,7 +124,7 @@ export default function WritePostComponent() {
         } catch {
             toast.error(t("editor.save.error"));
         }
-    }, [user, contentRef, titleRef, category, tags, dispatcher, t, coverImage]);
+    }, [user, contentRef, titleRef, category, tags, excerpt, dispatcher, t, coverImage]);
 
 
     //Handle import markdown
@@ -214,7 +215,8 @@ export default function WritePostComponent() {
                     email: user.email,
                     language: "VI",
                     listTag: tags.split(",").map(tag => tag.trim()),
-                    thumbnail: coverImage
+                    thumbnail: coverImage,
+                    excerpt: excerpt
                 };
 
                 const res = await uploadPost(postData);
@@ -231,7 +233,7 @@ export default function WritePostComponent() {
         if (isPublishRequested) {
             doPublish();
         }
-    }, [isPublishRequested, titleRef, contentRef, category, tags, coverImage, user, dispatcher, t]);
+    }, [isPublishRequested, titleRef, contentRef, category, tags, coverImage, user, excerpt, dispatcher, t]);
 
 
     return (

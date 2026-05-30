@@ -7,7 +7,7 @@ import { PageResponse } from "@/common/types/page-response"
 
 export const uploadPost = async (data: PostRequest) => {
     try {
-        const response = await apiClient.post<{ result: boolean, msg: string }>(`${apiUrl}/post/upload`, data)
+        const response = await apiClient.post<{ result: boolean, msg: string }>(`/post`, data)
         return response.data
     }
     catch {
@@ -31,6 +31,7 @@ export const getFeaturedPost = async () => {
 export const getNewestPost = async () => {
     try {
         const response = await axios.get<PostDetail[]>(`${apiUrl}/newest`)
+        console.log(response.data)
         return response.data
     }
     catch {
@@ -51,14 +52,14 @@ export const getPostBySlug = async (slug: string) => {
 
 
 export const getMyPosts = async (userId: string, page = 0, size = 50): Promise<PageResponse<PostTableItem>> => {
-    const response = await apiClient.get<PageResponse<PostDetail>>(`/post/get/${userId}?page=${page}&size=${size}`, {
+    const response = await apiClient.get<PageResponse<PostDetail>>(`/post/author/${userId}?page=${page}&size=${size}`, {
         headers: {
             "Content-Type": "application/json",
         },
     });
 
     if (response.status !== 200) {
-        throw new Error("Lỗi khi tải danh sách bài viết");
+        throw new Error("Error when load your blogs");
     }
 
     const pageData = response.data;
