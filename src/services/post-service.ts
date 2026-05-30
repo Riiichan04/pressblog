@@ -7,7 +7,7 @@ import { PageResponse } from "@/common/types/page-response"
 
 export const uploadPost = async (data: PostRequest) => {
     try {
-        const response = await apiClient.post<{ result: boolean, msg: string }>(`${apiUrl}/post/upload`, data)
+        const response = await apiClient.post<{ result: boolean, msg: string }>(`/post`, data)
         return response.data
     }
     catch {
@@ -31,6 +31,7 @@ export const getFeaturedPost = async () => {
 export const getNewestPost = async () => {
     try {
         const response = await axios.get<PostDetail[]>(`${apiUrl}/newest`)
+        console.log(response.data)
         return response.data
     }
     catch {

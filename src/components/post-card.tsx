@@ -6,7 +6,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { PostDetail } from "@/common/types/post";
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 import { useTranslation } from "react-i18next";
-import { purifyBlogContent } from "@/common/utils/html-purifier";
 
 export function PostCard({ post }: { post: PostDetail }) {
     const { i18n } = useTranslation("landing");
@@ -49,7 +48,7 @@ export function PostCard({ post }: { post: PostDetail }) {
                 </Link>
 
                 <div className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                    <div dangerouslySetInnerHTML={{ __html: purifyBlogContent(post.content) }}></div>
+                    <div>{post.excerpt || ""}</div>
                 </div>
 
                 {/* Tags */}

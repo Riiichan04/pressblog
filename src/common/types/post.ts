@@ -27,6 +27,7 @@ export interface PostDetail {
     status: PostStatus;
     viewCount: number;
     updatedAt: string;
+    excerpt: string;
 }
 
 export interface PostRequest {
@@ -34,6 +35,7 @@ export interface PostRequest {
     content: string,
     email: string,
     categoryName: string,
+    excerpt: string,
     listTag: string[],
     thumbnail: string | null,
     language: "VI" | "EN" //Convert to global provider later
