@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
-import { Sun, Moon, LogOut, Settings, User as UserIcon } from "lucide-react";
+import { Sun, Moon, LogOut, Settings, User as UserIcon, Languages } from "lucide-react";
 import {
     DropdownMenu, DropdownMenuContent, DropdownMenuItem,
     DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
@@ -13,12 +13,16 @@ import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import Cookies from 'js-cookie';
 
 export default function AdminHeader() {
     const { setTheme, theme } = useTheme();
     const { user, logout } = useAuth();
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
+
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
@@ -27,10 +31,30 @@ export default function AdminHeader() {
         return () => cancelAnimationFrame(frame);
     }, []);
 
+    const toggleLanguage = () => {
+        const newLang = i18n.language === "vi" ? "en" : "vi";
+        i18n.changeLanguage(newLang);
+        localStorage.setItem("lng", newLang);
+        Cookies.set('i18nextLng', newLang, { expires: 365 });
+        router.refresh();
+    };
+
     return (
-        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b bg-background px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 justify-end">
-            <div className="flex items-center gap-4">
-                {/* Nút đổi giao diện */}
+        <header className="sticky top-0 z-100 flex h-16 shrink-0 items-center gap-x-4 border-b bg-background px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 justify-end">
+            <div className="flex items-center gap-2 md:gap-4">
+
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={toggleLanguage}
+                    className="gap-2 px-2 cursor-pointer transition-colors rounded-full md:rounded-md"
+                >
+                    <Languages className="h-5 w-5" />
+                    <span className="uppercase text-xs font-bold hidden md:inline-block">
+                        {mounted ? i18n.resolvedLanguage : "..."}
+                    </span>
+                </Button>
+
                 <Button
                     variant="ghost"
                     size="icon"

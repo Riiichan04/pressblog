@@ -25,5 +25,36 @@
         "comments": "Comments",
         "approvals": "Post Approvals",
         "logout": "Logout"
+    },
+    "approvals": {
+        "title": "Post Approvals",
+        "description": "List of posts waiting for administrator review.",
+        "listTitle": "Pending List",
+        "table": {
+            "title": "Title",
+            "author": "Author",
+            "category": "Category",
+            "date": "Created At",
+            "actions": "Actions",
+            "empty": "No posts are waiting for review."
+        },
+        "actions": {
+            "approve": "Approve",
+            "reject": "Reject",
+            "view": "View"
+        },
+        "messages": {
+            "approveSuccess": "Post approved successfully!",
+            "rejectSuccess": "Post rejected!",
+            "error": "An error occurred, please try again."
+        },
+        "preview": {
+            "mode": "Preview Mode",
+            "updatedAt": "Last updated",
+            "unknownAuthor": "Unknown Author",
+            "noEmail": "No email provided",
+            "commentsDisabled": "The comment section is disabled in preview mode.",
+            "notFound": "Post not found or you don't have permission to view it!"
+        }
     }
 }

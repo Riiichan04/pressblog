@@ -25,5 +25,36 @@
         "comments": "Bình luận",
         "approvals": "Phê duyệt bài viết",
         "logout": "Đăng xuất"
+    },
+    "approvals": {
+        "title": "Phê duyệt bài viết",
+        "description": "Danh sách các bài viết đang chờ quản trị viên kiểm duyệt.",
+        "listTitle": "Danh sách chờ duyệt",
+        "table": {
+            "title": "Tiêu đề",
+            "author": "Tác giả",
+            "category": "Danh mục",
+            "date": "Ngày tạo",
+            "actions": "Thao tác",
+            "empty": "Không có bài viết nào đang chờ duyệt."
+        },
+        "actions": {
+            "approve": "Duyệt",
+            "reject": "Từ chối",
+            "view": "Xem"
+        },
+        "messages": {
+            "approveSuccess": "Đã duyệt bài viết thành công!",
+            "rejectSuccess": "Đã từ chối bài viết!",
+            "error": "Có lỗi xảy ra, vui lòng thử lại."
+        },
+        "preview": {
+            "mode": "Chế độ xem trước (Preview)",
+            "updatedAt": "Cập nhật lần cuối",
+            "unknownAuthor": "Tác giả ẩn danh",
+            "noEmail": "Không có email",
+            "commentsDisabled": "Khu vực bình luận bị vô hiệu hóa trong chế độ xem trước.",
+            "notFound": "Không tìm thấy bài viết hoặc bạn không có quyền xem!"
+        }
     }
 }
