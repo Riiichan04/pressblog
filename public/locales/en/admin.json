@@ -1,0 +1,19 @@
+{
+    "dashboard": {
+        "title": "System Statistics",
+        "totalUsers": "Total Users",
+        "totalPosts": "Active Posts",
+        "pendingPosts": "Pending Posts",
+        "actionRequired": "Action required",
+        "totalViews": "Total Views",
+        "chartTitle": "New Posts (Last 7 days)",
+        "chartDesc": "Statistics of newly created posts on the system",
+        "urgentReview": "Urgent Review",
+        "urgentReviewDesc": "Posts waiting for administrator review.",
+        "by": "by",
+        "noPending": "No posts waiting for review",
+        "viewAll": "View all posts",
+        "approve": "Approve",
+        "postUnit": "posts"
+    }
+}

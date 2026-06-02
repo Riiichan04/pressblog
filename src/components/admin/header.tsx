@@ -1,0 +1,92 @@
+"use client";
+
+import { useTheme } from "next-themes";
+import { useAuth } from "@/context/auth-context";
+import { Button } from "@/components/ui/button";
+import { Sun, Moon, LogOut, Settings, User as UserIcon } from "lucide-react";
+import {
+    DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+    DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
+import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
+
+export default function AdminHeader() {
+    const { setTheme, theme } = useTheme();
+    const { user, logout } = useAuth();
+    const [mounted, setMounted] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        const frame = requestAnimationFrame(() => {
+            setMounted(true);
+        });
+        return () => cancelAnimationFrame(frame);
+    }, []);
+
+    return (
+        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b bg-background px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 justify-end">
+            <div className="flex items-center gap-4">
+                {/* Nút đổi giao diện */}
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    className="rounded-full"
+                >
+                    {mounted && (
+                        <div className="relative h-5 w-5 flex items-center justify-center">
+                            <Sun className="absolute h-full w-full rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                            <Moon className="absolute h-full w-full rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                        </div>
+                    )}
+                </Button>
+
+                {/* User Dropdown */}
+                {mounted ? (
+                    user ? (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="relative h-9 w-9 rounded-full border">
+                                    <Avatar className="h-9 w-9">
+                                        <AvatarImage src={user.avatar || ""} alt={user.username} />
+                                        <AvatarFallback className={`${fallBackColor(user.username)} text-white text-xs`}>
+                                            {getFallback(user.displayName || user.username)}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56" align="end">
+                                <DropdownMenuLabel className="font-normal">
+                                    <div className="flex flex-col space-y-1">
+                                        <p className="text-sm font-medium leading-none">{user.displayName || user.username}</p>
+                                        <p className="text-xs leading-none text-muted-foreground mt-1">{user.email}</p>
+                                        <p className="text-[10px] uppercase font-bold text-primary mt-2">{user.role}</p>
+                                    </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/")}>
+                                    <UserIcon className="mr-2 h-4 w-4" /> Về trang chủ
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Settings className="mr-2 h-4 w-4" /> Cài đặt Admin
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="text-destructive cursor-pointer" onClick={() => logout()}>
+                                    <LogOut className="mr-2 h-4 w-4 text-destructive" /> Đăng xuất
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    ) : (
+                        <Skeleton className="h-9 w-9 rounded-full" />
+                    )
+                ) : (
+                    <Skeleton className="h-9 w-9 rounded-full" />
+                )}
+            </div>
+        </header>
+    );
+}

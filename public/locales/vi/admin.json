@@ -1,0 +1,19 @@
+{
+    "dashboard": {
+        "title": "Thống kê hệ thống",
+        "totalUsers": "Tổng Người dùng",
+        "totalPosts": "Bài viết hiện hành",
+        "pendingPosts": "Chờ duyệt",
+        "actionRequired": "Cần xử lý ngay",
+        "totalViews": "Tổng lượt xem",
+        "chartTitle": "Bài viết mới (7 ngày qua)",
+        "chartDesc": "Thống kê số lượng bài viết được tạo trên hệ thống",
+        "urgentReview": "Cần duyệt gấp",
+        "urgentReviewDesc": "Các bài viết đang chờ quản trị viên xử lý.",
+        "by": "bởi",
+        "noPending": "Không có bài viết nào chờ duyệt 🎉",
+        "viewAll": "Xem tất cả bài viết",
+        "approve": "Duyệt",
+        "postUnit": "bài viết"
+    }
+}
