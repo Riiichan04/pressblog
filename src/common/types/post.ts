@@ -1,6 +1,10 @@
 export enum PostStatus {
     DRAFT = 'DRAFT',
     PUBLISHED = 'PUBLISHED',
+    PENDING = 'PENDING',
+    REJECTED = 'REJECTED',
+    REQUEST_CHANGE = 'REQUEST_CHANGE',
+    //Other
     PRIVATE = 'PRIVATE',
     SCHEDULED = 'SCHEDULED',
 }
