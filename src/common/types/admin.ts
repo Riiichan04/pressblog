@@ -23,7 +23,7 @@ export interface AdminPostResponse {
     id: number;
     title: string;
     slug: string;
-    author: string;
+    authorName: string;
     category: string;
     status: string;
     isDeleted: boolean;

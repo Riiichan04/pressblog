@@ -1,6 +1,6 @@
 import { AdminDashboardResponse, AdminPostResponse } from "@/common/types/admin";
 import apiClient from "./api-client";
-import { PostStatus } from "@/common/types/post";
+import { PostDetail, PostStatus } from "@/common/types/post";
 import { PageResponse } from "@/common/types/page-response";
 
 export const getAdminStats = async (): Promise<AdminDashboardResponse> => {
@@ -15,5 +15,10 @@ export const updatePostStatus = async (postId: number, status: PostStatus): Prom
 
 export const getPendingPosts = async (page: number = 0, size: number = 10): Promise<PageResponse<AdminPostResponse>> => {
     const response = await apiClient.get(`/admin/posts/pending?page=${page}&size=${size}`);
+    return response.data;
+};
+
+export const getAdminPostBySlug = async (slug: string) => {
+    const response = await apiClient.get<PostDetail>(`/admin/posts/${slug}`);
     return response.data;
 };
