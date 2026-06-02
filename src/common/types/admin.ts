@@ -18,3 +18,14 @@ export interface AdminDashboardResponse {
     recentPendingPosts: PendingPostDto[];
     chartData: ChartStatDto[];
 }
+
+export interface AdminPostResponse {
+    id: number;
+    title: string;
+    slug: string;
+    author: string;
+    category: string;
+    status: string;
+    isDeleted: boolean;
+    createdAt: string;
+}

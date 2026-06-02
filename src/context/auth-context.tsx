@@ -3,12 +3,17 @@
 import { createContext, useContext, useState } from "react";
 import Cookies from "js-cookie";
 import { AuthDto } from "@/common/types/auth";
+import { PermissionType } from "@/common/constants/permissions";
+import { ROLES, RoleType } from "@/common/constants/roles";
 
 interface AuthContextType {
     user: AuthDto | null;
     login: (userData: AuthDto) => void;
     logout: () => void;
     updateUser: (updatedData: Partial<AuthDto>) => void;
+    hasPermission: (permission: PermissionType | PermissionType[]) => boolean;
+    hasRole: (role: RoleType | RoleType[]) => boolean;
+
     isLoading: boolean;
 }
 
@@ -57,8 +62,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
     };
 
+    const hasPermission = (permission: PermissionType | PermissionType[]) => {
+        if (!user) return false;
+
+        if (user.role === ROLES.ADMIN) return true;
+
+        const permissionsToCheck = Array.isArray(permission) ? permission : [permission];
+
+        return permissionsToCheck.some(p => user.permissions?.includes(p));
+    };
+
+    const hasRole = (role: RoleType | RoleType[]) => {
+        if (!user) return false;
+
+        const rolesToCheck = Array.isArray(role) ? role : [role];
+        return rolesToCheck.includes(user.role as RoleType);
+    };
+
     return (
-        <AuthContext.Provider value={{ user, login, logout, updateUser, isLoading }}>
+        <AuthContext.Provider value={{ user, login, logout, updateUser, hasPermission, hasRole, isLoading }}>
             {children}
         </AuthContext.Provider>
     );

@@ -15,5 +15,15 @@
         "viewAll": "Xem tất cả bài viết",
         "approve": "Duyệt",
         "postUnit": "bài viết"
+    },
+    "sidebar": {
+        "title": "PressBlog Admin",
+        "overview": "Tổng quan",
+        "users": "Người dùng",
+        "posts": "Bài viết",
+        "categories": "Danh mục",
+        "comments": "Bình luận",
+        "approvals": "Phê duyệt bài viết",
+        "logout": "Đăng xuất"
     }
 }

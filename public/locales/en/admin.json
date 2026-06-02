@@ -15,5 +15,15 @@
         "viewAll": "View all posts",
         "approve": "Approve",
         "postUnit": "posts"
+    },
+    "sidebar": {
+        "title": "PressBlog Admin",
+        "overview": "Overview",
+        "users": "Users",
+        "posts": "Posts",
+        "categories": "Categories",
+        "comments": "Comments",
+        "approvals": "Post Approvals",
+        "logout": "Logout"
     }
 }
