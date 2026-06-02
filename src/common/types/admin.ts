@@ -29,3 +29,15 @@ export interface AdminPostResponse {
     isDeleted: boolean;
     createdAt: string;
 }
+
+export interface AdminUserResponse {
+    id: number;
+    username: string;
+    email: string;
+    displayName: string | null;
+    roleName: string;
+    isActive: boolean;
+    isVerified: boolean;
+    createdAt: string;
+    avatarUrl: string
+}

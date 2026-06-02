@@ -56,5 +56,88 @@
             "commentsDisabled": "Khu vực bình luận bị vô hiệu hóa trong chế độ xem trước.",
             "notFound": "Không tìm thấy bài viết hoặc bạn không có quyền xem!"
         }
+    },
+    "users": {
+        "title": "Quản lý Người dùng",
+        "description": "Quản lý tài khoản, phân quyền và trạng thái hoạt động.",
+        "listTitle": "Danh sách tài khoản",
+        "table": {
+            "user": "Người dùng",
+            "role": "Vai trò",
+            "status": "Trạng thái",
+            "joined": "Ngày tham gia",
+            "actions": "Thao tác"
+        },
+        "status": {
+            "active": "Hoạt động",
+            "banned": "Đã khóa"
+        },
+        "roles": {
+            "USER": "User mặc định",
+            "CONTENT_MOD": "Content Mod",
+            "COMMENT_MOD": "Comment Mod",
+            "ADMIN": "Admin"
+        },
+        "actions": {
+            "ban": "Khóa tài khoản",
+            "unban": "Mở khóa",
+            "changeRole": "Đổi quyền"
+        },
+        "actionMenu": "Thao tác",
+        "pagination": {
+            "prev": "Trước",
+            "next": "Sau",
+            "page": "Trang"
+        },
+        "messages": {
+            "statusSuccess": "Đã cập nhật trạng thái người dùng!",
+            "roleSuccess": "Đã cập nhật vai trò thành công!",
+            "cannotBanSelf": "Bạn không thể tự khóa tài khoản của chính mình!",
+            "error": "Có lỗi xảy ra, vui lòng thử lại."
+        }
+    },
+    "posts": {
+        "title": "Quản lý bài viết",
+        "description": "Quản lý tất cả bài viết và xét duyệt nội dung trên hệ thống.",
+        "tabs": {
+            "all": "Tất cả bài viết",
+            "pending": "Chờ duyệt"
+        },
+        "table": {
+            "title": "Tiêu đề",
+            "author": "Tác giả",
+            "status": "Trạng thái",
+            "date": "Ngày tạo",
+            "actions": "Thao tác",
+            "empty": "Không có bài viết nào."
+        },
+        "status": {
+            "PUBLISHED": "Đã xuất bản",
+            "PENDING": "Chờ duyệt",
+            "DRAFT": "Bản nháp",
+            "REJECTED": "Bị từ chối",
+            "PRIVATE": "Riêng tư",
+            "DELETED": "Đã xóa"
+        },
+        "actions": {
+            "view": "Xem bài viết",
+            "restore": "Khôi phục",
+            "delete": "Xóa bài viết",
+            "deleteConfirm": "Bạn có chắc chắn muốn xóa bài viết này không?",
+            "changeStatus": "Đổi trạng thái nhanh",
+            "deleteConfirmTitle": "Xác nhận xóa bài viết",
+            "cancel": "Hủy"
+        },
+        "messages": {
+            "restoreSuccess": "Đã khôi phục bài viết thành công!",
+            "deleteSuccess": "Đã xóa bài viết thành công!",
+            "statusUpdateSuccess": "Đã cập nhật trạng thái bài viết!",
+            "error": "Có lỗi xảy ra, vui lòng thử lại."
+        },
+        "pagination": {
+            "prev": "Trước",
+            "next": "Sau",
+            "page": "Trang"
+        }
     }
 }
