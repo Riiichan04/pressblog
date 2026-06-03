@@ -41,3 +41,16 @@ export interface AdminUserResponse {
     createdAt: string;
     avatarUrl: string
 }
+
+export interface CategoryResponse {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+    deleted: boolean;
+}
+
+export interface CategoryRequest {
+    name: string;
+    description: string;
+}

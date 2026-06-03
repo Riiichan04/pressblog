@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const hasPermission = (permission: PermissionType | PermissionType[]) => {
         if (!user) return false;
 
-        if (user.role === ROLES.ADMIN) return true;
+       if (user.role === ROLES.ADMIN || user.role === "ROLE_ADMIN") return true;
 
         const permissionsToCheck = Array.isArray(permission) ? permission : [permission];
 

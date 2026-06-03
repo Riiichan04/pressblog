@@ -5,7 +5,9 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import {
     Eye, Loader2, RefreshCw, Trash2, MoreVertical,
-    ChevronLeft, ChevronRight, CheckCircle, Clock, XCircle
+    ChevronLeft, ChevronRight, CheckCircle, Clock, XCircle,
+    X,
+    Tags
 } from "lucide-react";
 import Link from "next/link";
 
@@ -16,20 +18,32 @@ import {
     DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
     DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/context/auth-context";
 
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+    AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
+import { useAuth } from "@/context/auth-context";
 import { getAllAdminPosts, restorePost, forceDeletePost, updatePostStatus } from "@/services/admin-service";
 import { PERMISSIONS } from "@/common/constants/permissions";
 import { PostStatus } from "@/common/types/post";
 import { AdminPostResponse } from "@/common/types/admin";
 
-export default function AllPostsTab() {
+interface AllPostsTabProps {
+    categorySlug: string | null;
+    onClearCategory: () => void;
+}
+
+export default function AllPostsTab({ categorySlug, onClearCategory }: AllPostsTabProps) {
     const { t } = useTranslation("admin");
     const { hasPermission } = useAuth();
 
     const [posts, setPosts] = useState<AdminPostResponse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [processingId, setProcessingId] = useState<number | null>(null);
+
+    const [postToDelete, setPostToDelete] = useState<number | null>(null);
 
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
@@ -43,7 +57,7 @@ export default function AllPostsTab() {
         const fetchPosts = async () => {
             setIsLoading(true);
             try {
-                const data = await getAllAdminPosts(page, SIZE);
+                const data = await getAllAdminPosts(page, SIZE, categorySlug);
                 setPosts(data.content);
                 setTotalPages(data.totalPages);
             } catch {
@@ -53,7 +67,7 @@ export default function AllPostsTab() {
             }
         };
         fetchPosts();
-    }, [page, t]);
+    }, [page, t, categorySlug]);
 
     const handleUpdateStatus = async (id: number, newStatus: PostStatus) => {
         setProcessingId(id);
@@ -81,17 +95,18 @@ export default function AllPostsTab() {
         }
     };
 
-    const handleDelete = async (id: number) => {
-        if (!window.confirm(t("posts.actions.deleteConfirm"))) return;
-        setProcessingId(id);
+    const executeDelete = async () => {
+        if (!postToDelete) return;
+        setProcessingId(postToDelete);
         try {
-            await forceDeletePost(id);
+            await forceDeletePost(postToDelete);
             toast.success(t("posts.messages.deleteSuccess"));
-            setPosts(prev => prev.map(p => p.id === id ? { ...p, isDeleted: true } : p));
+            setPosts(prev => prev.map(p => p.id === postToDelete ? { ...p, isDeleted: true } : p));
         } catch {
             toast.error(t("posts.messages.error"));
         } finally {
             setProcessingId(null);
+            setPostToDelete(null);
         }
     };
 
@@ -108,6 +123,25 @@ export default function AllPostsTab() {
 
     return (
         <div className="border rounded-lg bg-card overflow-hidden p-4">
+            {categorySlug && (
+                <div className="mb-4 flex items-center justify-between rounded-md bg-blue-50/50 p-3 border border-blue-100 dark:bg-blue-950/20 dark:border-blue-900/50">
+                    <div className="flex items-center text-sm text-blue-800 dark:text-blue-300">
+                        <Tags className="mr-2 h-4 w-4" />
+                        <span>
+                            {t("posts.filter.title")} <span className="font-semibold">{categorySlug}</span>
+                        </span>
+                    </div>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 text-blue-800 hover:text-blue-900 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-900/50"
+                        onClick={onClearCategory}
+                    >
+                        <X className="mr-1 h-4 w-4" /> {t("posts.filter.removeFilter")} 
+                    </Button>
+                </div>
+            )}
+
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -144,35 +178,34 @@ export default function AllPostsTab() {
                                     {getStatusBadge(post.status, post.isDeleted)}
                                 </TableCell>
                                 <TableCell className="text-sm text-muted-foreground">
-                                    {new Date(post.createdAt).toLocaleDateString('vi-VN')}
+                                    {new Date(post.createdAt).toLocaleDateString(t("posts.tabs.all") === "All Posts" ? "en-US" : "vi-VN")}
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <div className="flex justify-end gap-2">
 
                                         <Link href={`/admin/approvals/${post.slug}`} target="_blank">
-                                            <Button className={"cursor-pointer"} variant="outline" size="icon" title={t("posts.actions.view")}>
+                                            <Button variant="outline" size="icon" title={t("posts.actions.view")}>
                                                 <Eye className="h-4 w-4" />
                                             </Button>
                                         </Link>
 
                                         {post.isDeleted ? (
                                             canRestore && (
-                                                <Button variant="outline" size="icon" onClick={() => handleRestore(post.id)} disabled={processingId === post.id} className="cursor-pointer text-green-600 hover:bg-green-50 hover:text-green-700">
+                                                <Button variant="outline" size="icon" title={t("posts.actions.restore")} onClick={() => handleRestore(post.id)} disabled={processingId === post.id} className="cursor-pointer text-green-600 hover:bg-green-50 hover:text-green-700">
                                                     {processingId === post.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
                                                 </Button>
                                             )
                                         ) : (
                                             <>
                                                 {canDelete && (
-                                                    <Button className={"cursor-pointer"} variant="destructive" size="icon" onClick={() => handleDelete(post.id)} disabled={processingId === post.id}>
+                                                    <Button className="cursor-pointer" variant="destructive" size="icon" title={t("posts.actions.delete")} onClick={() => setPostToDelete(post.id)} disabled={processingId === post.id}>
                                                         {processingId === post.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                                                     </Button>
                                                 )}
-
                                                 {canChangeStatus && (
                                                     <DropdownMenu>
                                                         <DropdownMenuTrigger asChild>
-                                                            <Button className={"cursor-pointer"} variant="ghost" size="icon" disabled={processingId === post.id}>
+                                                            <Button className="cursor-pointer" variant="ghost" size="icon" disabled={processingId === post.id}>
                                                                 <MoreVertical className="h-4 w-4" />
                                                             </Button>
                                                         </DropdownMenuTrigger>
@@ -191,7 +224,6 @@ export default function AllPostsTab() {
                                                         </DropdownMenuContent>
                                                     </DropdownMenu>
                                                 )}
-
                                             </>
                                         )}
                                     </div>
@@ -215,6 +247,23 @@ export default function AllPostsTab() {
                     </Button>
                 </div>
             )}
+
+            <AlertDialog open={postToDelete !== null} onOpenChange={(open) => !open && setPostToDelete(null)}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>{t("posts.actions.deleteConfirmTitle")}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {t("posts.actions.deleteConfirm")}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel className="cursor-pointer">{t("posts.actions.cancel")}</AlertDialogCancel>
+                        <AlertDialogAction onClick={executeDelete} className="cursor-pointer bg-red-600 hover:bg-red-700 text-white">
+                            {t("posts.actions.delete")}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 }
