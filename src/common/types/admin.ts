@@ -54,3 +54,17 @@ export interface CategoryRequest {
     name: string;
     description: string;
 }
+
+export interface AdminCommentResponse {
+    id: number;
+    content: string;
+    authorName: string;
+    postId: number;
+    postName: string;
+    postSlug: string;
+    isDeleted: boolean;
+    createdAt: string;
+    status: string;
+    parentId?: number | null;
+    parentContent?: string | null;
+}

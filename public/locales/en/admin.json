@@ -193,5 +193,52 @@
             "next": "Next",
             "page": "Page"
         }
+    },
+    "comments": {
+        "title": "Comment Management",
+        "description": "Moderate and manage user comments across the system.",
+        "tabs": {
+            "all": "All Comments",
+            "pending": "Pending"
+        },
+        "table": {
+            "content": "Content",
+            "author": "Author",
+            "post": "Post",
+            "status": "Status",
+            "actions": "Actions",
+            "empty": "No comments found."
+        },
+        "status": {
+            "APPROVED": "Approved",
+            "PENDING": "Pending",
+            "REJECTED": "Rejected",
+            "DELETED": "Deleted"
+        },
+        "actions": {
+            "viewPost": "View Post",
+            "approve": "Approve",
+            "reject": "Reject",
+            "delete": "Delete",
+            "restore": "Restore",
+            "deleteConfirmTitle": "Confirm Deletion",
+            "deleteConfirm": "Are you sure you want to permanently delete this comment? This action cannot be undone.",
+            "cancel": "Cancel",
+            "clearFilter": "Clear Filter"
+        },
+        "messages": {
+            "approveSuccess": "Comment approved!",
+            "rejectSuccess": "Comment rejected!",
+            "statusUpdateSuccess": "Comment status updated!",
+            "deleteSuccess": "Comment deleted successfully!",
+            "restoreSuccess": "Comment restored successfully!",
+            "error": "An error occurred, please try again.",
+            "filtering": "Filtering comments by post:"
+        },
+        "pagination": {
+            "prev": "Previous",
+            "next": "Next",
+            "page": "Page"
+        }
     }
 }
