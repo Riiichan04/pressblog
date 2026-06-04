@@ -23,7 +23,7 @@ export default function Footer() {
                                 priority
                                 unoptimized
                             />
-                            <h2 className="text-xl font-bold italic">PressBlog</h2>
+                            <h2 className="text-xl font-bold uppercase">PressBlog</h2>
                         </div>
                         <p className="mt-4 text-sm text-muted-foreground">
                             {t('footer.brand.description')}

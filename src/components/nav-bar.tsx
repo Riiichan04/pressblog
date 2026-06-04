@@ -214,7 +214,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                         <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/dashboard")}>
                                             <User className="mr-2 h-4 w-4" /> {t("navbar.profile")}
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem className="cursor-pointer">
+                                        <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/dashboard/settings")}>
                                             <Settings className="mr-2 h-4 w-4" /> {t("navbar.settings")}
                                         </DropdownMenuItem>
                                         {user.role && user.role !== "USER" && (
