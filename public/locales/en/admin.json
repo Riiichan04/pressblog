@@ -16,6 +16,11 @@
         "approve": "Approve",
         "postUnit": "posts"
     },
+    "navbar": {
+        "detail": "Profile",
+        "homeNav": "Back to Home page",
+        "logout": "Log out"
+    },
     "sidebar": {
         "title": "PressBlog Admin",
         "overview": "Overview",
@@ -24,7 +29,11 @@
         "categories": "Categories",
         "comments": "Comments",
         "approvals": "Post Approvals",
-        "logout": "Logout"
+        "logout": "Logout",
+        "label": {
+            "content": "Content Management",
+            "system": "System"
+        }
     },
     "approvals": {
         "title": "Post Approvals",

@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import {
     Search, PenSquare, Bell, Languages, LogOut,
-    User, Settings, Sun, Moon
+    User, Settings, Sun, Moon,
+    LayoutDashboard
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
@@ -216,6 +217,17 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                         <DropdownMenuItem className="cursor-pointer">
                                             <Settings className="mr-2 h-4 w-4" /> {t("navbar.settings")}
                                         </DropdownMenuItem>
+                                        {user.role && user.role !== "USER" && (
+                                            <>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem 
+                                                    className="cursor-pointer text-primary font-medium" 
+                                                    onClick={() => router.push("/admin/dashboard")}
+                                                >
+                                                    <LayoutDashboard className="mr-2 h-4 w-4" /> {t("navbar.admin")}
+                                                </DropdownMenuItem>
+                                            </>
+                                        )}
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem
                                             className="text-destructive focus:bg-destructive/10 cursor-pointer"
