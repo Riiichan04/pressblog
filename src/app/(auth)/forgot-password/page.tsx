@@ -11,12 +11,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export default function ForgotPasswordForm() {
     const router = useRouter()
+    const { t } = useTranslation(["auth"]);
 
-    const sendVerifySchema = SendVerifySchema()
-    const verifySchema = VerifySchema()
+    const sendVerifySchema = SendVerifySchema(t)
+    const verifySchema = VerifySchema(t)
 
     const [step, setStep] = useState(1)
     const [email, setEmail] = useState("")
@@ -45,11 +47,11 @@ export default function ForgotPasswordForm() {
                 setCountdown(60);
             }
             else {
-                toast.error("Yêu cầu thất bại", { description: response.message || "" })
+                toast.error(t("errors.something_went_wrong"), { description: response.message || "" })
             }
         }
         catch {
-            toast.error("Có lỗi xảy ra, hãy thử lại sau")
+            toast.error(t("errors.something_went_wrong"))
         }
         finally {
             setIsSendingEmail(false)
@@ -67,18 +69,18 @@ export default function ForgotPasswordForm() {
 
             if (response.result) {
                 setIsSuccess(true)
-                toast.success("Đổi mật khẩu thành công", { description: "Chuyển sang trang đăng nhập sau 2 giây" })
+                toast.success(t("forgot.submitBtn"), { description: "Thành công" }) // Có thể thêm key successMsg vào JSON
                 setTimeout(() => {
                     router.push("/login")
                 }, 2000)
             }
             else {
-                toast.error("Đổi mật khẩu thất bại", { description: response.message || "" })
+                toast.error(t("errors.something_went_wrong"), { description: response.message || "" })
             }
             setIsVerifyLoading(false)
         }
         catch {
-            toast.error("Có lỗi xảy ra, hãy thử lại sau")
+            toast.error(t("errors.something_went_wrong"))
             setIsVerifyLoading(false)
         }
     }
@@ -103,19 +105,19 @@ export default function ForgotPasswordForm() {
                         onClick={() => router.push("/login")}
                     >
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Trở về đăng nhập
+                        {t("forgot.backToLogin")}
                     </Button>
                 </div>
             </div>
 
             <div className="space-y-1 text-center my-8">
-                <h1 className="text-2xl font-bold">Quên mật khẩu</h1>
-                <p className="text-gray-500 text-sm">Nhập email và mã xác nhận của bạn để lấy lại mật khẩu</p>
+                <h1 className="text-2xl font-bold">{t("forgot.title")}</h1>
+                <p className="text-gray-500 text-sm">{t("forgot.description")}</p>
             </div>
 
             <form onSubmit={sendVerifyForm.handleSubmit(onSendEmail)} className="space-y-6">
                 <div className="space-y-1">
-                    <label className="text-sm font-medium">Địa chỉ Email</label>
+                    <label className="text-sm font-medium">{t("forgot.emailLabel")}</label>
                     <div className="flex gap-2 items-center">
                         <Input
                             type="email"
@@ -132,14 +134,14 @@ export default function ForgotPasswordForm() {
                             {isSendingEmail ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             ) : countdown > 0 ? (
-                                `(${countdown}s)`
+                                t("forgot.resendIn", { time: countdown })
                             ) : (
-                                "Gửi OTP"
+                                t("forgot.sendOtp")
                             )}
                         </Button>
                     </div>
                     {sendVerifyForm.formState.errors.email && (
-                        <p className="text-xs text-red-500 mt-1">{sendVerifyForm.formState.errors.email.message}</p>
+                        <p className="text-xs text-red-500 mt-1">{sendVerifyForm.formState.errors.email.message as string}</p>
                     )}
                 </div>
             </form>
@@ -147,7 +149,7 @@ export default function ForgotPasswordForm() {
             {step === 2 &&
                 <form onSubmit={verifyForm.handleSubmit(onVerify)} className="space-y-6 mt-8">
                     <div className="space-y-1">
-                        <label className="text-sm font-medium">Mã xác thực</label>
+                        <label className="text-sm font-medium">{t("forgot.verifyCode")}</label>
                         <Input
                             inputMode="numeric" pattern="[0-9]*"
                             type="text"
@@ -155,29 +157,29 @@ export default function ForgotPasswordForm() {
                             className={`py-4 mt-1 tracking-widest text-center text-lg font-bold ${verifyForm.formState.errors.code ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                         />
                         {verifyForm.formState.errors.code && (
-                            <p className="text-xs text-red-500 mt-1">{verifyForm.formState.errors.code.message}</p>
+                            <p className="text-xs text-red-500 mt-1">{verifyForm.formState.errors.code.message as string}</p>
                         )}
                     </div>
 
                     <div className="space-y-1">
-                        <label className="text-sm font-medium">Nhập mật khẩu mới</label>
+                        <label className="text-sm font-medium">{t("forgot.newPassword")}</label>
                         <PasswordInput
                             {...verifyForm.register("password")}
                             className={`py-4 mt-1 ${verifyForm.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                         />
                         {verifyForm.formState.errors.password && (
-                            <p className="text-xs text-red-500 mt-1">{verifyForm.formState.errors.password.message}</p>
+                            <p className="text-xs text-red-500 mt-1">{verifyForm.formState.errors.password.message as string}</p>
                         )}
                     </div>
 
                     <div className="space-y-1">
-                        <label className="text-sm font-medium">Xác nhận mật khẩu</label>
+                        <label className="text-sm font-medium">{t("forgot.confirmPassword")}</label>
                         <PasswordInput
                             {...verifyForm.register("confirmPassword")}
                             className={`py-4 mt-1 ${verifyForm.formState.errors.confirmPassword ? "border-destructive focus-visible:ring-destructive" : ""}`}
                         />
                         {verifyForm.formState.errors.confirmPassword && (
-                            <p className="text-xs text-destructive mt-1">{verifyForm.formState.errors.confirmPassword.message}</p>
+                            <p className="text-xs text-destructive mt-1">{verifyForm.formState.errors.confirmPassword.message as string}</p>
                         )}
                     </div>
 
@@ -189,10 +191,10 @@ export default function ForgotPasswordForm() {
                         {isVerifyLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Đang đổi mật khẩu
+                                {t("login.processing")}
                             </>
                         ) : (
-                            "Đổi mật khẩu"
+                            t("forgot.submitBtn")
                         )}
                     </Button>
                 </form>

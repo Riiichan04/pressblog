@@ -12,7 +12,8 @@
         "settings": "Settings",
         "logout": "Logout",
         "back_previous": "Back to previous",
-        "admin": "Admin Management"
+        "admin": "Admin Management",
+        "verify": "Verify your account"
     },
     "user_menu": {
         "profile": "Profile",

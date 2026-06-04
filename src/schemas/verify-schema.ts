@@ -1,31 +1,31 @@
 import * as z from 'zod'
+import { TFunction } from 'i18next'
 
-export const SendVerifySchema = () =>
+export const SendVerifySchema = (t: TFunction<"auth", undefined>) =>
     z.object({
         email: z
             .string()
-            .min(1, { message: "Trường này không được để trống" })
-            .pipe(z.email({ message: "Email không hợp lệ" })),
+            .min(1, { message: t("errors.required") })
+            .pipe(z.email({ message: t("errors.invalid_email") })),
     })
 
-export const VerifySchema = () =>
+export const VerifySchema = (t: TFunction<"auth", undefined>) =>
     z.object({
         code: z
             .string()
-            .length(6, { message: "Mã xác thực phải bao gồm 6 ký số" })
-            .regex(/^\d+$/, { message: "Mã xác thực chỉ được chứa chữ số" }),
+            .length(6, { message: t("errors.required") })
+            .regex(/^\d+$/, { message: t("errors.required") }),
         password: z
             .string()
-            .min(6, { message: "Mật khẩu dài từ 6 - 32 ký tự" })
-            .max(32, { message: "Mật khẩu dài từ 6 - 32 ký tự" }),
+            .min(6, { message: t("errors.password_length_error") })
+            .max(32, { message: t("errors.password_length_error") }),
 
         confirmPassword: z
             .string()
-            .min(1, { message: "Trường này không được để trống" }),
+            .min(1, { message: t("errors.required") }),
     }).refine((data) => data.password === data.confirmPassword, {
-        message: "Xác nhận mật khẩu không đúng",
+        message: t("errors.passwords_not_matching"),
         path: ["confirmPassword"],
     });
-
 
 export type VerifyValues = z.infer<ReturnType<typeof VerifySchema>>

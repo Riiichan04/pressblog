@@ -11,10 +11,12 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
+import { useTranslation } from "react-i18next";
 
 export default function VerifyAccountPage() {
     const router = useRouter()
     const { user, updateUser } = useAuth()
+    const { t } = useTranslation(["auth"]);
 
     const [isVerifyLoading, setIsVerifyLoading] = useState(false)
     const [countdown, setCountdown] = useState(0)
@@ -22,10 +24,10 @@ export default function VerifyAccountPage() {
     const [isSuccess, setIsSuccess] = useState(false)
 
     const verifyForm = useForm({
-        resolver: zodResolver(VerifySchema()),
+        resolver: zodResolver(VerifySchema(t)),
         defaultValues: {
             code: "",
-            password: "DummyPasswd", 
+            password: "DummyPasswd",
             confirmPassword: "DummyPasswd"
         }
     })
@@ -34,10 +36,10 @@ export default function VerifyAccountPage() {
         if (!user) {
             router.push("/login");
         } else if (user.isVerified) {
-            toast.info("Tài khoản của bạn đã được xác thực!");
+            toast.info(t("verify.alreadyVerified"));
             router.push("/");
         }
-    }, [user, router]);
+    }, [user, router, t]);
 
     const handleResendOtp = async () => {
         if (!user?.email) return;
@@ -46,12 +48,12 @@ export default function VerifyAccountPage() {
             const response = await sendVerifyAccountOtp(user.email)
             if (response.result) {
                 setCountdown(60);
-                toast.success("Mã xác thực mới đã được gửi vào email của bạn")
+                toast.success(t("verify.description")) // Tái sử dụng string có sẵn báo gửi email
             } else {
-                toast.error("Lỗi khi gửi mã", { description: response.message })
+                toast.error(t("errors.something_went_wrong"), { description: response.message })
             }
         } catch {
-            toast.error("Lỗi khi gửi lại mã")
+            toast.error(t("errors.something_went_wrong"))
         } finally {
             setIsSendingEmail(false)
         }
@@ -64,16 +66,16 @@ export default function VerifyAccountPage() {
             const response = await verifyAccount({ email: user.email, code: data.code })
             if (response.result) {
                 setIsSuccess(true)
-                toast.success("Xác thực tài khoản thành công")
+                toast.success(t("verify.alreadyVerified"))
 
                 updateUser({ isVerified: true });
 
                 setTimeout(() => router.push("/"), 2000)
             } else {
-                toast.error("Xác thực thất bại", { description: response.message })
+                toast.error(t("errors.something_went_wrong"), { description: response.message })
             }
         } catch {
-            toast.error("Có lỗi xảy ra")
+            toast.error(t("errors.something_went_wrong"))
         } finally {
             setIsVerifyLoading(false)
         }
@@ -95,23 +97,23 @@ export default function VerifyAccountPage() {
                 <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ShieldCheck className="h-6 w-6 text-primary" />
                 </div>
-                <h1 className="text-2xl font-bold">Xác thực tài khoản</h1>
+                <h1 className="text-2xl font-bold">{t("verify.title")}</h1>
                 <p className="text-gray-500 text-sm">
-                    Mã xác thực đã được gửi đến email <b>{user.email}</b>
+                    {t("verify.description")} <b>{user.email}</b>
                 </p>
             </div>
 
             <form onSubmit={verifyForm.handleSubmit(onVerify)} className="space-y-6">
                 <div className="space-y-2">
                     <div className="flex justify-between items-end">
-                        <label className="text-sm font-medium">Mã xác thực (OTP)</label>
+                        <label className="text-sm font-medium">{t("verify.otpLabel")}</label>
                         <button
                             type="button"
                             disabled={isSendingEmail || countdown > 0}
                             onClick={handleResendOtp}
                             className="text-xs text-blue-600 hover:underline disabled:text-gray-400 cursor-pointer"
                         >
-                            {countdown > 0 ? `Gửi lại sau ${countdown}s` : "Nhận mã OTP"}
+                            {countdown > 0 ? t("verify.resendIn", { time: countdown }) : t("verify.resendBtn")}
                         </button>
                     </div>
                     <Input
@@ -131,7 +133,7 @@ export default function VerifyAccountPage() {
                     className="w-full mt-4 py-4.5 cursor-pointer"
                     disabled={isVerifyLoading || isSuccess}
                 >
-                    {isVerifyLoading ? <Loader2 className="animate-spin mr-2" /> : "Xác nhận"}
+                    {isVerifyLoading ? <Loader2 className="animate-spin mr-2" /> : t("verify.submitBtn")}
                 </Button>
 
                 <Button
@@ -140,7 +142,7 @@ export default function VerifyAccountPage() {
                     className="w-full cursor-pointer"
                     onClick={() => router.push("/")}
                 >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Bỏ qua & Về trang chủ
+                    <ArrowLeft className="mr-2 h-4 w-4" /> {t("verify.skipBtn")}
                 </Button>
             </form>
         </div>
