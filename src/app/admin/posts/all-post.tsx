@@ -178,8 +178,7 @@ export default function AllPostsTab({ categorySlug, onClearCategory }: AllPostsT
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <div className="flex justify-end gap-2">
-
-                                        <Link href={`/admin/approvals/${post.slug}`} target="_blank">
+                                        <Link href={post.status === PostStatus.PUBLISHED ? `/blog/${post.slug}` : `/admin/approvals/${post.slug}`} target={post.status === PostStatus.PUBLISHED ? "_blank" : ""}>
                                             <Button variant="outline" size="icon" title={t("posts.actions.view")}>
                                                 <Eye className="h-4 w-4" />
                                             </Button>

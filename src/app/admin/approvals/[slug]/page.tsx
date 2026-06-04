@@ -51,7 +51,7 @@ export default function AdminPreviewPage({ params }: { params: Promise<{ slug: s
             } else {
                 toast.success(t("approvals.messages.rejectSuccess"));
             }
-            router.push("/admin/approvals");
+            router.push("/admin/posts");
         } catch {
             toast.error(t("approvals.messages.error"));
         } finally {
