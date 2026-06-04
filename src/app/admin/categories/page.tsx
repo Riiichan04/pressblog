@@ -138,7 +138,7 @@ export default function AdminCategoriesPage() {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 p-6 lg:p-8">
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">{t("categories.title")}</h2>
@@ -222,12 +222,12 @@ export default function AdminCategoriesPage() {
                                                         </Link>
 
                                                         {canUpdate && (
-                                                            <Button className="cursor-pointer" variant="default" size="icon" onClick={() => handleOpenForm(cat)} disabled={processingId === cat.id} title={t("categories.actions.edit")}>
+                                                            <Button className="cursor-pointer" variant="outline" size="icon" onClick={() => handleOpenForm(cat)} disabled={processingId === cat.id} title={t("categories.actions.edit")}>
                                                                 <Edit className="h-4 w-4" />
                                                             </Button>
                                                         )}
                                                         {canDelete && (
-                                                            <Button variant="outline" size="icon" onClick={() => setCatToDelete({ id: cat.id, isForce: false })} disabled={processingId === cat.id} className="text-orange-500 hover:text-orange-600 hover:bg-orange-50 cursor-pointer" title={t("categories.actions.safeDelete")}>
+                                                            <Button variant="destructive" size="icon" onClick={() => setCatToDelete({ id: cat.id, isForce: false })} disabled={processingId === cat.id} className="cursor-pointer" title={t("categories.actions.safeDelete")}>
                                                                 <Trash className="h-4 w-4" />
                                                             </Button>
                                                         )}

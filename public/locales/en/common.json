@@ -11,7 +11,8 @@
         "profile": "Profile",
         "settings": "Settings",
         "logout": "Logout",
-        "back_previous": "Back to previous"
+        "back_previous": "Back to previous",
+        "admin": "Admin Management"
     },
     "user_menu": {
         "profile": "Profile",

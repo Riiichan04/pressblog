@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
-import { Sun, Moon, LogOut, Settings, User as UserIcon, Languages } from "lucide-react";
+import { Sun, Moon, LogOut, User as UserIcon, Languages, Home } from "lucide-react";
 import {
     DropdownMenu, DropdownMenuContent, DropdownMenuItem,
     DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
@@ -22,7 +22,7 @@ export default function AdminHeader() {
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
 
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation("admin");
 
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
@@ -40,7 +40,7 @@ export default function AdminHeader() {
     };
 
     return (
-        <header className="sticky top-0 z-100 flex h-16 shrink-0 items-center gap-x-4 border-b bg-background px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 justify-end">
+        <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-x-4 border-b bg-background px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 justify-end">
             <div className="flex items-center gap-2 md:gap-4">
 
                 <Button
@@ -85,22 +85,32 @@ export default function AdminHeader() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56" align="end">
                                 <DropdownMenuLabel className="font-normal">
-                                    <div className="flex flex-col space-y-1">
-                                        <p className="text-sm font-medium leading-none">{user.displayName || user.username}</p>
-                                        <p className="text-xs leading-none text-muted-foreground mt-1">{user.email}</p>
-                                        <p className="text-[10px] uppercase font-bold text-primary mt-2">{user.role}</p>
+                                    <div className="flex flex-col">
+                                        <div className="flex gap-2 items-center">
+                                            <Avatar className="h-9 w-9">
+                                                <AvatarImage src={user.avatar || ""} alt={user.username} />
+                                                <AvatarFallback className={`${fallBackColor(user.username)} text-white text-xs`}>
+                                                    {getFallback(user.displayName || user.username)}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col space-y-1">
+                                                <p className="text-sm font-medium leading-none">{user.displayName || user.username}</p>
+                                                <p className="text-xs leading-none text-muted-foreground mt-1">{user.email}</p>
+                                            </div>
+                                        </div>
+                                        <p className="ms-11 text-[10px] uppercase font-bold text-primary mt-2"> {user.role}</p>
                                     </div>
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/")}>
-                                    <UserIcon className="mr-2 h-4 w-4" /> Về trang chủ
+                                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/dashboard")}>
+                                    <UserIcon className="mr-2 h-4 w-4" /> {t("navbar.detail")}
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">
-                                    <Settings className="mr-2 h-4 w-4" /> Cài đặt Admin
+                                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/")}>
+                                    <Home className="mr-2 h-4 w-4" /> {t("navbar.homeNav")}
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem className="text-destructive cursor-pointer" onClick={() => logout()}>
-                                    <LogOut className="mr-2 h-4 w-4 text-destructive" /> Đăng xuất
+                                    <LogOut className="mr-2 h-4 w-4 text-destructive" /> {t("navbar.logout")}
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

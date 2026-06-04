@@ -16,6 +16,11 @@
         "approve": "Duyệt",
         "postUnit": "bài viết"
     },
+    "navbar": {
+        "detail": "Trang cá nhân",
+        "homeNav": "Về trang chủ",
+        "logout": "Đăng xuất"
+    },
     "sidebar": {
         "title": "PressBlog Admin",
         "overview": "Tổng quan",
@@ -24,7 +29,11 @@
         "categories": "Danh mục",
         "comments": "Bình luận",
         "approvals": "Phê duyệt bài viết",
-        "logout": "Đăng xuất"
+        "logout": "Đăng xuất",
+        "label": {
+            "content": "Quản lý nội dung",
+            "system": "Hệ thống"
+        }
     },
     "approvals": {
         "title": "Phê duyệt bài viết",
