@@ -80,5 +80,9 @@
         "view_count": "lượt xem",
         "post_tab": "Bài viết",
         "user_tab": "Người dùng"
+    },
+    "dialog": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
     }
 }

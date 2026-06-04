@@ -193,5 +193,62 @@
             "next": "Sau",
             "page": "Trang"
         }
+    },
+    "comments": {
+        "title": "Quản lý Bình luận",
+        "description": "Kiểm duyệt và quản lý bình luận của người dùng trên toàn hệ thống.",
+        "tabs": {
+            "all": "Tất cả bình luận",
+            "pending": "Chờ duyệt"
+        },
+        "table": {
+            "content": "Nội dung",
+            "author": "Người đăng",
+            "post": "Bài viết",
+            "status": "Trạng thái",
+            "actions": "Thao tác",
+            "empty": "Không có bình luận nào."
+        },
+        "status": {
+            "APPROVED": "Đã duyệt",
+            "PENDING": "Chờ duyệt",
+            "REJECTED": "Từ chối",
+            "DELETED": "Đã xóa"
+        },
+        "actions": {
+            "viewPost": "Đến bài viết",
+            "approve": "Phê duyệt",
+            "reject": "Từ chối",
+            "delete": "Xóa bình luận",
+            "restore": "Khôi phục",
+            "deleteConfirmTitle": "Xác nhận xóa",
+            "deleteConfirm": "Bạn có chắc chắn muốn xóa vĩnh viễn bình luận này không? Hành động này không thể hoàn tác.",
+            "cancel": "Hủy",
+            "clearFilter": "Bỏ lọc",
+            "viewDetail": "Xem chi tiết"
+        },
+        "messages": {
+            "approveSuccess": "Đã phê duyệt bình luận!",
+            "rejectSuccess": "Đã từ chối bình luận!",
+            "statusUpdateSuccess": "Đã cập nhật trạng thái bình luận!",
+            "deleteSuccess": "Đã xóa bình luận thành công!",
+            "restoreSuccess": "Đã khôi phục bình luận!",
+            "error": "Có lỗi xảy ra, vui lòng thử lại.",
+            "filtering": "Đang lọc bình luận theo bài viết:"
+        },
+        "pagination": {
+            "prev": "Trước",
+            "next": "Sau",
+            "page": "Trang"
+        },
+        "detail": {
+            "title": "Chi tiết Bình luận",
+            "author": "Người đăng:",
+            "status": "Trạng thái:",
+            "post": "Bài viết:",
+            "date": "Ngày đăng:",
+            "replyingTo": "Đang trả lời bình luận:",
+            "content": "Nội dung:"
+        }
     }
 }

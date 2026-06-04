@@ -1,4 +1,4 @@
-import { AdminDashboardResponse, AdminPostResponse, AdminUserResponse, CategoryRequest, CategoryResponse } from "@/common/types/admin";
+import { AdminCommentResponse, AdminDashboardResponse, AdminPostResponse, AdminUserResponse, CategoryRequest, CategoryResponse } from "@/common/types/admin";
 import apiClient from "./api-client";
 import { PostDetail, PostStatus } from "@/common/types/post";
 import { PageResponse } from "@/common/types/page-response";
@@ -89,5 +89,31 @@ export const forceDeleteCategory = async (id: number): Promise<string> => {
 
 export const restoreCategory = async (id: number): Promise<string> => {
     const response = await apiClient.put(`/admin/categories/${id}/restore`);
+    return response.data;
+};
+
+// For comment management
+export const getAllAdminComments = async (page: number = 0, size: number = 10, postSlug?: string | null, status?: string | null): Promise<PageResponse<AdminCommentResponse>> => {
+    let url = `/admin/comments?page=${page}&size=${size}`;
+    if (postSlug) url += `&postSlug=${postSlug}`;
+    if (status) url += `&status=${status}`;
+    const response = await apiClient.get(url);
+    return response.data;
+};
+
+export const approveComment = async (id: number, status: string): Promise<string> => {
+    const response = await apiClient.put(`/admin/comments/${id}/approve`, `"${status}"`, {
+        headers: { 'Content-Type': 'application/json' }
+    });
+    return response.data;
+};
+
+export const safeDeleteComment = async (id: number): Promise<string> => {
+    const response = await apiClient.delete(`/admin/comments/${id}`);
+    return response.data;
+};
+
+export const restoreComment = async (id: number): Promise<string> => {
+    const response = await apiClient.put(`/admin/comments/${id}/restore`);
     return response.data;
 };

@@ -80,5 +80,9 @@
         "view_count": "views",
         "post_tab": "Blogs",
         "user_tab": "Users"
+    },
+    "dialog": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
     }
 }
