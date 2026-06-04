@@ -33,12 +33,10 @@ export default function AdminUsersPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [processingId, setProcessingId] = useState<number | null>(null);
 
-    // Phân trang
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
     const SIZE = 10;
 
-    // Phân quyền hiển thị nút
     const canBanUser = hasPermission(PERMISSIONS.BAN_USER);
     const canUpdateRole = hasPermission(PERMISSIONS.UPDATE_USER_ROLE);
 
@@ -70,7 +68,6 @@ export default function AdminUsersPage() {
             await toggleUserStatus(targetUser.id);
             toast.success(t("users.messages.statusSuccess"));
 
-            // Optimistic update
             setUsers(prev => prev.map(u =>
                 u.id === targetUser.id ? { ...u, isActive: !u.isActive } : u
             ));
@@ -97,7 +94,6 @@ export default function AdminUsersPage() {
         }
     };
 
-    // Chuẩn hóa màu sắc hiển thị Role
     const getRoleBadgeColor = (role: string) => {
         switch (role) {
             case ROLES.ADMIN: return "bg-purple-500 hover:bg-purple-600";
@@ -240,7 +236,6 @@ export default function AdminUsersPage() {
                         </Table>
                     </div>
 
-                    {/* Phân trang */}
                     {!isLoading && totalPages > 1 && (
                         <div className="flex items-center justify-end space-x-2 pt-4">
                             <Button variant="outline" size="sm" onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}>

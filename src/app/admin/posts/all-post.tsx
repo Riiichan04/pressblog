@@ -19,16 +19,12 @@ import {
     DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {
-    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-    AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-
 import { useAuth } from "@/context/auth-context";
 import { getAllAdminPosts, restorePost, forceDeletePost, updatePostStatus } from "@/services/admin-service";
 import { PERMISSIONS } from "@/common/constants/permissions";
 import { PostStatus } from "@/common/types/post";
 import { AdminPostResponse } from "@/common/types/admin";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 interface AllPostsTabProps {
     categorySlug: string | null;
@@ -248,22 +244,15 @@ export default function AllPostsTab({ categorySlug, onClearCategory }: AllPostsT
                 </div>
             )}
 
-            <AlertDialog open={postToDelete !== null} onOpenChange={(open) => !open && setPostToDelete(null)}>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>{t("posts.actions.deleteConfirmTitle")}</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            {t("posts.actions.deleteConfirm")}
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel className="cursor-pointer">{t("posts.actions.cancel")}</AlertDialogCancel>
-                        <AlertDialogAction onClick={executeDelete} className="cursor-pointer bg-red-600 hover:bg-red-700 text-white">
-                            {t("posts.actions.delete")}
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            <ConfirmDialog 
+                isOpen={postToDelete !== null}
+                onClose={() => setPostToDelete(null)}
+                onConfirm={executeDelete}
+                title={t("posts.actions.deleteConfirmTitle")}
+                description={t("posts.actions.deleteConfirm")}
+                cancelText={t("posts.actions.cancel")}
+                confirmText={t("posts.actions.delete")}
+            />
         </div>
     );
 }

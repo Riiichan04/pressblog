@@ -32,7 +32,7 @@ export function ConfirmDialog({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel onClick={onClose}>
-                        {cancelText !== "" ? t("dialog.confirm") : cancelText}
+                        {cancelText !== "" ? cancelText : t("dialog.cancel")}
                     </AlertDialogCancel>
                     <AlertDialogAction
                         onClick={() => {
@@ -41,7 +41,7 @@ export function ConfirmDialog({
                         }}
                         className={isDestructive ? "bg-red-600 hover:bg-red-700 text-white" : ""}
                     >
-                        {confirmText !== "" ? t("dialog.confirm") : confirmText}
+                        {confirmText !== "" ? confirmText : t("dialog.confirm")}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

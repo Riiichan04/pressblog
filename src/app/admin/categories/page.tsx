@@ -19,10 +19,6 @@ import { Textarea } from "@/components/ui/textarea";
 import {
     Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
-import {
-    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-    AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 import { useAuth } from "@/context/auth-context";
 import { PERMISSIONS } from "@/common/constants/permissions";
@@ -34,6 +30,7 @@ import {
 import { CategoryResponse } from "@/common/types/admin";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 export default function AdminCategoriesPage() {
     const { t } = useTranslation("admin");
@@ -297,22 +294,15 @@ export default function AdminCategoriesPage() {
                 </DialogContent>
             </Dialog>
 
-            <AlertDialog open={catToDelete !== null} onOpenChange={(open) => !open && setCatToDelete(null)}>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>{t("categories.actions.deleteConfirmTitle")}</AlertDialogTitle>
-                        <AlertDialogDescription className={catToDelete?.isForce ? "text-red-500 font-medium" : ""}>
-                            {catToDelete?.isForce ? t("categories.actions.forceDeleteConfirm") : t("categories.actions.deleteConfirm")}
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>{t("categories.form.cancel")}</AlertDialogCancel>
-                        <AlertDialogAction onClick={executeDelete} className="bg-red-600 hover:bg-red-700 text-white">
-                            {catToDelete?.isForce ? t("categories.actions.forceDelete") : t("categories.actions.safeDelete")}
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            <ConfirmDialog
+                isOpen={catToDelete !== null}
+                onClose={() => setCatToDelete(null)}
+                onConfirm={executeDelete}
+                title={t("categories.actions.deleteConfirmTitle")}
+                description={catToDelete?.isForce ? t("categories.actions.forceDeleteConfirm") : t("categories.actions.deleteConfirm")}
+                cancelText={t("categories.form.cancel")}
+                confirmText={catToDelete?.isForce ? t("categories.actions.forceDelete") : t("categories.actions.safeDelete")}
+            />
         </div>
     );
 }
