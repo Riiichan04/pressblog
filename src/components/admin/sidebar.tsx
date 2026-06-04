@@ -8,6 +8,7 @@ import { useAuth } from "@/context/auth-context";
 import { PERMISSIONS } from "@/common/constants/permissions";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import Image from "next/image";
 
 export default function AdminSidebar() {
     const pathname = usePathname();
@@ -41,11 +42,19 @@ export default function AdminSidebar() {
 
     return (
         <aside className="w-64 border-r bg-white dark:bg-zinc-950 flex flex-col h-screen sticky top-0 shadow-sm">
-            <div className="p-6 border-b flex items-center gap-3">
-                <div className="bg-primary text-primary-foreground p-1.5 rounded-lg">
-                    <LayoutDashboard className="h-5 w-5" />
+            <div className="p-4 border-b flex items-center gap-3">
+                <div className="bg-primary text-primary-foreground rounded-lg">
+                    <Image
+                        src="/logo.png"
+                        alt="Logo"
+                        width={32}
+                        height={32}
+                        className="transition-transform group-hover:scale-110 rounded-md"
+                        priority
+                        unoptimized
+                    />
                 </div>
-                <h1 className="font-bold text-lg tracking-tight">{t("sidebar.title")}</h1>
+                <h1 className="font-bold text-lg tracking-tight uppercase">{t("sidebar.title")}</h1>
             </div>
 
             <nav className="flex-1 px-3 py-4 space-y-6 overflow-y-auto">

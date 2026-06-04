@@ -72,7 +72,7 @@ export default function AdminPreviewPage({ params }: { params: Promise<{ slug: s
     const { processedHtml, headings } = processContentAndGetHeadings(post.content);
 
     return (
-        <div className="relative min-h-screen bg-background pb-20">
+        <div className="relative min-h-screen bg-background pb-20 flex flex-col">
             <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b shadow-sm py-3 px-6 flex items-center justify-between">
                 <div className="flex items-center gap-1">
                     <Button className="cursor-pointer" variant="ghost" size="icon" onClick={() => router.back()}>
@@ -105,7 +105,7 @@ export default function AdminPreviewPage({ params }: { params: Promise<{ slug: s
                 </div>
             </div>
 
-            <main className="container flex justify-center mx-auto py-10 px-4 shadow-lg">
+            <main className="container flex justify-center mx-auto py-10 px-4 shadow-lg overflow-y-auto flex-1">
                 <div className="flex flex-col lg:flex-row gap-12 max-w-6xl w-full">
                     <article className="flex-1 min-w-0">
                         <div className="w-full">

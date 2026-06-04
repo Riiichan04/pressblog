@@ -121,7 +121,7 @@ export default function CommentList({ filterStatus, postSlug, onClearPostFilter 
     };
 
     return (
-        <div>
+        <div className="p-6 lg:p-8">
             <div className="mb-8">
                 <h2 className="text-3xl font-bold tracking-tight">{t("comments.title")}</h2>
                 <p className="text-muted-foreground mt-2">{t("comments.description")}</p>

@@ -40,7 +40,7 @@ export default function AdminHeader() {
     };
 
     return (
-        <header className="sticky top-0 z-100 flex h-16 shrink-0 items-center gap-x-4 border-b bg-background px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 justify-end">
+        <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-x-4 border-b bg-background px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 justify-end">
             <div className="flex items-center gap-2 md:gap-4">
 
                 <Button
