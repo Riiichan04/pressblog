@@ -29,3 +29,28 @@ export interface AdminPostResponse {
     isDeleted: boolean;
     createdAt: string;
 }
+
+export interface AdminUserResponse {
+    id: number;
+    username: string;
+    email: string;
+    displayName: string | null;
+    roleName: string;
+    isActive: boolean;
+    isVerified: boolean;
+    createdAt: string;
+    avatarUrl: string
+}
+
+export interface CategoryResponse {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+    deleted: boolean;
+}
+
+export interface CategoryRequest {
+    name: string;
+    description: string;
+}

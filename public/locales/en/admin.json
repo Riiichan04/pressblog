@@ -56,5 +56,142 @@
             "commentsDisabled": "The comment section is disabled in preview mode.",
             "notFound": "Post not found or you don't have permission to view it!"
         }
+    },
+    "users": {
+        "title": "User Management",
+        "description": "Manage user accounts, permissions, and activity status.",
+        "listTitle": "User List",
+        "table": {
+            "user": "User",
+            "role": "Role",
+            "status": "Status",
+            "joined": "Joined",
+            "actions": "Actions"
+        },
+        "status": {
+            "active": "Active",
+            "banned": "Banned"
+        },
+        "roles": {
+            "USER": "Default User",
+            "CONTENT_MOD": "Content Mod",
+            "COMMENT_MOD": "Comment Mod",
+            "ADMIN": "Admin"
+        },
+        "actions": {
+            "ban": "Ban Account",
+            "unban": "Unban Account",
+            "changeRole": "Change Role"
+        },
+        "actionMenu": "Actions",
+        "pagination": {
+            "prev": "Previous",
+            "next": "Next",
+            "page": "Page"
+        },
+        "messages": {
+            "statusSuccess": "User status updated successfully!",
+            "roleSuccess": "User role updated successfully!",
+            "cannotBanSelf": "You cannot ban your own account!",
+            "error": "An error occurred, please try again."
+        }
+    },
+    "posts": {
+        "title": "Post Management",
+        "description": "Manage all posts and moderate content on the system.",
+        "filter": {
+            "title": "Filter blogs by category:",
+            "removeFilter": "Remove filter"
+        },
+        "tabs": {
+            "all": "All Posts",
+            "pending": "Pending"
+        },
+        "table": {
+            "title": "Title",
+            "author": "Author",
+            "status": "Status",
+            "date": "Date Created",
+            "actions": "Actions",
+            "empty": "No posts found."
+        },
+        "status": {
+            "PUBLISHED": "Published",
+            "PENDING": "Pending",
+            "DRAFT": "Draft",
+            "REJECTED": "Rejected",
+            "PRIVATE": "Private",
+            "DELETED": "Deleted"
+        },
+        "actions": {
+            "view": "View Post",
+            "restore": "Restore",
+            "delete": "Delete Post",
+            "deleteConfirm": "Are you sure you want to delete this post?",
+            "changeStatus": "Quick Status Change",
+            "deleteConfirmTitle": "Confirm Deletion",
+            "cancel": "Cancel"
+        },
+        "messages": {
+            "restoreSuccess": "Post restored successfully!",
+            "deleteSuccess": "Post deleted successfully!",
+            "statusUpdateSuccess": "Post status updated!",
+            "error": "An error occurred, please try again."
+        },
+        "pagination": {
+            "prev": "Previous",
+            "next": "Next",
+            "page": "Page"
+        }
+    },
+    "categories": {
+        "title": "Category Management",
+        "description": "Manage post categories on the system.",
+        "createBtn": "Add Category",
+        "subTitle": "List Categories",
+        "noCategories": "No Categories",
+        "table": {
+            "name": "Category Name",
+            "slug": "Slug",
+            "description": "Description",
+            "status": "Status",
+            "actions": "Actions"
+        },
+        "form": {
+            "createTitle": "Create New Category",
+            "updateTitle": "Update Category",
+            "name": "Category Name",
+            "description": "Short Description",
+            "save": "Save",
+            "cancel": "Cancel",
+            "createTitlePlaceholder": "E.g. Travel, Tech,...",
+            "createDescriptionPlaceholder": "Write a few lines of description..."
+        },
+        "actions": {
+            "edit": "Edit",
+            "safeDelete": "Safe Delete",
+            "forceDelete": "Force Delete",
+            "restore": "Restore",
+            "deleteConfirmTitle": "Confirm Deletion",
+            "deleteConfirm": "Do you want to safely delete this category? If the category contains posts, the system will block this action.",
+            "forceDeleteConfirm": "Warning: You are forcing the deletion of this category (ignoring post checks). Are you sure?"
+        },
+        "messages": {
+            "createSuccess": "Category created successfully!",
+            "updateSuccess": "Category updated successfully!",
+            "deleteSuccess": "Category deleted successfully!",
+            "restoreSuccess": "Category restored successfully!",
+            "softDeleteError": "This category still have blogs, can't delete!",
+            "error": "An error occurred, please check again."
+        },
+        "state": {
+            "active": "Active",
+            "disabled": "Disabled"
+        },
+        "pagination": {
+            "prev": "Previous",
+            "next": "Next",
+            "page": "Page"
+        }
     }
 }

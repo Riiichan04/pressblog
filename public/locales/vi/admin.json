@@ -56,5 +56,142 @@
             "commentsDisabled": "Khu vực bình luận bị vô hiệu hóa trong chế độ xem trước.",
             "notFound": "Không tìm thấy bài viết hoặc bạn không có quyền xem!"
         }
+    },
+    "users": {
+        "title": "Quản lý Người dùng",
+        "description": "Quản lý tài khoản, phân quyền và trạng thái hoạt động.",
+        "listTitle": "Danh sách tài khoản",
+        "table": {
+            "user": "Người dùng",
+            "role": "Vai trò",
+            "status": "Trạng thái",
+            "joined": "Ngày tham gia",
+            "actions": "Thao tác"
+        },
+        "status": {
+            "active": "Hoạt động",
+            "banned": "Đã khóa"
+        },
+        "roles": {
+            "USER": "User mặc định",
+            "CONTENT_MOD": "Content Mod",
+            "COMMENT_MOD": "Comment Mod",
+            "ADMIN": "Admin"
+        },
+        "actions": {
+            "ban": "Khóa tài khoản",
+            "unban": "Mở khóa",
+            "changeRole": "Đổi quyền"
+        },
+        "actionMenu": "Thao tác",
+        "pagination": {
+            "prev": "Trước",
+            "next": "Sau",
+            "page": "Trang"
+        },
+        "messages": {
+            "statusSuccess": "Đã cập nhật trạng thái người dùng!",
+            "roleSuccess": "Đã cập nhật vai trò thành công!",
+            "cannotBanSelf": "Bạn không thể tự khóa tài khoản của chính mình!",
+            "error": "Có lỗi xảy ra, vui lòng thử lại."
+        }
+    },
+    "posts": {
+        "title": "Quản lý bài viết",
+        "description": "Quản lý tất cả bài viết và xét duyệt nội dung trên hệ thống.",
+        "filter": {
+            "title": "Đang lọc bài viết theo danh mục:",
+            "removeFilter": "Bỏ lọc"
+        },
+        "tabs": {
+            "all": "Tất cả bài viết",
+            "pending": "Chờ duyệt"
+        },
+        "table": {
+            "title": "Tiêu đề",
+            "author": "Tác giả",
+            "status": "Trạng thái",
+            "date": "Ngày tạo",
+            "actions": "Thao tác",
+            "empty": "Không có bài viết nào."
+        },
+        "status": {
+            "PUBLISHED": "Đã xuất bản",
+            "PENDING": "Chờ duyệt",
+            "DRAFT": "Bản nháp",
+            "REJECTED": "Bị từ chối",
+            "PRIVATE": "Riêng tư",
+            "DELETED": "Đã xóa"
+        },
+        "actions": {
+            "view": "Xem bài viết",
+            "restore": "Khôi phục",
+            "delete": "Xóa bài viết",
+            "deleteConfirm": "Bạn có chắc chắn muốn xóa bài viết này không?",
+            "changeStatus": "Đổi trạng thái nhanh",
+            "deleteConfirmTitle": "Xác nhận xóa bài viết",
+            "cancel": "Hủy"
+        },
+        "messages": {
+            "restoreSuccess": "Đã khôi phục bài viết thành công!",
+            "deleteSuccess": "Đã xóa bài viết thành công!",
+            "statusUpdateSuccess": "Đã cập nhật trạng thái bài viết!",
+            "error": "Có lỗi xảy ra, vui lòng thử lại."
+        },
+        "pagination": {
+            "prev": "Trước",
+            "next": "Sau",
+            "page": "Trang"
+        }
+    },
+    "categories": {
+        "title": "Quản lý Danh mục",
+        "description": "Quản lý các chuyên mục bài viết trên hệ thống.",
+        "createBtn": "Thêm danh mục",
+        "subTitle": "Danh sách danh mục",
+        "noCategories": "Trống",
+        "table": {
+            "name": "Tên danh mục",
+            "slug": "Đường dẫn (Slug)",
+            "description": "Mô tả",
+            "status": "Trạng thái",
+            "actions": "Thao tác"
+        },
+        "form": {
+            "createTitle": "Tạo danh mục mới",
+            "updateTitle": "Cập nhật danh mục",
+            "name": "Tên danh mục",
+            "description": "Mô tả ngắn gọn",
+            "save": "Lưu lại",
+            "cancel": "Hủy",
+            "createTitlePlaceholder": "Ví dụ: Travel, Du lịch,...",
+            "createDescriptionPlaceholder": "Viết vài dòng mô tả..."
+        },
+        "actions": {
+            "edit": "Chỉnh sửa",
+            "safeDelete": "Xóa an toàn",
+            "forceDelete": "Ép xóa",
+            "restore": "Khôi phục",
+            "deleteConfirmTitle": "Xác nhận xóa",
+            "deleteConfirm": "Bạn có muốn xóa an toàn danh mục này không? Nếu danh mục đang có bài viết, hệ thống sẽ chặn thao tác này.",
+            "forceDeleteConfirm": "Cảnh báo: Bạn đang ép xóa danh mục này (bỏ qua kiểm tra bài viết). Bạn có chắc chắn không?"
+        },
+        "messages": {
+            "createSuccess": "Tạo danh mục thành công!",
+            "updateSuccess": "Cập nhật danh mục thành công!",
+            "deleteSuccess": "Đã xóa danh mục!",
+            "restoreSuccess": "Đã khôi phục danh mục!",
+            "softDeleteError": "Vẫn còn bài viết trong danh mục, không thể xóa!",
+            "error": "Có lỗi xảy ra, vui lòng kiểm tra lại."
+        },
+        "state": {
+            "active": "Hoạt động",
+            "disabled": "Đã ẩn"
+        },
+        "pagination": {
+            "prev": "Trước",
+            "next": "Sau",
+            "page": "Trang"
+        }
     }
 }

@@ -2,27 +2,33 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, FileText, Tags, MessageSquare, LogOut, CheckCircle } from "lucide-react";
+import { LayoutDashboard, Users, FileText, Tags, MessageSquare, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import { PERMISSIONS } from "@/common/constants/permissions";
 import { useTranslation } from "react-i18next";
-
-const navItems = [
-    { href: "/admin/dashboard", icon: LayoutDashboard, labelKey: "overview" },
-    { href: "/admin/users", icon: Users, labelKey: "users" },
-    { href: "/admin/posts", icon: FileText, labelKey: "posts" },
-    { href: "/admin/categories", icon: Tags, labelKey: "categories" },
-    { href: "/admin/comments", icon: MessageSquare, labelKey: "comments" },
-];
+import { useMemo } from "react";
 
 export default function AdminSidebar() {
     const pathname = usePathname();
     const { hasPermission, logout } = useAuth();
-
     const { t } = useTranslation("admin");
 
-    const canApprovePost = hasPermission(PERMISSIONS.APPROVE_POST);
+    const filteredNavItems = useMemo(() => {
+        const items = [
+            { href: "/admin/dashboard", icon: LayoutDashboard, labelKey: "overview", show: true },
+            { href: "/admin/users", icon: Users, labelKey: "users", show: hasPermission(PERMISSIONS.VIEW_USERS) },
+            {
+                href: "/admin/posts",
+                icon: FileText,
+                labelKey: "posts",
+                show: hasPermission([PERMISSIONS.UPDATE_ANY_POST, PERMISSIONS.DELETE_ANY_POST, PERMISSIONS.APPROVE_POST])
+            },
+            { href: "/admin/categories", icon: Tags, labelKey: "categories", show: hasPermission(PERMISSIONS.UPDATE_CATEGORY) },
+            { href: "/admin/comments", icon: MessageSquare, labelKey: "comments", show: hasPermission(PERMISSIONS.DELETE_ANY_COMMENT) },
+        ];
+        return items.filter(item => item.show);
+    }, [hasPermission]);
 
     return (
         <aside className="w-64 border-r bg-white dark:bg-zinc-900 flex flex-col h-screen sticky top-0">
@@ -31,7 +37,7 @@ export default function AdminSidebar() {
             </div>
 
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-                {navItems.map((item) => {
+                {filteredNavItems.map((item) => {
                     const isActive = pathname.startsWith(item.href);
                     return (
                         <Link
@@ -49,25 +55,6 @@ export default function AdminSidebar() {
                         </Link>
                     );
                 })}
-
-                {canApprovePost && (
-                    <>
-                        <div className="my-4 border-t dark:border-zinc-800" />
-                        <Link
-                            href="/admin/approvals"
-                            className={cn(
-                                "flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                                pathname.startsWith("/admin/approvals")
-                                    ? "bg-primary text-primary-foreground"
-                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                            )}
-                        >
-                            <CheckCircle className="h-4 w-4" />
-                            {/* 🎯 Dịch nút Phê duyệt */}
-                            {t("sidebar.approvals")}
-                        </Link>
-                    </>
-                )}
             </nav>
 
             <div className="p-4 border-t">
