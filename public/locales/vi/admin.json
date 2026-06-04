@@ -224,7 +224,8 @@
             "deleteConfirmTitle": "Xác nhận xóa",
             "deleteConfirm": "Bạn có chắc chắn muốn xóa vĩnh viễn bình luận này không? Hành động này không thể hoàn tác.",
             "cancel": "Hủy",
-            "clearFilter": "Bỏ lọc"
+            "clearFilter": "Bỏ lọc",
+            "viewDetail": "Xem chi tiết"
         },
         "messages": {
             "approveSuccess": "Đã phê duyệt bình luận!",
@@ -239,6 +240,15 @@
             "prev": "Trước",
             "next": "Sau",
             "page": "Trang"
+        },
+        "detail": {
+            "title": "Chi tiết Bình luận",
+            "author": "Người đăng:",
+            "status": "Trạng thái:",
+            "post": "Bài viết:",
+            "date": "Ngày đăng:",
+            "replyingTo": "Đang trả lời bình luận:",
+            "content": "Nội dung:"
         }
     }
 }

@@ -224,7 +224,8 @@
             "deleteConfirmTitle": "Confirm Deletion",
             "deleteConfirm": "Are you sure you want to permanently delete this comment? This action cannot be undone.",
             "cancel": "Cancel",
-            "clearFilter": "Clear Filter"
+            "clearFilter": "Clear Filter",
+            "viewDetail": "View Details"
         },
         "messages": {
             "approveSuccess": "Comment approved!",
@@ -239,6 +240,15 @@
             "prev": "Previous",
             "next": "Next",
             "page": "Page"
+        },
+        "detail": {
+            "title": "Comment Details",
+            "author": "Author:",
+            "status": "Status:",
+            "post": "Post:",
+            "date": "Date:",
+            "replyingTo": "Replying to:",
+            "content": "Content:"
         }
     }
 }
