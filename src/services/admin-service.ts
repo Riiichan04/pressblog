@@ -45,6 +45,16 @@ export const forceDeletePost = async (id: number): Promise<string> => {
     return response.data;
 };
 
+export const updateFeaturedPostsOrder = async (orderedIds: number[]) => {
+    const response = await apiClient.put("/admin/posts/featured/order", orderedIds);
+    return response.data;
+};
+
+export const getFeaturedPosts = async (): Promise<AdminPostResponse[]> => {
+    const response = await apiClient.get("/admin/posts/featured");
+    return response.data;
+};
+
 // For user management
 export const getAllUsers = async (page: number = 0, size: number = 10): Promise<PageResponse<AdminUserResponse>> => {
     const response = await apiClient.get(`/admin/users?page=${page}&size=${size}`);
