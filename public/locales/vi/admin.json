@@ -29,6 +29,7 @@
         "categories": "Danh mục",
         "comments": "Bình luận",
         "approvals": "Phê duyệt bài viết",
+        "featured": "Bài viết nổi bật",
         "logout": "Đăng xuất",
         "label": {
             "content": "Quản lý nội dung",
@@ -258,6 +259,24 @@
             "date": "Ngày đăng:",
             "replyingTo": "Đang trả lời bình luận:",
             "content": "Nội dung:"
+        }
+    },
+    "featured": {
+        "title": "Quản lý Bài Nổi Bật",
+        "description": "Sắp xếp thứ tự các bài viết sẽ hiển thị trên Slider trang chủ. Kéo thả để đổi vị trí.",
+        "saveConfig": "Lưu cấu hình",
+        "leftColTitle": "Kho Bài Viết",
+        "searchPlaceholder": "Nhập tiêu đề để tìm kiếm...",
+        "addBtn": "Thêm",
+        "rightColTitle": "Danh Sách Bài viết nổi bật",
+        "rightColDesc": "Bài viết trên cùng sẽ hiện đầu tiên",
+        "postUnit": "bài viết",
+        "emptyCarousel": "Chưa có bài viết nổi bật nào.",
+        "emptyCarouselHint": "Hãy tìm và thêm từ cột bên trái.",
+        "messages": {
+            "duplicate": "Bài viết này đã có trong danh sách nổi bật!",
+            "saveSuccess": "Đã lưu cấu hình bài viết nổi bật!",
+            "error": "Có lỗi xảy ra, vui lòng thử lại."
         }
     }
 }
