@@ -12,7 +12,8 @@
         "settings": "Cài đặt",
         "logout": "Đăng xuất",
         "back_previous": "Trở về trang trước",
-        "admin": "Trang quản trị (Admin)"
+        "admin": "Trang quản trị (Admin)",
+        "verify": "Xác thực tài khoản"
     },
     "user_menu": {
         "profile": "Trang cá nhân",

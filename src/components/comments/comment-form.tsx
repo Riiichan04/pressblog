@@ -24,12 +24,11 @@ export default function CommentForm({ postId, parentId, onSuccess, onCancel }: C
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!content.trim() || !user?.isVerified) return
+        if (!content.trim() || !user?.verified) return
         try {
             setLoading(true)
             await createComment({
                 postId: postId,
-                authorId: user.id,
                 content: content.trim(),
                 commentId: parentId
             })
@@ -42,7 +41,7 @@ export default function CommentForm({ postId, parentId, onSuccess, onCancel }: C
         }
     }
 
-    if (!user?.isVerified) {
+    if (!user?.verified) {
         return (
             <div className="p-4 border rounded-lg bg-muted/20 text-center flex flex-col items-center gap-3">
                 <p className="text-sm text-muted-foreground">{t("comments.login_required")}</p>

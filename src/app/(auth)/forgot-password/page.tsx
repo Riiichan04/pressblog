@@ -1,0 +1,219 @@
+"use client"
+
+import { PasswordInput } from "@/components/password-input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SendVerifySchema, VerifySchema } from "@/schemas/verify-schema";
+import { sendResetPasswordOtp, verifyResetPassword } from "@/services/auth-service";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+
+export default function ForgotPasswordForm() {
+    const router = useRouter()
+    const { t } = useTranslation(["auth"]);
+
+    const sendVerifySchema = SendVerifySchema(t)
+    const verifySchema = VerifySchema(t)
+
+    const [step, setStep] = useState(1)
+    const [email, setEmail] = useState("")
+    const [isVerifyLoading, setIsVerifyLoading] = useState(false)
+    const [countdown, setCountdown] = useState(0);
+    const [isSendingEmail, setIsSendingEmail] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false)
+
+    const sendVerifyForm = useForm({
+        resolver: zodResolver(sendVerifySchema),
+        defaultValues: { email: "" }
+    })
+
+    const verifyForm = useForm({
+        resolver: zodResolver(verifySchema),
+        defaultValues: { code: "", password: "", confirmPassword: "" }
+    })
+
+    const onSendEmail = async (data: { email: string }) => {
+        setIsSendingEmail(true)
+        try {
+            const response = await sendResetPasswordOtp(data.email)
+            if (response.result) {
+                setEmail(data.email)
+                setStep(2)
+                setCountdown(60);
+            }
+            else {
+                toast.error(t("errors.something_went_wrong"), { description: response.message || "" })
+            }
+        }
+        catch {
+            toast.error(t("errors.something_went_wrong"))
+        }
+        finally {
+            setIsSendingEmail(false)
+        }
+    }
+
+    const onVerify = async (data: { code: string, password: string }) => {
+        try {
+            setIsVerifyLoading(true)
+            const response = await verifyResetPassword({
+                email: email,
+                code: data.code,
+                newPassword: data.password
+            });
+
+            if (response.result) {
+                setIsSuccess(true)
+                toast.success(t("forgot.submitBtn"), { description: "Thành công" }) // Có thể thêm key successMsg vào JSON
+                setTimeout(() => {
+                    router.push("/login")
+                }, 2000)
+            }
+            else {
+                toast.error(t("errors.something_went_wrong"), { description: response.message || "" })
+            }
+            setIsVerifyLoading(false)
+        }
+        catch {
+            toast.error(t("errors.something_went_wrong"))
+            setIsVerifyLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (countdown > 0) {
+            timer = setInterval(() => {
+                setCountdown((prev) => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [countdown]);
+
+    return (
+        <div className="w-full">
+            <div className="absolute top-4 right-4">
+                <div className="flex justify-end gap-2">
+                    <Button
+                        variant={"ghost"}
+                        className="cursor-pointer"
+                        onClick={() => router.push("/login")}
+                    >
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        {t("forgot.backToLogin")}
+                    </Button>
+                </div>
+            </div>
+
+            <div className="space-y-1 text-center my-8">
+                <h1 className="text-2xl font-bold">{t("forgot.title")}</h1>
+                <p className="text-gray-500 text-sm">{t("forgot.description")}</p>
+            </div>
+
+            <form onSubmit={sendVerifyForm.handleSubmit(onSendEmail)} className="space-y-6">
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">{t("forgot.emailLabel")}</label>
+                    <div className="flex gap-2 items-center">
+                        <Input
+                            type="email"
+                            readOnly={step === 2}
+                            placeholder="name@example.com"
+                            {...sendVerifyForm.register("email")}
+                            className={`py-4 mt-1 ${sendVerifyForm.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                        />
+                        <Button
+                            type="submit"
+                            className="cursor-pointer py-4 min-w-20"
+                            disabled={isSendingEmail || countdown > 0 || step === 2}
+                        >
+                            {isSendingEmail ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : countdown > 0 ? (
+                                t("forgot.resendIn", { time: countdown })
+                            ) : (
+                                t("forgot.sendOtp")
+                            )}
+                        </Button>
+                    </div>
+                    {sendVerifyForm.formState.errors.email && (
+                        <p className="text-xs text-red-500 mt-1">{sendVerifyForm.formState.errors.email.message as string}</p>
+                    )}
+                </div>
+            </form>
+
+            {step === 2 &&
+                <form onSubmit={verifyForm.handleSubmit(onVerify)} className="space-y-6 mt-8">
+                    <div className="space-y-1">
+                        <label className="text-sm font-medium">{t("forgot.verifyCode")}</label>
+
+                        <div className="flex mt-1 justify-center">
+                            <Controller
+                                control={verifyForm.control}
+                                name="code"
+                                render={({ field }) => (
+                                    <InputOTP maxLength={6} {...field}>
+                                        <InputOTPGroup>
+                                            <InputOTPSlot index={0} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={1} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={2} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={3} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={4} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={5} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                        </InputOTPGroup>
+                                    </InputOTP>
+                                )}
+                            />
+                        </div>
+
+                        {verifyForm.formState.errors.code && (
+                            <p className="text-xs text-red-500 mt-1">{verifyForm.formState.errors.code.message as string}</p>
+                        )}
+                    </div>
+
+                    <div className="space-y-1">
+                        <label className="text-sm font-medium">{t("forgot.newPassword")}</label>
+                        <PasswordInput
+                            {...verifyForm.register("password")}
+                            className={`py-4 mt-1 ${verifyForm.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                        />
+                        {verifyForm.formState.errors.password && (
+                            <p className="text-xs text-red-500 mt-1">{verifyForm.formState.errors.password.message as string}</p>
+                        )}
+                    </div>
+
+                    <div className="space-y-1">
+                        <label className="text-sm font-medium">{t("forgot.confirmPassword")}</label>
+                        <PasswordInput
+                            {...verifyForm.register("confirmPassword")}
+                            className={`py-4 mt-1 ${verifyForm.formState.errors.confirmPassword ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                        />
+                        {verifyForm.formState.errors.confirmPassword && (
+                            <p className="text-xs text-destructive mt-1">{verifyForm.formState.errors.confirmPassword.message as string}</p>
+                        )}
+                    </div>
+
+                    <Button
+                        type="submit"
+                        className="w-full mt-4 cursor-pointer py-4.5"
+                        disabled={isVerifyLoading || isSuccess}
+                    >
+                        {isVerifyLoading ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                {t("login.processing")}
+                            </>
+                        ) : (
+                            t("forgot.submitBtn")
+                        )}
+                    </Button>
+                </form>
+            }
+        </div>
+    )
+}

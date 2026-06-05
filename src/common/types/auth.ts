@@ -6,8 +6,8 @@ export interface AuthDto {
     gender: number;
     avatar: string | null;
     description: string | null;
-    isActive: boolean;
-    isVerified: boolean;
+    active: boolean;
+    verified: boolean;
     role: string;
     permissions: string[];
     jwtToken: string | null;
