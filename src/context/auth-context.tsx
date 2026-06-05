@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import Cookies from "js-cookie";
 import { AuthDto } from "@/common/types/auth";
 import { PermissionType } from "@/common/constants/permissions";
@@ -38,12 +38,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { user: null, isLoading: false };
     });
 
-    const login = (userData: AuthDto) => {
+    const login = useCallback((userData: AuthDto) => {
         if (!userData.jwtToken) return
         setAuthState({ user: userData, isLoading: false });
         Cookies.set("token", userData.jwtToken, { expires: 7 });
         localStorage.setItem("user_data", JSON.stringify(userData));
-    };
+    }, []);
 
     const logout = () => {
         setAuthState({ user: null, isLoading: false });
@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const hasPermission = (permission: PermissionType | PermissionType[]) => {
         if (!user) return false;
 
-       if (user.role === ROLES.ADMIN || user.role === "ROLE_ADMIN") return true;
+        if (user.role === ROLES.ADMIN || user.role === ROLES.ADMIN) return true;
 
         const permissionsToCheck = Array.isArray(permission) ? permission : [permission];
 
