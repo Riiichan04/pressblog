@@ -6,7 +6,8 @@ import { useTranslation } from "react-i18next";
 import {
     Search, PenSquare, Bell, Languages, LogOut,
     User, Settings, Sun, Moon,
-    LayoutDashboard
+    LayoutDashboard,
+    ShieldCheck
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
@@ -157,20 +158,34 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         </span>
                     </Button>
 
+                    {mounted && user && (
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className={cn(
+                                "relative cursor-pointer transition-colors",
+                                !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa
+                            )}
+                        >
+                            <Bell className="h-5 w-5" />
+                        </Button>
+                    )}
+
+                    {user && !user.verified && (
+                        <Button
+                            variant="default"
+                            size="sm"
+                            onClick={() => router.push("/verify-account")}
+                            className="gap-2 rounded-full px-5 transition-all bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg dark:bg-white dark:text-black dark:hover:bg-white/90 cursor-pointer"
+                        >
+                            <ShieldCheck className="h-4 w-4" />
+                            {t("navbar.verify")}
+                        </Button>
+                    )}
+
                     {mounted ?
                         user ? (
                             <>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className={cn(
-                                        "relative cursor-pointer transition-colors",
-                                        !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa
-                                    )}
-                                >
-                                    <Bell className="h-5 w-5" />
-                                </Button>
-
                                 <Link href="/write" className="hidden md:block">
                                     <Button className={cn(
                                         "gap-2 rounded-full px-5 cursor-pointer transition-all",
@@ -180,6 +195,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                         {t("navbar.write")}
                                     </Button>
                                 </Link>
+
 
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
@@ -221,8 +237,8 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                         {user.role && user.role !== ROLES.USER && (
                                             <>
                                                 <DropdownMenuSeparator />
-                                                <DropdownMenuItem 
-                                                    className="cursor-pointer text-primary font-medium" 
+                                                <DropdownMenuItem
+                                                    className="cursor-pointer text-primary font-medium"
                                                     onClick={() => router.push("/admin/dashboard")}
                                                 >
                                                     <LayoutDashboard className="mr-2 h-4 w-4" /> {t("navbar.admin")}

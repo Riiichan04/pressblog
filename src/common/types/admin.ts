@@ -36,8 +36,8 @@ export interface AdminUserResponse {
     email: string;
     displayName: string | null;
     roleName: string;
-    isActive: boolean;
-    isVerified: boolean;
+    active: boolean;
+    verified: boolean;
     createdAt: string;
     avatarUrl: string
 }
