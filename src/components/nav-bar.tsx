@@ -27,6 +27,7 @@ import { Skeleton } from "./ui/skeleton";
 import { cn } from "@/lib/utils";
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 import { useRouter } from 'next/navigation';
+import { ROLES } from '@/common/constants/roles';
 
 export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean }) {
     const { user, logout } = useAuth();
@@ -217,7 +218,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                         <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/dashboard/settings")}>
                                             <Settings className="mr-2 h-4 w-4" /> {t("navbar.settings")}
                                         </DropdownMenuItem>
-                                        {user.role && user.role !== "USER" && (
+                                        {user.role && user.role !== ROLES.USER && (
                                             <>
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem 
