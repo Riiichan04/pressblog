@@ -170,7 +170,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         </Button>
                     )}
 
-                    {user && !user.isVerified && (
+                    {user && !user.verified && (
                         <Button
                             variant="default"
                             size="sm"

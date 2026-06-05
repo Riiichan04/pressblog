@@ -69,7 +69,7 @@ export default function AdminUsersPage() {
             toast.success(t("users.messages.statusSuccess"));
 
             setUsers(prev => prev.map(u =>
-                u.id === targetUser.id ? { ...u, isActive: !u.isActive } : u
+                u.id === targetUser.id ? { ...u, active: !u.active } : u
             ));
         } catch {
             toast.error(t("approvals.messages.error"));
@@ -184,7 +184,7 @@ export default function AdminUsersPage() {
                                             </TableCell>
                                             {/* Status */}
                                             <TableCell>
-                                                {targetUser.isActive ? (
+                                                {targetUser.active ? (
                                                     <Badge variant="outline" className="border-green-500 text-green-600 bg-green-50 dark:bg-green-950/20">
                                                         {t("users.status.active")}
                                                     </Badge>
@@ -217,9 +217,9 @@ export default function AdminUsersPage() {
                                                         {canBanUser && (
                                                             <DropdownMenuItem
                                                                 onClick={() => handleToggleStatus(targetUser)}
-                                                                className={targetUser.isActive ? "text-red-600" : "text-green-600"}
+                                                                className={targetUser.active ? "text-red-600" : "text-green-600"}
                                                             >
-                                                                {targetUser.isActive ? (
+                                                                {targetUser.active ? (
                                                                     <><ShieldAlert className="h-4 w-4 mr-2 text-red-600" /> {t("users.actions.ban")}</>
                                                                 ) : (
                                                                     <><ShieldCheck className="h-4 w-4 mr-2" /> {t("users.actions.unban")}</>

@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
+import { PasswordInput } from "@/components/password-input";
 
 export default function LoginForm() {
     const { t } = useTranslation(["auth"]);
@@ -24,7 +25,7 @@ export default function LoginForm() {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const { login } = useAuth()
-
+    
     const {
         register,
         handleSubmit,
@@ -94,8 +95,7 @@ export default function LoginForm() {
                             {t("login.forgot_password")}
                         </button>
                     </div>
-                    <Input
-                        type="password"
+                    <PasswordInput
                         {...register("password")}
                         className={errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}
                     />

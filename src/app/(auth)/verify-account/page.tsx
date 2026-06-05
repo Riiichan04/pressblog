@@ -35,7 +35,7 @@ export default function VerifyAccountPage() {
     useEffect(() => {
         if (!user) {
             router.push("/login");
-        } else if (user.isVerified) {
+        } else if (user.verified) {
             toast.info(t("verify.alreadyVerified"));
             router.push("/");
         }
@@ -68,7 +68,7 @@ export default function VerifyAccountPage() {
                 setIsSuccess(true)
                 toast.success(t("verify.alreadyVerified"))
 
-                updateUser({ isVerified: true });
+                updateUser({ verified: true });
 
                 setTimeout(() => router.push("/"), 2000)
             } else {
@@ -89,7 +89,7 @@ export default function VerifyAccountPage() {
         return () => clearInterval(timer);
     }, [countdown]);
 
-    if (!user || user.isVerified) return null;
+    if (!user || user.verified) return null;
 
     return (
         <div className="w-full">
