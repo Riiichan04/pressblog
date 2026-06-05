@@ -9,9 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
 export default function ForgotPasswordForm() {
     const router = useRouter()
@@ -150,12 +151,26 @@ export default function ForgotPasswordForm() {
                 <form onSubmit={verifyForm.handleSubmit(onVerify)} className="space-y-6 mt-8">
                     <div className="space-y-1">
                         <label className="text-sm font-medium">{t("forgot.verifyCode")}</label>
-                        <Input
-                            inputMode="numeric" pattern="[0-9]*"
-                            type="text"
-                            {...verifyForm.register("code")}
-                            className={`py-4 mt-1 tracking-widest text-center text-lg font-bold ${verifyForm.formState.errors.code ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-                        />
+
+                        <div className="flex mt-1 justify-center">
+                            <Controller
+                                control={verifyForm.control}
+                                name="code"
+                                render={({ field }) => (
+                                    <InputOTP maxLength={6} {...field}>
+                                        <InputOTPGroup>
+                                            <InputOTPSlot index={0} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={1} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={2} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={3} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={4} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                            <InputOTPSlot index={5} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                        </InputOTPGroup>
+                                    </InputOTP>
+                                )}
+                            />
+                        </div>
+
                         {verifyForm.formState.errors.code && (
                             <p className="text-xs text-red-500 mt-1">{verifyForm.formState.errors.code.message as string}</p>
                         )}

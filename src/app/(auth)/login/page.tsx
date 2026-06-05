@@ -90,7 +90,7 @@ export default function LoginForm() {
                 <div className="space-y-1">
                     <div className="flex justify-between items-center">
                         <label className="text-sm font-medium">{t("login.password_label")}</label>
-                        <button type="button" className="cursor-pointer text-xs hover:underline">
+                        <button type="button" className="cursor-pointer text-xs hover:underline" onClick={() => router.push("/forgot-password")}>
                             {t("login.forgot_password")}
                         </button>
                     </div>

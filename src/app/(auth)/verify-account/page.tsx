@@ -1,17 +1,17 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { VerifySchema } from "@/schemas/verify-schema";
 import { sendVerifyAccountOtp, verifyAccount } from "@/services/auth-service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Loader2, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
 import { useTranslation } from "react-i18next";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
 export default function VerifyAccountPage() {
     const router = useRouter()
@@ -48,7 +48,7 @@ export default function VerifyAccountPage() {
             const response = await sendVerifyAccountOtp(user.email)
             if (response.result) {
                 setCountdown(60);
-                toast.success(t("verify.description")) // Tái sử dụng string có sẵn báo gửi email
+                toast.success(t("verify.sendSuccess"))
             } else {
                 toast.error(t("errors.something_went_wrong"), { description: response.message })
             }
@@ -72,7 +72,7 @@ export default function VerifyAccountPage() {
 
                 setTimeout(() => router.push("/"), 2000)
             } else {
-                toast.error(t("errors.something_went_wrong"), { description: response.message })
+                toast.error(t("errors.something_went_wrong"))
             }
         } catch {
             toast.error(t("errors.something_went_wrong"))
@@ -116,13 +116,24 @@ export default function VerifyAccountPage() {
                             {countdown > 0 ? t("verify.resendIn", { time: countdown }) : t("verify.resendBtn")}
                         </button>
                     </div>
-                    <Input
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        maxLength={6}
-                        {...verifyForm.register("code")}
-                        className={`py-6 text-center text-2xl tracking-[1em] font-bold ${verifyForm.formState.errors.code ? "border-red-500" : ""}`}
-                    />
+                    <div className="flex justify-center mt-2">
+                        <Controller
+                            control={verifyForm.control}
+                            name="code"
+                            render={({ field }) => (
+                                <InputOTP maxLength={6} {...field}>
+                                    <InputOTPGroup>
+                                        <InputOTPSlot index={0} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                        <InputOTPSlot index={1} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                        <InputOTPSlot index={2} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                        <InputOTPSlot index={3} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                        <InputOTPSlot index={4} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                        <InputOTPSlot index={5} className={`w-12 h-14 text-xl ${verifyForm.formState.errors.code ? "border-red-500" : ""}`} />
+                                    </InputOTPGroup>
+                                </InputOTP>
+                            )}
+                        />
+                    </div>
                     {verifyForm.formState.errors.code && (
                         <p className="text-xs text-red-500 text-center">{verifyForm.formState.errors.code.message as string}</p>
                     )}
