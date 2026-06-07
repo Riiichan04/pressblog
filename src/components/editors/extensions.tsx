@@ -15,6 +15,11 @@ import Underline from '@tiptap/extension-underline';
 import { cx } from "class-variance-authority";
 import { TFunction } from "i18next";
 
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { all, createLowlight } from 'lowlight';
+
+const lowlight = createLowlight(all);
+
 const horizontalRule = HorizontalRule.configure({
     HTMLAttributes: {
         class: cx("mt-4 mb-6 border-t border-stone-300"),
@@ -137,16 +142,19 @@ const resetFormatOnEnter = Extension.create({
     },
 });
 
+const codeBlockExtension = CodeBlockLowlight.configure({
+    lowlight,
+    HTMLAttributes: {
+        class: cx("rounded-md bg-stone-900 text-stone-100 p-5 font-mono text-sm"), 
+    },
+});
+
 const starterKit = StarterKit.configure({
     bulletList: {},
     orderedList: {},
     listItem: {},
     blockquote: {},
-    codeBlock: {
-        HTMLAttributes: {
-            class: cx("rounded-sm bg-stone-100 p-5 font-mono font-medium text-stone-800"),
-        },
-    },
+    codeBlock: false, 
     code: false,
     horizontalRule: false,
     dropcursor: {
@@ -162,6 +170,7 @@ export const getDefaultExtensions = (t: TFunction) => [
         placeholder: t("extensions.placeholder"),
     }),
     codeExtension as never,
+    codeBlockExtension as never,
     tiptapLink as never,
     tiptapImage,
     taskList,

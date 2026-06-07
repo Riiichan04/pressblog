@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-
+import 'highlight.js/styles/github-dark.css';
 import {
     ImagePlus,
     FolderTree, Tags, Link as AlignLeft, X
