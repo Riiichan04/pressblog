@@ -17,6 +17,8 @@ import { TFunction } from "i18next";
 
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { all, createLowlight } from 'lowlight';
+import { MermaidExtension } from "./mermaid-extension";
+import { TrailingNode } from "./trailing-note";
 
 const lowlight = createLowlight(all);
 
@@ -177,5 +179,7 @@ export const getDefaultExtensions = (t: TFunction) => [
     taskItem,
     resetFormatOnEnter as never,
     horizontalRule,
-    Underline as never
+    Underline as never,
+    MermaidExtension as never,
+    TrailingNode
 ];

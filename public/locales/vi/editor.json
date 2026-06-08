@@ -87,6 +87,10 @@
         "strike": {
             "title": "Gạch ngang",
             "desc": "Gạch ngang văn bản"
+        },
+        "mermaid": {
+            "title": "Sơ đồ Mermaid",
+            "desc": "Vẽ sơ đồ bằng Mermaid"
         }
     },
     "navbar": {

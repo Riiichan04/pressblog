@@ -87,6 +87,10 @@
         "strike": {
             "title": "Strikethrough",
             "desc": "Strike through text"
+        },
+        "mermaid": {
+            "title": "Mermaid Diagram",
+            "desc": "Draw mermaid Diagram"
         }
     },
     "navbar": {

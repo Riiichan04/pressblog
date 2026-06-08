@@ -3,7 +3,8 @@ import {
     Heading1, Heading2, Heading3, Heading4, Heading5, Heading6,
     List, ListOrdered, TextQuote, CheckSquare, CodeIcon,
     BoldIcon, ItalicIcon, UnderlineIcon, Strikethrough,
-    Image as ImageIcon, LinkIcon
+    Image as ImageIcon, LinkIcon,
+    Spline
 } from "lucide-react";
 import { Range, Editor, type JSONContent } from "@tiptap/core";
 import type { TFunction } from "i18next";
@@ -194,7 +195,16 @@ export const getSuggestionItems = (t: TFunction): SuggestionItem[] => [
         command: ({ editor, range }: CommandProps) => {
             editor.chain().focus().deleteRange(range).toggleStrike().run();
         },
-    }
+    },
+    {
+        title: t("slash_command.mermaid.title"),
+        description: t("slash_command.mermaid.desc"),
+        searchTerms: ["mermaid", "sodo", "diagram", "chart"],
+        icon: <Spline size={18} />,
+        command: ({ editor, range }: CommandProps) => {
+            editor.chain().focus().deleteRange(range).insertContent({ type: 'mermaid' }).run();
+        },
+    },
 ];
 
 export const getSlashCommand = (getItems: () => SuggestionItem[]) => Command.configure({
