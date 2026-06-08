@@ -3,14 +3,16 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import mermaid from 'mermaid';
 import { useEffect, useState } from 'react';
 import { Textarea } from '../ui/textarea';
+import { useTranslation } from 'react-i18next'; // 🎯 Import i18n
 
-//TODO: Add i18n for Mermaid
 const MermaidNodeView = ({ node, updateAttributes }: NodeViewProps) => {
     const code = node.attrs.code;
     const [svg, setSvg] = useState('');
     const [error, setError] = useState(false);
-
     const [mode, setMode] = useState<'code' | 'preview' | 'both'>('code');
+
+    // 🎯 Gọi hook dịch thuật (dùng namespace "editor")
+    const { t } = useTranslation(["editor"]);
 
     useEffect(() => {
         mermaid.initialize({ startOnLoad: false, theme: 'default' });
@@ -38,7 +40,7 @@ const MermaidNodeView = ({ node, updateAttributes }: NodeViewProps) => {
 
                 <div className="flex items-center justify-between border-b border-border/60 pb-2 mb-1">
                     <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider select-none">
-                        Mermaid Diagram
+                        {t("mermaid.title", "Mermaid Diagram")}
                     </span>
                     <div className="flex items-center bg-muted p-0.5 rounded-md border border-border/40 text-xs select-none">
                         <button
@@ -46,21 +48,21 @@ const MermaidNodeView = ({ node, updateAttributes }: NodeViewProps) => {
                             onClick={() => setMode('code')}
                             className={`px-2.5 py-1 rounded-sm font-medium transition-all ${mode === 'code' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                         >
-                            Code
+                            {t("mermaid.mode_code", "Code")}
                         </button>
                         <button
                             type="button"
                             onClick={() => setMode('preview')}
                             className={`px-2.5 py-1 rounded-sm font-medium transition-all ${mode === 'preview' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                         >
-                            Preview
+                            {t("mermaid.mode_preview", "Preview")}
                         </button>
                         <button
                             type="button"
                             onClick={() => setMode('both')}
                             className={`px-2.5 py-1 rounded-sm font-medium transition-all ${mode === 'both' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                         >
-                            Both
+                            {t("mermaid.mode_both", "Both")}
                         </button>
                     </div>
                 </div>
@@ -72,14 +74,14 @@ const MermaidNodeView = ({ node, updateAttributes }: NodeViewProps) => {
                         spellCheck={false}
                         value={code}
                         onChange={(e) => updateAttributes({ code: e.target.value })}
-                        placeholder="Gõ code Mermaid vào đây (vd: graph TD; A-->B;)"
+                        placeholder={t("mermaid.placeholder", "Gõ code Mermaid vào đây (vd: graph TD; A-->B;)")}
                     />
                 )}
 
                 {(mode === 'preview' || mode === 'both') && (
                     error ? (
                         <div className="rounded-md bg-destructive/10 p-4 text-sm text-destructive font-medium border border-destructive/20">
-                            Lỗi cú pháp Mermaid! Không thể render sơ đồ.
+                            {t("mermaid.error", "Lỗi cú pháp Mermaid! Không thể render sơ đồ.")}
                         </div>
                     ) : (
                         svg ? (
@@ -89,7 +91,7 @@ const MermaidNodeView = ({ node, updateAttributes }: NodeViewProps) => {
                             />
                         ) : (
                             <div className="text-center p-5 text-sm text-muted-foreground italic bg-background/40 rounded-md border border-dashed">
-                                Sơ đồ trống. Hãy nhập mã code Mermaid để render.
+                                {t("mermaid.empty", "Sơ đồ trống. Hãy nhập mã code Mermaid để render.")}
                             </div>
                         )
                     )
