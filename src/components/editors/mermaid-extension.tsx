@@ -1,9 +1,9 @@
 import { NodeViewWrapper, ReactNodeViewRenderer, type NodeViewProps } from '@tiptap/react';
 import { Node, mergeAttributes } from '@tiptap/core';
 import mermaid from 'mermaid';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Textarea } from '../ui/textarea';
-import { useTranslation } from 'react-i18next'; // 🎯 Import i18n
+import { useTranslation } from 'react-i18next';
 
 const MermaidNodeView = ({ node, updateAttributes }: NodeViewProps) => {
     const code = node.attrs.code;
@@ -11,8 +11,25 @@ const MermaidNodeView = ({ node, updateAttributes }: NodeViewProps) => {
     const [error, setError] = useState(false);
     const [mode, setMode] = useState<'code' | 'preview' | 'both'>('code');
 
-    // 🎯 Gọi hook dịch thuật (dùng namespace "editor")
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
     const { t } = useTranslation(["editor"]);
+
+    const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        updateAttributes({ code: e.target.value });
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            const scrollHeight = textareaRef.current.scrollHeight;
+            textareaRef.current.style.height = `${Math.min(scrollHeight, 1200)}px`;
+        }
+    };
+
+    useEffect(() => {
+        if (textareaRef.current && (mode === 'code' || mode === 'both')) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 1200)}px`;
+        }
+    }, [mode, code]);
 
     useEffect(() => {
         mermaid.initialize({ startOnLoad: false, theme: 'default' });
@@ -69,19 +86,21 @@ const MermaidNodeView = ({ node, updateAttributes }: NodeViewProps) => {
 
                 {(mode === 'code' || mode === 'both') && (
                     <Textarea
-                        className="w-full min-h-25 rounded-md bg-stone-900 text-stone-100 p-5 font-mono! text-sm outline-none focus:ring-2 focus:ring-primary resize-y leading-relaxed"
+                        ref={textareaRef}
+                        rows={10}
+                        className="w-full rounded-md bg-stone-900 text-stone-100 p-5 font-mono! text-sm outline-none focus:ring-2 focus:ring-primary resize-none leading-relaxed overflow-y-auto" // Đổi resize-y thành resize-none vì đã auto-resize
                         style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' }}
                         spellCheck={false}
                         value={code}
-                        onChange={(e) => updateAttributes({ code: e.target.value })}
-                        placeholder={t("mermaid.placeholder", "Gõ code Mermaid vào đây (vd: graph TD; A-->B;)")}
+                        onChange={handleTextareaChange}
+                        placeholder={t("mermaid.placeholder")}
                     />
                 )}
 
                 {(mode === 'preview' || mode === 'both') && (
                     error ? (
                         <div className="rounded-md bg-destructive/10 p-4 text-sm text-destructive font-medium border border-destructive/20">
-                            {t("mermaid.error", "Lỗi cú pháp Mermaid! Không thể render sơ đồ.")}
+                            {t("mermaid.error")}
                         </div>
                     ) : (
                         svg ? (
@@ -91,7 +110,7 @@ const MermaidNodeView = ({ node, updateAttributes }: NodeViewProps) => {
                             />
                         ) : (
                             <div className="text-center p-5 text-sm text-muted-foreground italic bg-background/40 rounded-md border border-dashed">
-                                {t("mermaid.empty", "Sơ đồ trống. Hãy nhập mã code Mermaid để render.")}
+                                {t("mermaid.empty")}
                             </div>
                         )
                     )
