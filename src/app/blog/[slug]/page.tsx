@@ -8,6 +8,8 @@ import { notFound } from 'next/navigation';
 import { getServerTranslation } from "@/common/utils/server-translation";
 import { processContentAndGetHeadings } from "@/common/utils/blog-toc";
 import CommentSection from "@/components/comments/comment";
+import PostRenderer from "@/components/readers/blog-renderer";
+import 'highlight.js/styles/github-dark.css';     
 
 interface Props {
     params: Promise<{ slug: string; locale: string }>;
@@ -84,10 +86,11 @@ export default async function BlogDetail({ params }: Props) {
                             </div>
                         </a>
                     </div>
-                    <div
+                    <PostRenderer markdownContent={processedHtml} />
+                    {/* <div
                         className="prose dark:prose-invert max-w-none"
                         dangerouslySetInnerHTML={{ __html: processedHtml }}
-                    />
+                    /> */}
                     <CommentSection postId={post.id} />
                 </article>
 

@@ -5,14 +5,13 @@ import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import 'highlight.js/styles/github-dark.css';     
 
 import {
     ImagePlus,
     FolderTree, Tags, Link as AlignLeft, X
 } from "lucide-react";
 import Image from "next/image";
-// import "@/components/styles/post-editor.css"
 import { FieldSeparator } from "../ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { getCurrentCategory } from "@/services/post-metadata-service";
@@ -27,6 +26,7 @@ import { uploadPost } from "@/services/post-service";
 import { RootState } from "@/store/store";
 import { debounce } from "lodash";
 import { EditorInstance } from "novel";
+import { TagInput } from '../ui/tag-input';
 
 const TextEditor = dynamic(() => import("@/components/editors/editor"), {
     ssr: false,
@@ -38,9 +38,10 @@ export default function WritePostComponent() {
     const titleRef = useRef<HTMLTextAreaElement>(null);
     const [coverImage, setCoverImage] = useState<string | null>(null);
 
-    const [category, setCategory] = useState("");
-    const [tags, setTags] = useState("");
-    const [excerpt, setExcerpt] = useState("");
+    const categoryRef = useRef<string>("");
+    const tagsRef = useRef<string[]>([]);
+    const excerptRef = useRef<HTMLTextAreaElement>(null);
+
     const [isPublishable, setIsPublishable] = useState(false);
 
     const contentRef = useRef<string>("");
@@ -59,10 +60,9 @@ export default function WritePostComponent() {
     const mdParser = useMemo(() => new MarkdownIt({
         html: true,
         breaks: true,
-        linkify: true 
+        linkify: true
     }), [])
 
-    //FIXME: Merge 2 function below into 1
     //Upload image in editor
     const onImageDroppedInEditor = async (file: File) => {
         const { url, publicId } = await uploadImageToCloudinary(file, "/temp");
@@ -89,12 +89,12 @@ export default function WritePostComponent() {
             const currentTitle = titleRef.current?.value || "";
 
             const hasTitle = currentTitle.trim().length >= 10;
-            const hasCategory = category !== "";
+            const hasCategory = categoryRef.current !== "";
             const hasContent = contentLengthRef.current > 100;
 
             setIsPublishable(hasTitle && hasCategory && hasContent);
         }, 500),
-        [category]
+        [] 
     );
 
     //Handle editor's content
@@ -104,27 +104,27 @@ export default function WritePostComponent() {
         uploadValidation();
     }, [uploadValidation]);
 
-    //Save current post (currently saved into a store)
+    //Save current post
     const handleSaveCurrentPost = useCallback(() => {
         if (!user || !contentRef || !titleRef.current) return;
 
         try {
             const post: PostRequest = {
                 name: titleRef.current.value,
-                categoryName: category,
+                categoryName: categoryRef.current,
                 content: contentRef.current,
                 email: user?.email,
                 language: "VI",
                 thumbnail: coverImage,
-                excerpt: excerpt,
-                listTag: tags.split(",").map(tag => tag.trim())
+                excerpt: excerptRef.current?.value || "",
+                listTag: tagsRef.current
             };
             dispatcher(savePost({ post, updatedAt: Date.now() }));
             toast.success(t("editor.save.success"));
         } catch {
             toast.error(t("editor.save.error"));
         }
-    }, [user, contentRef, titleRef, category, tags, excerpt, dispatcher, t, coverImage]);
+    }, [user, dispatcher, t, coverImage]);
 
 
     //Handle import markdown
@@ -156,13 +156,9 @@ export default function WritePostComponent() {
     }, [editorInstance, handleEditorChange, t, mdParser]);
 
 
-
-    //For validate Publish button
+    //For validate Publish button on mount
     useEffect(() => {
         uploadValidation();
-    }, [category, uploadValidation]);
-
-    useEffect(() => {
         return () => {
             uploadValidation.cancel();
         };
@@ -210,13 +206,13 @@ export default function WritePostComponent() {
             try {
                 const postData: PostRequest = {
                     name: titleRef.current.value || "",
-                    categoryName: category,
+                    categoryName: categoryRef.current,
                     content: contentRef.current,
                     email: user.email,
                     language: "VI",
-                    listTag: tags.split(",").map(tag => tag.trim()),
+                    listTag: tagsRef.current,
                     thumbnail: coverImage,
-                    excerpt: excerpt
+                    excerpt: excerptRef.current?.value || "" 
                 };
 
                 const res = await uploadPost(postData);
@@ -233,7 +229,7 @@ export default function WritePostComponent() {
         if (isPublishRequested) {
             doPublish();
         }
-    }, [isPublishRequested, titleRef, contentRef, category, tags, coverImage, user, excerpt, dispatcher, t]);
+    }, [isPublishRequested, coverImage, user, dispatcher, t]);
 
 
     return (
@@ -305,21 +301,16 @@ export default function WritePostComponent() {
                         <div className="w-32 flex items-center gap-2 text-foreground">
                             <FolderTree className="h-4 w-4" /> {t("layout.category", { ns: "editor" })}
                         </div>
-                        <Select value={category} onValueChange={setCategory}>
+                        <Select onValueChange={(val) => { categoryRef.current = val; uploadValidation(); }}>
                             <SelectTrigger className="h-8 border-none shadow-none focus:ring-1 focus:ring-muted focus:ring-offset-0 bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2 data-placeholder:text-muted-foreground">
                                 <SelectValue placeholder={t("layout.category_placeholder", { ns: "editor" })} />
                             </SelectTrigger>
                             <SelectContent>
-                                {
-                                    listCategory.length > 0 && listCategory.map(category =>
-                                        <SelectItem
-                                            key={category.slug}
-                                            value={category.slug}
-                                        >
-                                            {category.name}
-                                        </SelectItem>
-                                    )
-                                }
+                                {listCategory.length > 0 && listCategory.map(category =>
+                                    <SelectItem key={category.slug} value={category.slug}>
+                                        {category.name}
+                                    </SelectItem>
+                                )}
                             </SelectContent>
                         </Select>
                     </div>
@@ -328,11 +319,9 @@ export default function WritePostComponent() {
                         <div className="w-32 flex items-center gap-2 text-foreground">
                             <Tags className="h-4 w-4" /> {t("layout.tags", { ns: "editor" })}
                         </div>
-                        <Input
-                            value={tags}
-                            onChange={(e) => setTags(e.target.value)}
+                        <TagInput
                             placeholder={t("layout.tags_placeholder", { ns: "editor" })}
-                            className="h-8 border-none shadow-none focus-visible:ring-1 focus-visible:ring-muted bg-transparent hover:bg-muted/50 w-full md:max-w-md transition-colors rounded-sm px-2"
+                            onChange={(tags) => { tagsRef.current = tags; uploadValidation(); }}
                         />
                     </div>
 
@@ -341,8 +330,9 @@ export default function WritePostComponent() {
                             <AlignLeft className="h-4 w-4" /> {t("layout.excerpt", { ns: "editor" })}
                         </div>
                         <textarea
-                            value={excerpt}
-                            onChange={(e) => setExcerpt(e.target.value)}
+                            ref={excerptRef}
+                            onChange={() => uploadValidation()}
+                            defaultValue=""
                             placeholder={t("layout.excerpt_placeholder", { ns: "editor" })}
                             className="flex-1 bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-muted hover:bg-muted/50 transition-colors rounded-sm px-2 py-1.5 resize-none min-h-15"
                         />
@@ -351,14 +341,12 @@ export default function WritePostComponent() {
 
                 <FieldSeparator />
 
-                {/* Markdown Editor */}
                 <TextEditor
                     onEditorCreate={(editor) => setEditorInstance(editor)}
                     onChange={handleEditorChange}
                     onImageUpload={onImageDroppedInEditor}
                 />
 
-                {/* For import feature */}
                 <input
                     type="file"
                     id="hidden-markdown-import"

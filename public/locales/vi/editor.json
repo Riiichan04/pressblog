@@ -87,6 +87,10 @@
         "strike": {
             "title": "Gạch ngang",
             "desc": "Gạch ngang văn bản"
+        },
+        "mermaid": {
+            "title": "Sơ đồ Mermaid",
+            "desc": "Vẽ sơ đồ bằng Mermaid"
         }
     },
     "navbar": {
@@ -104,5 +108,14 @@
     "import": {
         "successs": "Nhập file thành công",
         "error": "Nhập file thất bại"
+    },
+    "mermaid": {
+        "title": "Sơ đồ Mermaid",
+        "mode_code": "Mã nguồn",
+        "mode_preview": "Xem trước",
+        "mode_both": "Cả hai",
+        "placeholder": "Nhập mã Mermaid vào đây (vd: graph TD; A-->B;)",
+        "error": "Lỗi cú pháp Mermaid! Không thể render sơ đồ.",
+        "empty": "Sơ đồ trống. Hãy nhập mã để hiển thị."
     }
 }

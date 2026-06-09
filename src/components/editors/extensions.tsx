@@ -15,6 +15,11 @@ import Underline from '@tiptap/extension-underline';
 import { cx } from "class-variance-authority";
 import { TFunction } from "i18next";
 
+import { all, createLowlight } from 'lowlight';
+import { MermaidExtension } from "./mermaid-extension";
+import { TrailingNode } from "./trailing-note";
+import { CustomCodeBlockExtension } from "./code-block-extension";
+
 const horizontalRule = HorizontalRule.configure({
     HTMLAttributes: {
         class: cx("mt-4 mb-6 border-t border-stone-300"),
@@ -142,11 +147,7 @@ const starterKit = StarterKit.configure({
     orderedList: {},
     listItem: {},
     blockquote: {},
-    codeBlock: {
-        HTMLAttributes: {
-            class: cx("rounded-sm bg-stone-100 p-5 font-mono font-medium text-stone-800"),
-        },
-    },
+    codeBlock: false, 
     code: false,
     horizontalRule: false,
     dropcursor: {
@@ -162,11 +163,14 @@ export const getDefaultExtensions = (t: TFunction) => [
         placeholder: t("extensions.placeholder"),
     }),
     codeExtension as never,
+    CustomCodeBlockExtension as never,
     tiptapLink as never,
     tiptapImage,
     taskList,
     taskItem,
     resetFormatOnEnter as never,
     horizontalRule,
-    Underline as never
+    Underline as never,
+    MermaidExtension as never,
+    TrailingNode
 ];

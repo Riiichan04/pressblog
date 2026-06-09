@@ -87,6 +87,10 @@
         "strike": {
             "title": "Strikethrough",
             "desc": "Strike through text"
+        },
+        "mermaid": {
+            "title": "Mermaid Diagram",
+            "desc": "Draw mermaid Diagram"
         }
     },
     "navbar": {
@@ -104,5 +108,14 @@
     "import": {
         "successs": "Import successful",
         "error": "Error ocurred when importing your file"
+    },
+    "mermaid": {
+        "title": "Mermaid Diagram",
+        "mode_code": "Code",
+        "mode_preview": "Preview",
+        "mode_both": "Both",
+        "placeholder": "Enter Mermaid code here (e.g., graph TD; A-->B;)",
+        "error": "Mermaid syntax error! Cannot render the diagram.",
+        "empty": "Empty diagram. Please enter code to render."
     }
 }
