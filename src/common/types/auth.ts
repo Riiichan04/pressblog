@@ -11,6 +11,7 @@ export interface AuthDto {
     role: string;
     permissions: string[];
     jwtToken: string | null;
+    refreshToken: string
 }
 
 export interface AuthResponse {
