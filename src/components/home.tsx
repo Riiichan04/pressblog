@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ArrowRight, Calendar, Clock, Laptop, RefreshCcw, SearchX } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Eye, FileText, Hash, Laptop, RefreshCcw, SearchX} from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { PostCard } from "./post-card";
@@ -17,11 +17,15 @@ import Link from "next/link";
 import { Category } from "@/common/types/post-metadata";
 import { getCurrentCategory } from "@/services/post-metadata-service";
 import { categoryIconMap } from "@/common/constants/category-icon-map";
+import { AuthorStatsDto } from "@/common/types/home";
+import { getFeaturedAuthors, getTrendingTags } from "@/services/home-service";
 
-export function LandingPage() {
+export function HomePageComponent() {
     const [newestPost, setNewestPosts] = useState<PostDetail[]>([]);
     const [featuredPost, setFeaturedPost] = useState<PostDetail | null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
+    const [trendingTags, setTrendingTags] = useState<string[]>([]);
+    const [featuredAuthors, setFeaturedAuthors] = useState<AuthorStatsDto[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const { t, i18n } = useTranslation("landing");
 
@@ -30,14 +34,18 @@ export function LandingPage() {
     const fetchPosts = useCallback(async () => {
         setIsLoading(true);
         try {
-            const [newest, featured, cats] = await Promise.all([
+            const [newest, featured, cats, tags, authors] = await Promise.all([
                 getNewestPost(),
                 getFeaturedPost(),
-                getCurrentCategory()
+                getCurrentCategory(),
+                getTrendingTags(),
+                getFeaturedAuthors()
             ]);
             setNewestPosts(newest || []);
             setFeaturedPost(featured);
             setCategories(cats || []);
+            setTrendingTags(tags || []);
+            setFeaturedAuthors(authors || []);
         } catch (error) {
             console.error("Failed to fetch posts:", error);
         } finally {
@@ -142,6 +150,10 @@ export function LandingPage() {
                         <CategorySection categories={categories} />
                     )}
 
+                    {trendingTags.length > 0 && (
+                        <TrendingTagsSection tags={trendingTags} />
+                    )}
+
                     {/* Newest Blog */}
                     <section className="container mx-auto pt-24 px-4 bg-background">
                         <div className="mb-12">
@@ -160,18 +172,27 @@ export function LandingPage() {
 
                     {/* Recommend Blog */}
                     <section className="container mx-auto pt-24 px-4 bg-background">
-                        <div className="mb-12">
-                            <h2 className="text-3xl font-bold tracking-tight mb-2 text-foreground">{t("feature.recommend")}</h2>
-                            <div className="h-1.5 w-20 bg-primary rounded-full" />
-                        </div>
+                        <div className="flex flex-col lg:flex-row gap-10 items-start">
+                            <div className="flex-1 w-full">
+                                <div className="mb-10">
+                                    <h2 className="text-3xl font-bold tracking-tight mb-2 text-foreground">{t("feature.recommend")}</h2>
+                                    <div className="h-1.5 w-20 bg-primary rounded-full" />
+                                </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {/* FIXME: Update to recommend blog */}
-                            {newestPost
-                                .filter(post => post.id !== featuredPost?.id)
-                                .map((post) => (
-                                    <PostCard key={post.id} post={post} />
-                                ))}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                                    {newestPost
+                                        .filter(post => post.id !== featuredPost?.id)
+                                        .map((post) => (
+                                            <PostCard key={`rec-${post.id}`} post={post} />
+                                        ))}
+                                </div>
+                            </div>
+
+                            {featuredAuthors.length > 0 && (
+                                <aside className="w-full lg:w-87.5 shrink-0 sticky top-24 lg:mt-22.5">
+                                    <FeaturedAuthorsSidebar authors={featuredAuthors} />
+                                </aside>
+                            )}
                         </div>
                     </section>
                 </>
@@ -254,5 +275,84 @@ function CategorySection({ categories }: { categories: Category[] }) {
                 })}
             </div>
         </section>
+    );
+}
+
+function TrendingTagsSection({ tags }: { tags: string[] }) {
+    const { t } = useTranslation("landing");
+
+    return (
+        <section className="container mx-auto pt-16 px-4">
+            <div className="mb-12">
+                <h2 className="text-3xl font-bold tracking-tight mb-2 text-foreground">{t("feature.trending_tags")}</h2>
+                <div className="h-1.5 w-20 bg-primary rounded-full" />
+            </div>
+            <div className="flex flex-wrap gap-3">
+                {tags.map((tag) => (
+                    <Link
+                        key={tag}
+                        href={`/tags/${tag}`}
+                        className="group flex items-center gap-1.5 px-4 py-2 rounded-full border border-border bg-card hover:border-primary hover:bg-primary/5 transition-all"
+                    >
+                        <Hash className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <span className="font-medium text-sm group-hover:text-primary transition-colors">{tag}</span>
+                    </Link>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+function FeaturedAuthorsSidebar({ authors }: { authors: AuthorStatsDto[] }) {
+    const { t } = useTranslation("landing");
+
+    return (
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <div className="mb-12">
+                <h3 className="font-bold text-xl mb-2 flex items-center gap-2d">{t("feature.featured_authors")}</h3>
+                <div className="h-1.5 w-20 bg-primary rounded-full" />
+            </div>
+
+            <div className="flex flex-col gap-5">
+                {authors.map((author, index) => (
+                    <Link
+                        key={author.username}
+                        href={`/author/${author.username}`}
+                        className="flex items-center gap-4 group"
+                    >
+                        {/* Avatar */}
+                        <div className="relative">
+                            <Avatar className="h-12 w-12 border-2 border-transparent group-hover:border-primary transition-colors">
+                                <AvatarImage src={author.avatar || ""} />
+                                <AvatarFallback className={`${fallBackColor(author.username)} text-white`}>
+                                    {getFallback(author.username)}
+                                </AvatarFallback>
+                            </Avatar>
+                            {/* Rank Badge */}
+                            {index < 3 && (
+                                <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-card bg-foreground text-[10px] font-bold text-background">
+                                    {index + 1}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1 overflow-hidden">
+                            <h4 className="font-semibold text-sm truncate group-hover:text-primary transition-colors">
+                                {author.username}
+                            </h4>
+                            <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                    <FileText size={12} /> {author.postCount} {t("post.posts")}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                    <Eye size={12} /> {author.viewCount.toLocaleString()}
+                                </span>
+                            </div>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+        </div>
     );
 }

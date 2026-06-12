@@ -7,9 +7,12 @@
         "newest": "Newest blog",
         "featured": "Featured blog",
         "recommend": "Recommend blog",
-        "categories": "Category"
+        "categories": "Category",
+        "trending_tags": "Trending Tags",
+        "featured_authors": "Featured Authors"
     },
     "post": {
+        "posts": "posts",
         "read_time_singular": "minute read",
         "read_time_plural": "minutes read",
         "published_at": "Published at"

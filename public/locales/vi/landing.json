@@ -7,9 +7,12 @@
         "newest": "Bài viết mới nhất",
         "featured": "Bài viết nổi bật",
         "recommend": "Bài viết đề xuất",
-        "categories": "Danh mục bài viết"
+        "categories": "Danh mục bài viết",
+        "trending_tags": "Tag Thịnh Hành",
+        "featured_authors": "Tác Giả Nổi Bật"
     },
     "post": {
+        "posts": "bài viết",
         "read_time_singular": "phút đọc",
         "read_time_plural": "phút đọc",
         "published_at": "Đăng ngày"

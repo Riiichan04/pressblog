@@ -52,8 +52,8 @@ export function PostCard({ post }: { post: PostDetail }) {
                 </div>
 
                 {/* Tags */}
-                <div className="mt-3 flex flex-wrap gap-1">
-                    {post.tagNames.slice(0, 2).map((tag: string) => (
+                <div className="mt-3 flex flex-wrap gap-1 overflow-x-auto">
+                    {post.tagNames.map((tag: string) => (
                         <span key={tag} className="text-[10px] font-medium px-2 py-0.5 rounded bg-secondary/50 text-secondary-foreground">
                             #{tag}
                         </span>
