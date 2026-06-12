@@ -31,6 +31,7 @@
         "approvals": "Blog Approvals",
         "featured": "Featured Blog",
         "logout": "Logout",
+        "tags": "Tag",
         "label": {
             "content": "Content Management",
             "system": "System"

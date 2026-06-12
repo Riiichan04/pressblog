@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, FileText, Tags, MessageSquare, LogOut, Settings, LayoutTemplate } from "lucide-react";
+import { LayoutDashboard, Users, FileText, Tags, MessageSquare, LogOut, Settings, LayoutTemplate, Hash } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import { PERMISSIONS } from "@/common/constants/permissions";
@@ -29,6 +29,7 @@ export default function AdminSidebar() {
                     { href: "/admin/featured", icon: LayoutTemplate, labelKey: "featured", show: hasPermission(PERMISSIONS.UPDATE_ANY_POST) },
                     { href: "/admin/categories", icon: Tags, labelKey: "categories", show: hasPermission(PERMISSIONS.UPDATE_CATEGORY) },
                     { href: "/admin/comments", icon: MessageSquare, labelKey: "comments", show: hasPermission(PERMISSIONS.DELETE_ANY_COMMENT) },
+                    { href: "/admin/tags", icon: Hash, labelKey: "tags", show: hasPermission([PERMISSIONS.APPROVE_TAG, PERMISSIONS.UPDATE_TAG, PERMISSIONS.DELETE_TAG])}
                 ]
             },
             {

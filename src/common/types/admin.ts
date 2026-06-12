@@ -68,3 +68,10 @@ export interface AdminCommentResponse {
     parentId?: number | null;
     parentContent?: string | null;
 }
+
+export interface AdminTagResponse {
+    id: number;
+    name: string;
+    slug: string;
+    approved: boolean;
+}

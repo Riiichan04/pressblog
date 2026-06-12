@@ -1,4 +1,4 @@
-import { AdminCommentResponse, AdminDashboardResponse, AdminPostResponse, AdminUserResponse, CategoryRequest, CategoryResponse } from "@/common/types/admin";
+import { AdminCommentResponse, AdminDashboardResponse, AdminPostResponse, AdminTagResponse, AdminUserResponse, CategoryRequest, CategoryResponse } from "@/common/types/admin";
 import apiClient from "./api-client";
 import { PostDetail, PostStatus } from "@/common/types/post";
 import { PageResponse } from "@/common/types/page-response";
@@ -126,4 +126,25 @@ export const safeDeleteComment = async (id: number): Promise<string> => {
 export const restoreComment = async (id: number): Promise<string> => {
     const response = await apiClient.put(`/admin/comments/${id}/restore`);
     return response.data;
+};
+
+// For tag management
+export const getAllTagsAdmin = async (page: number, size: number) => {
+    const res = await apiClient.get<PageResponse<AdminTagResponse>>(`/admin/tags?page=${page}&size=${size}`);
+    return res.data;
+};
+
+export const updateTag = async (id: number, name: string) => {
+    const res = await apiClient.put<AdminTagResponse>(`/admin/tags/${id}`, { name });
+    return res.data;
+};
+
+export const toggleTagApproval = async (id: number) => {
+    const res = await apiClient.post<AdminTagResponse>(`/admin/tags/${id}/approve`);
+    return res.data;
+};
+
+export const forceDeleteTag = async (id: number) => {
+    const res = await apiClient.delete(`/admin/tags/${id}`);
+    return res.data;
 };
