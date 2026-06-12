@@ -279,5 +279,53 @@
             "saveSuccess": "Đã lưu cấu hình bài viết nổi bật!",
             "error": "Có lỗi xảy ra, vui lòng thử lại."
         }
+    },
+    "tags": {
+        "title": "Quản lý Tags",
+        "description": "Duyệt các Tag được phép xuất hiện ở Trang chủ / Xu hướng.",
+        "listTitle": "Danh sách Tags",
+        "emptyList": "Chưa có Tag nào",
+        "messages": {
+            "fetchError": "Lỗi khi tải danh sách Tag",
+            "updateSuccess": "Cập nhật Tag thành công",
+            "updateError": "Có lỗi xảy ra khi cập nhật",
+            "approveSuccess": "Đã duyệt Tag",
+            "unapproveSuccess": "Hủy phê duyệt Tag thành công",
+            "approveError": "Lỗi khi thay đổi trạng thái Tag",
+            "deleteSuccess": "Đã xóa vĩnh viễn Tag",
+            "deleteError": "Lỗi khi xóa Tag"
+        },
+        "table": {
+            "name": "Tên Tag",
+            "slug": "Slug",
+            "status": "Trạng thái",
+            "actions": "Hành động"
+        },
+        "status": {
+            "approved": "Đã duyệt",
+            "pending": "Chờ duyệt"
+        },
+        "actions": {
+            "unapprove": "Gỡ duyệt",
+            "approve": "Duyệt Tag này"
+        },
+        "pagination": {
+            "prev": "Trước",
+            "page": "Trang",
+            "next": "Sau"
+        },
+        "form": {
+            "editTitle": "Sửa tên Tag",
+            "nameLabel": "Tên Tag",
+            "slugHint": "Slug sẽ được tự động tạo lại dựa trên tên mới.",
+            "cancel": "Hủy",
+            "save": "Lưu thay đổi"
+        },
+        "deleteConfirm": {
+            "title": "Xóa vĩnh viễn Tag?",
+            "description": "Tag này sẽ bị gỡ khỏi mọi bài viết đang chứa nó và bị xóa hoàn toàn khỏi hệ thống. Hành động này không thể hoàn tác!",
+            "cancel": "Hủy",
+            "confirm": "Xóa vĩnh viễn"
+        }
     }
 }

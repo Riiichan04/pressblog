@@ -279,5 +279,53 @@
             "saveSuccess": "Featured posts configuration saved!",
             "error": "An error occurred, please try again."
         }
+    },
+    "tags": {
+        "title": "Tags Management",
+        "description": "Approve tags allowed to appear on the Homepage / Trending.",
+        "listTitle": "Tags List",
+        "emptyList": "No tags found",
+        "messages": {
+            "fetchError": "Error loading tags",
+            "updateSuccess": "Tag updated successfully",
+            "updateError": "An error occurred while updating",
+            "approveSuccess": "Tag approved",
+            "unapproveSuccess": "Tag unapproved successfully",
+            "approveError": "Error changing tag status",
+            "deleteSuccess": "Tag permanently deleted",
+            "deleteError": "Error deleting tag"
+        },
+        "table": {
+            "name": "Tag Name",
+            "slug": "Slug",
+            "status": "Status",
+            "actions": "Actions"
+        },
+        "status": {
+            "approved": "Approved",
+            "pending": "Pending"
+        },
+        "actions": {
+            "unapprove": "Unapprove",
+            "approve": "Approve this tag"
+        },
+        "pagination": {
+            "prev": "Prev",
+            "page": "Page",
+            "next": "Next"
+        },
+        "form": {
+            "editTitle": "Edit Tag",
+            "nameLabel": "Tag Name",
+            "slugHint": "The slug will be automatically regenerated based on the new name.",
+            "cancel": "Cancel",
+            "save": "Save changes"
+        },
+        "deleteConfirm": {
+            "title": "Permanently delete tag?",
+            "description": "This tag will be removed from all posts containing it and permanently deleted from the system. This action cannot be undone!",
+            "cancel": "Cancel",
+            "confirm": "Delete permanently"
+        }
     }
 }
