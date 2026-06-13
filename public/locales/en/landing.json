@@ -1,21 +1,48 @@
 {
-    "main": {
-        "read_more_action": "Read more",
-        "retry_action": "Retry now"
+    "hero": {
+        "title": "A Place to Share Knowledge and Life",
+        "subtitle": "Discover profound stories, unique perspectives, and a minimalist experience designed just for you.",
+        "start_reading": "START READING",
+        "become_creator": "BECOME A CREATOR"
     },
-    "feature": {
-        "newest": "Newest blog",
-        "featured": "Featured blog",
-        "recommend": "Recommend blog",
-        "categories": "Category"
+    "features": {
+        "title": "Excellence in every detail",
+        "subtitle": "Every feature is carefully refined to honor your content.",
+        "quality": {
+            "title": "High-Quality Content",
+            "desc": "Thoroughly moderated to deliver the finest and most valuable articles."
+        },
+        "cms": {
+            "title": "Professional Editor",
+            "desc": "A smooth writing experience that perfectly blends tradition with modernity."
+        },
+        "community": {
+            "title": "Vibrant Community",
+            "desc": "Interact directly with readers and fellow creators through our engaging commenting system.",
+            "action": "EXPLORE COMMUNITY"
+        }
     },
-    "post": {
-        "read_time_singular": "minute read",
-        "read_time_plural": "minutes read",
-        "published_at": "Published at"
+    "cta": {
+        "title": "Ready to showcase your work?",
+        "subtitle": "Join the authors who are shaping the future of digital publishing.",
+        "button": "CREATE FREE ACCOUNT"
     },
-    "empty": {
-        "title": "No posts found",
-        "description": "It seems the content is being updated or there's a connection issue. Please try refreshing the page!"
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Find answers to all your questions about the platform right here.",
+        "q1": "Who can become an author on the platform?",
+        "a1": "Anyone can become an author. Simply create a free account and start your creative journey.",
+        "q2": "Will my articles be moderated?",
+        "a2": "Yes. To ensure a clean and high-quality content environment, your articles will be reviewed by our moderation team before they are published.",
+        "q3": "Does the editor support Markdown and other syntax?",
+        "a3": "Yes! Our editor fully supports standard Markdown syntax along with specialized diagrams like Mermaid."
+    },
+    "editor_showcase": {
+        "title": "PressBlog Writing Experience",
+        "subtitle": "An editor that seamlessly blends modern style with traditional touches.",
+        "action": {
+            "title": "Add Image",
+            "desc": "Insert Markdown image syntax"
+        }
     }
 }

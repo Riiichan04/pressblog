@@ -27,7 +27,7 @@ import Image from "next/image";
 import { Skeleton } from "./ui/skeleton";
 import { cn } from "@/lib/utils";
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { ROLES } from '@/common/constants/roles';
 
 export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean }) {
@@ -37,6 +37,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
     const [mounted, setMounted] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const router = useRouter();
+    const pathname = usePathname();
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
@@ -71,12 +72,15 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
         }
     };
 
+    const isLandingPage = pathname === "/" && !user;
+    const forceWhiteText = isLandingPage && !isScrolled;
+
     return (
         <nav
             className={cn(
                 "fixed top-0 z-50 w-full transition-all duration-300",
                 isScrolled && !isEnableScroll
-                    ? "border-b bg-background/80 backdrop-blur-md h-16"
+                    ? "border-b bg-background/80 backdrop-blur-md h-16 shadow-sm"
                     : "bg-transparent border-transparent h-20"
             )}
         >
@@ -94,9 +98,9 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         />
                         <span className={cn(
                             "text-xl font-bold tracking-tighter transition-colors",
-                            isScrolled && !isEnableScroll ? "text-primary" : "text-primary"
+                            forceWhiteText ? "text-white" : "text-primary"
                         )}>
-                            PRESS<span className={isScrolled && !isEnableScroll ? "text-foreground" : "text-primary"}>BLOG</span>
+                            PRESS<span className={forceWhiteText ? "text-white/80" : "text-foreground"}>BLOG</span>
                         </span>
                     </Link>
 
@@ -104,9 +108,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                     <form onSubmit={handleSearch} className="relative hidden md:block w-80 group">
                         <Search className={cn(
                             "absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition-all z-10",
-                            isScrolled && !isEnableScroll
-                                ? "text-muted-foreground"
-                                : "text-foreground dark:text-white drop-shadow-md" // Đã sửa
+                            forceWhiteText ? "text-white drop-shadow-md" : "text-muted-foreground"
                         )} />
                         <Input
                             type="search"
@@ -115,9 +117,9 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className={cn(
                                 "pl-10 border-none transition-all",
-                                isScrolled && !isEnableScroll
-                                    ? "bg-muted/50 focus-visible:ring-1"
-                                    : "bg-black/5 dark:bg-black/20 text-foreground dark:text-white placeholder:text-foreground/70 dark:placeholder:text-white/80 focus-visible:ring-black/30 dark:focus-visible:ring-white/30 backdrop-blur-md" // Đã sửa
+                                forceWhiteText
+                                    ? "bg-white/10 text-white placeholder:text-white/70 focus-visible:ring-white/30 backdrop-blur-md"
+                                    : "bg-muted/50 focus-visible:ring-1 text-foreground dark:text-white dark:bg-black/20"
                             )}
                         />
                     </form>
@@ -127,8 +129,8 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                     {/* Theme button */}
                     <Button
                         className={cn(
-                            "cursor-pointer transition-colors",
-                            !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa & gỡ bỏ theme === "light"
+                            "cursor-pointer transition-colors rounded-full",
+                            forceWhiteText ? "text-white hover:bg-white/20" : "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
                         )}
                         variant="ghost"
                         size="icon"
@@ -148,11 +150,11 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         size="sm"
                         onClick={toggleLanguage}
                         className={cn(
-                            "gap-2 px-2 cursor-pointer transition-colors",
-                            !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa
+                            "gap-2 px-3 rounded-full cursor-pointer transition-colors",
+                            forceWhiteText ? "text-white hover:bg-white/20" : "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
                         )}
                     >
-                        <Languages className="h-5 w-5" />
+                        <Languages className="h-4 w-4" />
                         <span className="uppercase text-xs font-bold">
                             {mounted ? i18n.resolvedLanguage : "..."}
                         </span>
@@ -163,8 +165,8 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                             variant="ghost"
                             size="icon"
                             className={cn(
-                                "relative cursor-pointer transition-colors",
-                                !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa
+                                "relative rounded-full cursor-pointer transition-colors",
+                                forceWhiteText ? "text-white hover:bg-white/20" : "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
                             )}
                         >
                             <Bell className="h-5 w-5" />
@@ -176,7 +178,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                             variant="default"
                             size="sm"
                             onClick={() => router.push("/verify-account")}
-                            className="gap-2 rounded-full px-5 transition-all bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg dark:bg-white dark:text-black dark:hover:bg-white/90 cursor-pointer"
+                            className="gap-2 rounded-full px-5 transition-all bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg cursor-pointer"
                         >
                             <ShieldCheck className="h-4 w-4" />
                             {t("navbar.verify")}
@@ -188,19 +190,20 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                             <>
                                 <Link href="/write" className="hidden md:block">
                                     <Button className={cn(
-                                        "gap-2 rounded-full px-5 cursor-pointer transition-all",
-                                        !isScrolled && "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg dark:bg-white dark:text-black dark:hover:bg-white/90" // Đã tinh chỉnh để nổi bật cả 2 mode
+                                        "gap-2 rounded-full px-5 cursor-pointer transition-all shadow-lg",
+                                        forceWhiteText
+                                            ? "bg-white text-black hover:bg-white/90"
+                                            : "bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-white dark:text-black dark:hover:bg-white/90"
                                     )}>
                                         <PenSquare className="h-4 w-4" />
                                         {t("navbar.write")}
                                     </Button>
                                 </Link>
 
-
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="relative h-10 w-10 rounded-full border cursor-pointer">
-                                            <Avatar className="h-10 w-10">
+                                        <Button variant="ghost" className="relative h-10 w-10 rounded-full border cursor-pointer hover:opacity-80 transition-opacity">
+                                            <Avatar className="h-10 w-10 ring-2 ring-transparent transition-all hover:ring-primary">
                                                 <AvatarImage src={user.avatar || ""} alt={user.username} />
                                                 <AvatarFallback className={`${fallBackColor(user.username)} text-white`}>
                                                     {getFallback(user.displayName || user.username)}
@@ -260,8 +263,8 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                 <Link href="/login">
                                     <Button
                                         className={cn(
-                                            "cursor-pointer transition-colors",
-                                            !isScrolled && "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10" // Đã sửa
+                                            "cursor-pointer rounded-full transition-colors",
+                                            forceWhiteText ? "text-white hover:bg-white/20" : "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
                                         )}
                                         variant="ghost"
                                     >
@@ -270,8 +273,10 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                 </Link>
                                 <Link href="/register">
                                     <Button className={cn(
-                                        "cursor-pointer transition-all",
-                                        !isScrolled && "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg dark:bg-white dark:text-black dark:hover:bg-white/90" // Đã tinh chỉnh
+                                        "cursor-pointer rounded-full transition-all shadow-lg",
+                                        forceWhiteText
+                                            ? "bg-white text-black hover:bg-white/90"
+                                            : "bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-white dark:text-black dark:hover:bg-white/90"
                                     )}>
                                         {t("navbar.get_started")}
                                     </Button>
@@ -279,13 +284,13 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                             </div>
                         )
                         : <div className="flex items-center gap-3">
-                            <Skeleton className="h-9 w-9 rounded-full hidden md:block" />
-                            <Skeleton className="h-9 w-24 rounded-full hidden md:block" />
-                            <Skeleton className="h-10 w-10 rounded-full border" />
+                            <Skeleton className="h-9 w-9 rounded-full hidden md:block opacity-50" />
+                            <Skeleton className="h-9 w-24 rounded-full hidden md:block opacity-50" />
+                            <Skeleton className="h-10 w-10 rounded-full border opacity-50" />
                         </div>
                     }
                 </div>
             </div>
-        </nav >
+        </nav>
     );
 }

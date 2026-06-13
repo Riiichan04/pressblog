@@ -1,7 +1,8 @@
 "use client"
 
 import Footer from "@/components/footer";
-import { LandingPage } from "@/components/landing";
+import { HomePageComponent } from "@/components/home";
+import LandingPageComponent from "@/components/landing";
 import Navbar from "@/components/nav-bar";
 import { useAuth } from "@/context/auth-context";
 
@@ -11,7 +12,10 @@ export default function HomePage() {
     return (
         <div>
             <Navbar />
-            <LandingPage />
+            {user ?
+                <HomePageComponent />
+                : <LandingPageComponent />
+            }
             <Footer />
         </div>
     )

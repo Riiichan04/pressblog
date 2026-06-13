@@ -1,0 +1,24 @@
+{
+    "main": {
+        "read_more_action": "Read more",
+        "retry_action": "Retry now"
+    },
+    "feature": {
+        "newest": "Newest blog",
+        "featured": "Featured blog",
+        "recommend": "Recommend blog",
+        "categories": "Category",
+        "trending_tags": "Trending Tags",
+        "featured_authors": "Featured Authors"
+    },
+    "post": {
+        "posts": "posts",
+        "read_time_singular": "minute read",
+        "read_time_plural": "minutes read",
+        "published_at": "Published at"
+    },
+    "empty": {
+        "title": "No posts found",
+        "description": "It seems the content is being updated or there's a connection issue. Please try refreshing the page!"
+    }
+}

@@ -1,21 +1,48 @@
 {
-    "main": {
-        "read_more_action": "Đọc thêm",
-        "retry_action": "Thử lại ngay"
+    "hero": {
+        "title": "Nơi Chia Sẻ Kiến Thức Và Cuộc Sống",
+        "subtitle": "Khám phá những câu chuyện sâu sắc, góc nhìn độc đáo và trải nghiệm tối giản dành cho bạn.",
+        "start_reading": "BẮT ĐẦU ĐỌC",
+        "become_creator": "TRỞ THÀNH TÁC GIẢ"
     },
-    "feature": {
-        "newest": "Bài viết mới nhất",
-        "featured": "Bài viết nổi bật",
-        "recommend": "Bài viết đề xuất",
-        "categories": "Danh mục bài viết"
+    "features": {
+        "title": "Tinh hoa trong từng chi tiết",
+        "subtitle": "Mọi tính năng đều được tinh chỉnh để tôn vinh nội dung của bạn.",
+        "quality": {
+            "title": "Nội dung chất lượng",
+            "desc": "Kiểm duyệt kĩ lưỡng để đem đến những bài viết chất lượng nhất"
+        },
+        "cms": {
+            "title": "Trình soạn thảo Chuyên nghiệp",
+            "desc": "Soạn thảo mượt mà, kết hợp giữa truyền thống và hiện đại."
+        },
+        "community": {
+            "title": "Cộng đồng sôi nổi",
+            "desc": "Tương tác trực tiếp với độc giả và những người sáng tạo khác thông qua hệ thống bình luận",
+            "action": "KHÁM PHÁ CỘNG ĐỒNG"
+        }
     },
-    "post": {
-        "read_time_singular": "phút đọc",
-        "read_time_plural": "phút đọc",
-        "published_at": "Đăng ngày"
+    "cta": {
+        "title": "Sẵn sàng để thể hiện tác phẩm của bạn?",
+        "subtitle": "Hãy tham gia cùng những tác giả đang định hình tương lai của xuất bản kỹ thuật số.",
+        "button": "TẠO TÀI KHOẢN MIỄN PHÍ"
     },
-    "empty": {
-        "title": "Chưa có bài viết nào",
-        "description": "Có vẻ như nội dung đang được cập nhật hoặc có sự cố kết nối. Thử tải lại trang xem sao nhé!"
+    "faq": {
+        "title": "Những câu hỏi thường gặp",
+        "subtitle": "Mọi thắc mắc của bạn về nền tảng đều được giải đáp tại đây.",
+        "q1": "Ai có thể trở thành tác giả trên nền tảng?",
+        "a1": "Bất kỳ ai cũng có thể trở thành tác giả. Bạn chỉ cần tạo một tài khoản miễn phí và bắt đầu hành trình sáng tạo của mình.",
+        "q2": "Bài viết của tôi có bị kiểm duyệt không?",
+        "a2": "Có. Để xây dựng một môi trường nội dung sạch và chất lượng, bài viết của bạn sẽ được đội ngũ quản trị phê duyệt trước khi hiển thị.",
+        "q3": "Trình soạn thảo có hỗ trợ Markdown và một số cú pháp khác không?",
+        "a3": "Có! Trình soạn thảo của chúng tôi hỗ trợ hoàn toàn các cú pháp Markdown tiêu chuẩn và một số biểu đồ đặc biệt như Mermaid. "
+    },
+    "editor_showcase": {
+        "title": "Trải nghiệm viết lách cùng PressBlog",
+        "subtitle": "Trình soạn thảo mang phong cách hiện đại kết hợp cùng những nét truyền thống.",
+        "action": {
+            "title": "Thêm Hình Ảnh",
+            "desc": "Chèn cú pháp ảnh Markdown"
+        }
     }
 }
