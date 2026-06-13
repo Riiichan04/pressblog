@@ -27,7 +27,7 @@ export function HomePageComponent() {
     const [trendingTags, setTrendingTags] = useState<string[]>([]);
     const [featuredAuthors, setFeaturedAuthors] = useState<AuthorStatsDto[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { t, i18n } = useTranslation("landing");
+    const { t, i18n } = useTranslation("home");
 
     const timeLocale = i18n.language
 

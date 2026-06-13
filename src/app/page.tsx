@@ -2,6 +2,7 @@
 
 import Footer from "@/components/footer";
 import { HomePageComponent } from "@/components/home";
+import LandingPageComponent from "@/components/landing";
 import Navbar from "@/components/nav-bar";
 import { useAuth } from "@/context/auth-context";
 
@@ -11,7 +12,10 @@ export default function HomePage() {
     return (
         <div>
             <Navbar />
-            <HomePageComponent />
+            {user ?
+                <HomePageComponent />
+                : <LandingPageComponent />
+            }
             <Footer />
         </div>
     )
