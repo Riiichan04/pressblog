@@ -218,7 +218,7 @@ function LandingPageSkeleton() {
 }
 
 function EmptyPostState({ onRetry }: { onRetry: () => void }) {
-    const { t } = useTranslation("landing");
+    const { t } = useTranslation("home");
     return (
         <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-background">
             <div className="bg-muted rounded-full p-6 mb-4">
@@ -241,7 +241,7 @@ function EmptyPostState({ onRetry }: { onRetry: () => void }) {
 }
 
 function CategorySection({ categories }: { categories: Category[] }) {
-    const { t } = useTranslation("landing");
+    const { t } = useTranslation("home");
 
     return (
         <section className="container mx-auto pt-24 px-4 bg-background">
@@ -279,7 +279,7 @@ function CategorySection({ categories }: { categories: Category[] }) {
 }
 
 function TrendingTagsSection({ tags }: { tags: string[] }) {
-    const { t } = useTranslation("landing");
+    const { t } = useTranslation("home");
 
     return (
         <section className="container mx-auto pt-16 px-4">
@@ -304,7 +304,7 @@ function TrendingTagsSection({ tags }: { tags: string[] }) {
 }
 
 function FeaturedAuthorsSidebar({ authors }: { authors: AuthorStatsDto[] }) {
-    const { t } = useTranslation("landing");
+    const { t } = useTranslation("home");
 
     return (
         <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
