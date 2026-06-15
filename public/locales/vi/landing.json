@@ -20,6 +20,10 @@
             "title": "Cộng đồng sôi nổi",
             "desc": "Tương tác trực tiếp với độc giả và những người sáng tạo khác thông qua hệ thống bình luận",
             "action": "KHÁM PHÁ CỘNG ĐỒNG"
+        },
+        "ui": {
+            "title": "Giao diện Tối giản",
+            "desc": "Thiết kế tối giản, giúp mang lại trải nghiệm đọc và viết hoàn toàn không bị phân tâm."
         }
     },
     "cta": {

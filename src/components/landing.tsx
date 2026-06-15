@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Bold, Code, Edit, Heading1, ImageIcon, Italic, LinkIcon, List, ListOrdered, MessageSquare, Quote, Redo, Sparkles, Strikethrough, Type, Underline, Undo } from "lucide-react";
+import { ArrowRight, Bold, Code, Edit, Heading1, ImageIcon, Italic, Layout, LinkIcon, List, ListOrdered, MessageSquare, Quote, Redo, Sparkles, Strikethrough, Type, Underline, Undo } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -12,14 +12,15 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { imageLoader } from "@/common/utils/image-loader";
 
 export default function LandingPageComponent() {
     return (
         <>
             <HeroSection />
             <FeatureSection />
-            <CtaSection />
             <EditorShowcaseSection />
+            <CtaSection />
             <FaqSection />
         </>
     )
@@ -31,15 +32,15 @@ export function HeroSection() {
     return (
         <section className="relative w-full min-h-screen bg-zinc-950 flex flex-col items-center justify-center px-4 overflow-hidden">
             <div className="absolute inset-0 z-0">
-                {/* FIXME: Put image here */}
-                {/* <Image
-                    src="/hero-bg.jpg" 
+                <Image
+                    loader={imageLoader}
+                    src="/hero-background_uk0kqz.webp"
                     alt="Hero Background"
                     fill
                     priority
-                    className="object-cover opacity-30 mix-blend-luminosity"
-                /> */}
-                <div className="absolute inset-0 bg-linear-to-b from-zinc-950/40 via-zinc-950/80 to-zinc-950" />
+                    className="object-cover opacity-40 mix-blend-luminosity"
+                />
+                <div className="absolute inset-0 bg-linear-to-b from-zinc-950/30 via-zinc-950/60 to-zinc-950" />
             </div>
 
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-100 bg-red-900/20 blur-[120px] rounded-full pointer-events-none z-0" />
@@ -48,7 +49,7 @@ export function HeroSection() {
                 <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }} 
                     className="text-5xl md:text-7xl font-bold tracking-tight text-white drop-shadow-sm"
                 >
                     {t("hero.title")}
@@ -57,7 +58,7 @@ export function HeroSection() {
                 <motion.p
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+                    transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }} 
                     className="text-zinc-400 max-w-2xl text-lg md:text-xl leading-relaxed"
                 >
                     {t("hero.subtitle")}
@@ -66,7 +67,7 @@ export function HeroSection() {
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
+                    transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }} 
                     className="flex flex-col sm:flex-row items-center gap-4 pt-4"
                 >
                     <Link href="/explore">
@@ -95,7 +96,7 @@ export function FeatureSection() {
     };
 
     return (
-        <section className="w-full bg-zinc-950 flex flex-col justify-center py-20 px-4 relative z-10">
+        <section className="w-full bg-white dark:bg-zinc-950 flex flex-col justify-center py-20 px-4 relative z-10 transition-colors duration-500">
             <div className="container mx-auto max-w-5xl">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -104,25 +105,26 @@ export function FeatureSection() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-12"
                 >
-                    <h2 className="text-3xl font-bold text-white mb-3">{t("features.title")}</h2>
-                    <p className="text-zinc-400 text-sm">{t("features.subtitle")}</p>
+                    <h2 className="text-3xl font-bold text-zinc-900 dark:text-white mb-3">{t("features.title")}</h2>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-sm">{t("features.subtitle")}</p>
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
                     <motion.div
                         variants={cardVariants}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="flex flex-col justify-between rounded-3xl border border-zinc-800/50 bg-zinc-900/20 p-6 hover:bg-zinc-900/40 transition-colors"
+                        className="flex flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20 p-6 hover:bg-zinc-100 dark:hover:bg-zinc-900/40 transition-colors"
                     >
-                        <div className="h-10 w-10 rounded-xl bg-zinc-800/50 flex items-center justify-center mb-5">
-                            <Sparkles className="h-5 w-5 text-zinc-100" />
+                        <div className="h-10 w-10 rounded-xl bg-zinc-200 dark:bg-zinc-800/50 flex items-center justify-center mb-5">
+                            <Sparkles className="h-5 w-5 text-zinc-700 dark:text-zinc-100" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-bold text-white mb-2">{t("features.quality.title")}</h3>
-                            <p className="text-zinc-400 text-sm leading-relaxed">
+                            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">{t("features.quality.title")}</h3>
+                            <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
                                 {t("features.quality.desc")}
                             </p>
                         </div>
@@ -134,14 +136,14 @@ export function FeatureSection() {
                         whileInView="visible"
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.5, delay: 0.2 }}
-                        className="flex flex-col justify-between rounded-3xl border border-zinc-800/50 bg-zinc-900/20 p-6 hover:bg-zinc-900/40 transition-colors"
+                        className="flex flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20 p-6 hover:bg-zinc-100 dark:hover:bg-zinc-900/40 transition-colors"
                     >
-                        <div className="h-10 w-10 rounded-xl bg-zinc-800/50 flex items-center justify-center mb-5">
-                            <Edit className="h-5 w-5 text-zinc-100" />
+                        <div className="h-10 w-10 rounded-xl bg-zinc-200 dark:bg-zinc-800/50 flex items-center justify-center mb-5">
+                            <Edit className="h-5 w-5 text-zinc-700 dark:text-zinc-100" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-bold text-white mb-2">{t("features.cms.title")}</h3>
-                            <p className="text-zinc-400 text-sm leading-relaxed">
+                            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">{t("features.cms.title")}</h3>
+                            <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
                                 {t("features.cms.desc")}
                             </p>
                         </div>
@@ -153,21 +155,35 @@ export function FeatureSection() {
                         whileInView="visible"
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.5, delay: 0.3 }}
-                        className="md:col-span-2 flex flex-col md:flex-row items-center justify-between rounded-3xl border border-zinc-800/50 bg-zinc-900/20 p-6 overflow-hidden group hover:bg-zinc-900/40 transition-colors"
+                        className="flex flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20 p-6 hover:bg-zinc-100 dark:hover:bg-zinc-900/40 transition-colors"
                     >
-                        <div className="md:w-1/2 pr-6 mb-6 md:mb-0">
-                            <div className="h-10 w-10 rounded-xl bg-zinc-800/50 flex items-center justify-center mb-5">
-                                <MessageSquare className="h-5 w-5 text-zinc-100" />
-                            </div>
-                            <h3 className="text-lg font-bold text-white mb-2">{t("features.community.title")}</h3>
-                            <p className="text-zinc-400 text-sm leading-relaxed">
+                        <div className="h-10 w-10 rounded-xl bg-zinc-200 dark:bg-zinc-800/50 flex items-center justify-center mb-5">
+                            <MessageSquare className="h-5 w-5 text-zinc-700 dark:text-zinc-100" />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">{t("features.community.title")}</h3>
+                            <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
                                 {t("features.community.desc")}
                             </p>
                         </div>
-                        <div className="md:w-1/2 relative h-40 md:h-full min-h-40 w-full rounded-xl overflow-hidden opacity-80 mix-blend-luminosity group-hover:mix-blend-normal group-hover:opacity-100 transition-all duration-500">
-                            <div className="absolute inset-0 bg-zinc-800/50 flex items-center justify-center text-zinc-500 text-xs">
-                                {/* Place image here */}
-                            </div>
+                    </motion.div>
+
+                    <motion.div
+                        variants={cardVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        className="flex flex-col justify-between rounded-3xl border border-zinc-200 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20 p-6 hover:bg-zinc-100 dark:hover:bg-zinc-900/40 transition-colors"
+                    >
+                        <div className="h-10 w-10 rounded-xl bg-zinc-200 dark:bg-zinc-800/50 flex items-center justify-center mb-5">
+                            <Layout className="h-5 w-5 text-zinc-700 dark:text-zinc-100" />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">{t("features.ui.title")}</h3>
+                            <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                                {t("features.ui.desc")}
+                            </p>
                         </div>
                     </motion.div>
                 </div>

@@ -20,6 +20,10 @@
             "title": "Vibrant Community",
             "desc": "Interact directly with readers and fellow creators through our engaging commenting system.",
             "action": "EXPLORE COMMUNITY"
+        },
+        "ui": {
+            "title": "Minimalist Interface",
+            "desc": "A minimalist design that delivers a completely distraction-free reading and writing experience."
         }
     },
     "cta": {
