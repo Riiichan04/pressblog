@@ -40,10 +40,21 @@ A full-stack Content Management System (CMS) and blogging platform featuring a c
 * **Database:** PostgreSQL
 
 ---
+## Screenshot
+<img width="1918" height="906" alt="image" src="https://github.com/user-attachments/assets/91b8ac4d-5e3b-4bfc-a483-56d339a792a9" />
+<img width="1918" height="905" alt="image" src="https://github.com/user-attachments/assets/0877c3f9-6ef8-4622-a85b-a3a6db97b4bf" />
+<img width="1918" height="906" alt="image" src="https://github.com/user-attachments/assets/78d1c587-e66e-4b0a-be3b-164cd0f40a75" />
+<img width="1918" height="906" alt="image" src="https://github.com/user-attachments/assets/ce093f5b-2130-43fb-aab1-99817a1f92ec" />
+<img width="1918" height="907" alt="image" src="https://github.com/user-attachments/assets/06ba6903-6154-45cd-9da8-3a35a63ed6e2" />
+<img width="1918" height="902" alt="image" src="https://github.com/user-attachments/assets/5fff7f75-225c-42e7-823c-ae8d1786ab5a" />
+
+
+
+---
 ## Roadmap
 - [x] Complete JWT & Google OAuth2 Authentication.
 - [x] Integrate i18n for En/Vi languages.
-- [ ] Overhaul Tiptap Editor with custom extensions - (Mermaid, Syntax Highlighting).
+- [x] Overhaul Tiptap Editor with custom extensions - (Mermaid, Syntax Highlighting).
 - [ ] Export posts to Markdown/PDF.
 - [ ] Add social features (Followers, Real-time Notifications).
 
