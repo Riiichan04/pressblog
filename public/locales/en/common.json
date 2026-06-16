@@ -61,7 +61,7 @@
             "home": "Home",
             "articles": "Articles",
             "projects": "Projects",
-            "about": "About",
+            "about": "About us",
             "contact": "Contact",
             "documentation": "Documentation",
             "privacy": "Privacy Policy",
@@ -86,5 +86,13 @@
     "dialog": {
         "confirm": "Confirm",
         "cancel": "Cancel"
+    },
+    "about": {
+        "title": "About PressBlog",
+        "subtitle": "A Place to Share Knowledge and Life",
+        "mission_title": "Our Mission",
+        "mission_desc": "PressBlog was born with the goal of creating a minimalist, clean, and completely distraction-free digital publishing space. We believe everyone has a story worth telling, and technology should be a bridge, not a barrier.",
+        "vision_title": "Vision",
+        "vision_desc": "To become the leading platform for sharing knowledge and experiences, where content quality is prioritized over toxic clickbait algorithms."
     }
 }
