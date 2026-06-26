@@ -32,6 +32,7 @@
         "featured": "Bài viết nổi bật",
         "tags": "Tag",
         "logout": "Đăng xuất",
+        "pages": "Trang tĩnh",
         "label": {
             "content": "Quản lý nội dung",
             "system": "Hệ thống"
@@ -327,5 +328,26 @@
             "cancel": "Hủy",
             "confirm": "Xóa vĩnh viễn"
         }
+    },
+    "page": {
+        "title": "Quản lý Trang tĩnh",
+        "subtitle": "Tạo và chỉnh sửa các trang điều khoản, chính sách, tài liệu hoặc giới thiệu.",
+        "create_btn": "Tạo trang mới",
+        "delete_confirm": "Bạn có chắc chắn muốn xóa trang này?",
+        "delete_success": "Xóa trang thành công",
+        "delete_error": "Xóa trang thất bại",
+        "load_error": "Không thể tải danh sách trang tĩnh",
+        "table": {
+            "title": "Tiêu đề trang",
+            "slug": "Đường dẫn (Slug)",
+            "status": "Trạng thái",
+            "last_updated": "Cập nhật cuối",
+            "actions": "Thao tác",
+            "loading": "Đang tải dữ liệu...",
+            "empty": "Chưa có trang tĩnh nào được tạo.",
+            "status_live": "Xuất bản",
+            "status_draft": "Bản nháp"
+        },
+        "pagination": "Trang {{current}} trên {{total}}"
     }
 }

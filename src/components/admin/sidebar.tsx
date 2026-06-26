@@ -2,17 +2,22 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, FileText, Tags, MessageSquare, LogOut, Settings, LayoutTemplate, Hash } from "lucide-react";
+import {
+    LayoutDashboard, Users, FileText, Tags,
+    MessageSquare, LogOut, Settings, LayoutTemplate,
+    Hash, Files
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import { PERMISSIONS } from "@/common/constants/permissions";
+import { ROLES } from "@/common/constants/roles";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import Image from "next/image";
 
 export default function AdminSidebar() {
     const pathname = usePathname();
-    const { hasPermission, logout } = useAuth();
+    const { hasPermission, hasRole, logout } = useAuth();
     const { t } = useTranslation("admin");
 
     const navGroups = useMemo(() => {
@@ -29,18 +34,19 @@ export default function AdminSidebar() {
                     { href: "/admin/featured", icon: LayoutTemplate, labelKey: "featured", show: hasPermission(PERMISSIONS.UPDATE_ANY_POST) },
                     { href: "/admin/categories", icon: Tags, labelKey: "categories", show: hasPermission(PERMISSIONS.UPDATE_CATEGORY) },
                     { href: "/admin/comments", icon: MessageSquare, labelKey: "comments", show: hasPermission(PERMISSIONS.DELETE_ANY_COMMENT) },
-                    { href: "/admin/tags", icon: Hash, labelKey: "tags", show: hasPermission([PERMISSIONS.APPROVE_TAG, PERMISSIONS.UPDATE_TAG, PERMISSIONS.DELETE_TAG])}
+                    { href: "/admin/tags", icon: Hash, labelKey: "tags", show: hasPermission([PERMISSIONS.APPROVE_TAG, PERMISSIONS.UPDATE_TAG, PERMISSIONS.DELETE_TAG]) }
                 ]
             },
             {
                 label: t("sidebar.label.system"),
                 items: [
+                    { href: "/admin/page", icon: Files, labelKey: "pages", show: hasRole(ROLES.ADMIN) },
                     { href: "/admin/users", icon: Users, labelKey: "users", show: hasPermission(PERMISSIONS.VIEW_USERS) },
                     { href: "/admin/settings", icon: Settings, labelKey: "settings", show: false },
                 ]
             }
         ];
-    }, [hasPermission, t]);
+    }, [hasPermission, hasRole, t]);
 
     return (
         <aside className="w-64 border-r bg-white dark:bg-zinc-950 flex flex-col h-screen sticky top-0 shadow-sm">

@@ -42,12 +42,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!userData.jwtToken) return
         setAuthState({ user: userData, isLoading: false });
         Cookies.set("token", userData.jwtToken, { expires: 7 });
+        if (userData.refreshToken) {
+            Cookies.set("refreshToken", userData.refreshToken, { expires: 7 });
+        }
         localStorage.setItem("user_data", JSON.stringify(userData));
     }, []);
 
     const logout = () => {
         setAuthState({ user: null, isLoading: false });
         Cookies.remove("token");
+        Cookies.remove("refreshToken");
         localStorage.removeItem("user_data");
         window.location.href = "/";
     };
