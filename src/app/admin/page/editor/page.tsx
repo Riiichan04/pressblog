@@ -121,7 +121,7 @@ export default function StaticPageEditor() {
                         type="text"
                         value={slug}
                         onChange={(e) => setSlug(e.target.value)}
-                        placeholder="tuy-chinh-duong-dan"
+                        placeholder="..."
                         className="bg-transparent border-b border-dashed border-border focus:border-primary outline-none py-1 min-w-62.5 transition-colors"
                     />
                 </div>
