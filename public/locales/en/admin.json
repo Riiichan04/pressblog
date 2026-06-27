@@ -32,6 +32,7 @@
         "featured": "Featured Blog",
         "logout": "Logout",
         "tags": "Tag",
+        "pages": "Static Pages",
         "label": {
             "content": "Content Management",
             "system": "System"
@@ -327,5 +328,26 @@
             "cancel": "Cancel",
             "confirm": "Delete permanently"
         }
+    },
+    "page": {
+        "title": "Static Pages",
+        "subtitle": "Create and manage terms of use, privacy policies, documentation, or about pages.",
+        "create_btn": "Create New Page",
+        "delete_confirm": "Are you sure you want to delete this page?",
+        "delete_success": "Page deleted successfully",
+        "delete_error": "Failed to delete page",
+        "load_error": "Failed to load static pages",
+        "table": {
+            "title": "Page Title",
+            "slug": "Slug Path",
+            "status": "Status",
+            "last_updated": "Last Updated",
+            "actions": "Actions",
+            "loading": "Loading data...",
+            "empty": "No static pages created yet.",
+            "status_live": "Live",
+            "status_draft": "Draft"
+        },
+        "pagination": "Page {{current}} of {{total}}"
     }
 }

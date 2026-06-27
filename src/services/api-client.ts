@@ -96,7 +96,7 @@ apiClient.interceptors.response.use(
 
                 Cookies.remove("token");
                 Cookies.remove("refreshToken");
-                Cookies.remove("user_session");
+                localStorage.removeItem("user_data"); 
                 window.location.href = "/login";
 
                 return Promise.reject(refreshError);

@@ -66,12 +66,12 @@ export default function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/privacy" className="hover:text-primary">
+                                <Link href="/privacy-policy" className="hover:text-primary">
                                     {t('footer.links.privacy')}
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/terms" className="hover:text-primary">
+                                <Link href="/terms-of-service" className="hover:text-primary">
                                     {t('footer.links.terms')}
                                 </Link>
                             </li>

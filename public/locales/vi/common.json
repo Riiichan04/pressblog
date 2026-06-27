@@ -61,7 +61,7 @@
             "home": "Trang chủ",
             "articles": "Bài viết",
             "projects": "Dự án",
-            "about": "Giới thiệu",
+            "about": "Về chúng tôi",
             "contact": "Liên hệ",
             "documentation": "Tài liệu",
             "privacy": "Chính sách bảo mật",
@@ -86,5 +86,13 @@
     "dialog": {
         "confirm": "Confirm",
         "cancel": "Cancel"
+    },
+    "about": {
+        "title": "Về PressBlog",
+        "subtitle": "Nơi Chia Sẻ Kiến Thức Và Cuộc Sống",
+        "mission_title": "Sứ mệnh của chúng tôi",
+        "mission_desc": "PressBlog được sinh ra với mục tiêu tạo ra một không gian xuất bản nội dung số tối giản, sạch sẽ và hoàn toàn không bị phân tâm. Chúng tôi tin rằng mỗi người đều có một câu chuyện đáng để kể, và công nghệ nên là cầu nối chứ không phải rào cản.",
+        "vision_title": "Tầm nhìn",
+        "vision_desc": "Trở thành nền tảng chia sẻ kiến thức và trải nghiệm hàng đầu, nơi chất lượng nội dung được đặt lên trên những thuật toán câu view độc hại."
     }
 }
