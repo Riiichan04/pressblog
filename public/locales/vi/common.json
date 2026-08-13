@@ -15,6 +15,13 @@
         "admin": "Trang quản trị (Admin)",
         "verify": "Xác thực tài khoản"
     },
+    "notification": {
+        "mark_read": "Đánh dấu đã đọc",
+        "no_notification": "Không có thông báo",
+        "action": {
+            "view_all": "Xem tất cả"
+        }
+    },
     "user_menu": {
         "profile": "Trang cá nhân",
         "write": "Viết bài",

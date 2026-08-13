@@ -15,6 +15,13 @@
         "admin": "Admin Management",
         "verify": "Verify your account"
     },
+    "notification": {
+        "mark_read": "Mark as read",
+        "no_notification": "No notifications",
+        "action": {
+            "view_all": "View all"
+        }
+    },
     "user_menu": {
         "profile": "Profile",
         "write": "Write",
