@@ -6,6 +6,7 @@ import I18nProvider from "./i18n-provider";
 import { AuthProvider } from "@/context/auth-context";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
+import NotificationListener from "./notification-listener";
 
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
     return (
@@ -19,6 +20,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
                         disableTransitionOnChange
                     >
                         {children}
+                        <NotificationListener />
                         <Toaster richColors closeButton />
                     </ThemeProvider>
                 </I18nProvider>
