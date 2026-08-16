@@ -4,10 +4,14 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { toast } from "sonner";
-// import { useDispatch } from "react-redux";   // For badge (if impl)
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+
+import { incrementUnreadCount, addNewNotification } from "@/store/slices/notification-slice";
 
 export default function NotificationListener() {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const { t } = useTranslation('notification');
 
     useEffect(() => {
         const token = Cookies.get("token");
@@ -35,9 +39,17 @@ export default function NotificationListener() {
                     if (event.event === "new-notification") {
                         const newNoti = JSON.parse(event.data);
 
-                        toast.info(`${newNoti.content}`);
+                        const [rawKey, ...args] = (newNoti.content || '').split('|');
+                        const translateKey = rawKey.trim().replace('notification.', '');
+                        const safeArg = args.join('|') || '';
 
-                        // dispatch(incrementUnreadCount());
+                        toast.info(t('title'), {
+                            description: t(translateKey, { postName: safeArg })
+                        });
+
+                        dispatch(incrementUnreadCount());
+                        dispatch(addNewNotification(newNoti));
+
                     } else if (event.event === "connected") {
                         console.log("Server says:", event.data);
                     }
@@ -57,7 +69,7 @@ export default function NotificationListener() {
         return () => {
             ctrl.abort();
         };
-    }, []);
+    }, [dispatch, t]);
 
-    return null; 
+    return null;
 }

@@ -78,7 +78,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
 
     const isLandingPage = pathname === "/" && !user;
     const forceWhiteText = isLandingPage && !isScrolled;
-
+    
     return (
         <nav
             className={cn(
