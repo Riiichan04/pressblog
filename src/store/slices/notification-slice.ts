@@ -24,8 +24,21 @@ export const notificationSlice = createSlice({
         addNewNotification: (state, action: PayloadAction<NotificationItem>) => {
             state.notifications.unshift(action.payload);
         },
+        markAsReadAction: (state, action: PayloadAction<number>) => {
+            const noti = state.notifications.find(n => n.id === action.payload);
+            if (noti && !noti.isRead) {
+                noti.isRead = true;
+                state.unreadCount = Math.max(0, state.unreadCount - 1);
+            }
+        },
+        markAllAsReadAction: (state) => {
+            state.notifications.forEach(noti => {
+                noti.isRead = true;
+            });
+            state.unreadCount = 0;
+        },
     }
 });
 
-export const { setInitialUnreadCount, incrementUnreadCount, addNewNotification } = notificationSlice.actions;
+export const { setInitialUnreadCount, incrementUnreadCount, addNewNotification, markAllAsReadAction, markAsReadAction } = notificationSlice.actions;
 export default notificationSlice.reducer;

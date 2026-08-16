@@ -42,7 +42,13 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
     const pathname = usePathname();
     const [searchQuery, setSearchQuery] = useState("");
 
-    const { unreadCount, notifications, resetUnread } = useNotification();
+    const { 
+        unreadCount, 
+        notifications, 
+        handleMarkAllAsRead, 
+        handleNotificationClick, 
+        handleViewAll 
+    } = useNotification();
 
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
@@ -78,7 +84,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
 
     const isLandingPage = pathname === "/" && !user;
     const forceWhiteText = isLandingPage && !isScrolled;
-    
+
     return (
         <nav
             className={cn(
@@ -108,7 +114,6 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         </span>
                     </Link>
 
-                    {/* Search bar */}
                     <form onSubmit={handleSearch} className="relative hidden md:block w-80 group">
                         <Search className={cn(
                             "absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition-all z-10",
@@ -130,7 +135,6 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                 </div>
 
                 <div className="flex items-center gap-2 md:gap-4">
-                    {/* Theme button */}
                     <Button
                         className={cn(
                             "cursor-pointer transition-colors rounded-full",
@@ -148,7 +152,6 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         )}
                     </Button>
 
-                    {/* Language button */}
                     <Button
                         variant="ghost"
                         size="sm"
@@ -165,9 +168,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                     </Button>
 
                     {mounted && user && (
-                        <DropdownMenu onOpenChange={(isOpen) => {
-                            if (isOpen) resetUnread();
-                        }}>
+                        <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant="ghost"
@@ -189,7 +190,13 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                             <DropdownMenuContent align="end" className="w-80 sm:w-96 p-0 shadow-lg">
                                 <div className="flex items-center justify-between px-4 py-3 border-b">
                                     <span className="font-semibold text-sm">{t("navbar.notifications", "Thông báo")}</span>
-                                    <Button variant="ghost" size="sm" className="h-auto p-0 text-xs text-indigo-500 hover:text-indigo-600 hover:bg-transparent cursor-pointer">
+                                    <Button 
+                                        variant="ghost" 
+                                        size="sm" 
+                                        className="h-auto p-0 text-xs text-indigo-500 hover:text-indigo-600 hover:bg-transparent cursor-pointer disabled:opacity-50"
+                                        onClick={handleMarkAllAsRead}
+                                        disabled={notifications.length === 0 || notifications.every(n => n.isRead)}
+                                    >
                                         {t("notification.mark_read")}
                                     </Button>
                                 </div>
@@ -207,7 +214,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                                     "flex flex-col items-start gap-1 p-4 cursor-pointer focus:bg-muted/50 border-b last:border-0",
                                                     !noti.isRead ? "bg-primary/5" : ""
                                                 )}
-                                                onClick={() => router.push(noti.targetUrl)}
+                                                onClick={() => handleNotificationClick(noti)}
                                             >
                                                 <NotificationComponent noti={noti} />
                                             </DropdownMenuItem>
@@ -217,7 +224,11 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
 
                                 {notifications.length > 0 && (
                                     <div className="border-t p-2">
-                                        <Button variant="ghost" className="w-full text-sm justify-center cursor-pointer text-indigo-500 hover:text-indigo-600">
+                                        <Button 
+                                            variant="ghost" 
+                                            className="w-full text-sm justify-center cursor-pointer text-indigo-500 hover:text-indigo-600"
+                                            onClick={handleViewAll}
+                                        >
                                             {t("notification.action.view_all")}
                                         </Button>
                                     </div>
