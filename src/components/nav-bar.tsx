@@ -30,6 +30,7 @@ import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 import { useRouter, usePathname } from 'next/navigation';
 import { ROLES } from '@/common/constants/roles';
 import { useNotification } from '@/context/notification-context';
+import NotificationComponent from './notification-component';
 
 export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean }) {
     const { user, logout } = useAuth();
@@ -189,7 +190,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                 <div className="flex items-center justify-between px-4 py-3 border-b">
                                     <span className="font-semibold text-sm">{t("navbar.notifications", "Thông báo")}</span>
                                     <Button variant="ghost" size="sm" className="h-auto p-0 text-xs text-indigo-500 hover:text-indigo-600 hover:bg-transparent cursor-pointer">
-                                        {t("notification.action.mark_read")}
+                                        {t("notification.mark_read")}
                                     </Button>
                                 </div>
 
@@ -208,19 +209,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                                 )}
                                                 onClick={() => router.push(noti.targetUrl)}
                                             >
-                                                <div className="flex items-start gap-3 w-full">
-                                                    <div className="flex-1 space-y-1">
-                                                        <p className={cn("text-sm leading-snug", !noti.isRead ? "font-medium" : "text-muted-foreground")}>
-                                                            {noti.content}
-                                                        </p>
-                                                        <p className="text-xs text-muted-foreground/70">
-                                                            {new Date(noti.createdAt).toLocaleDateString()}
-                                                        </p>
-                                                    </div>
-                                                    {!noti.isRead && (
-                                                        <div className="h-2 w-2 bg-indigo-500 rounded-full shrink-0 mt-2"></div>
-                                                    )}
-                                                </div>
+                                                <NotificationComponent noti={noti} />
                                             </DropdownMenuItem>
                                         ))
                                     )}

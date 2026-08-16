@@ -1,0 +1,9 @@
+{
+    "title": "Notifications",
+    "empty": "You have no notifications yet.",
+    "mark_all_read": "Mark all as read",
+    "new_comment": "A user commented on your post: <strong>{{postName}}</strong>",
+    "reply_comment": "A user replied to your comment on a post: <strong>{{postName}}</strong>",
+    "unread": "Unread",
+    "view_all": "View all notifications"
+}

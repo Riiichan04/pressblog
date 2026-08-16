@@ -1,0 +1,9 @@
+{
+    "title": "Thông báo",
+    "empty": "Bạn chưa có thông báo nào.",
+    "mark_all_read": "Đánh dấu tất cả đã đọc",
+    "new_comment": "Một người dùng đã bình luận về bài viết: <strong>{{postName}}</strong>",
+    "reply_comment": "Một người dùng đã trả lời bình luận trong bài viết: <strong>{{postName}}</strong>",
+    "unread": "Chưa đọc",
+    "view_all": "Xem tất cả thông báo"
+}

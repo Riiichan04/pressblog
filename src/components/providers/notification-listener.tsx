@@ -16,7 +16,7 @@ export default function NotificationListener() {
         const ctrl = new AbortController();
 
         const connectStream = async () => {
-            await fetchEventSource(`${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_API_VERSION}/notifications/stream`, {
+            await fetchEventSource(`${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_API_VERSION}/notification/stream`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
