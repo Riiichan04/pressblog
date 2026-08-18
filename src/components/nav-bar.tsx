@@ -29,6 +29,8 @@ import { cn } from "@/lib/utils";
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
 import { useRouter, usePathname } from 'next/navigation';
 import { ROLES } from '@/common/constants/roles';
+import { useNotification } from '@/context/notification-context';
+import NotificationComponent from './notification-component';
 
 export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean }) {
     const { user, logout } = useAuth();
@@ -39,6 +41,14 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
     const router = useRouter();
     const pathname = usePathname();
     const [searchQuery, setSearchQuery] = useState("");
+
+    const { 
+        unreadCount, 
+        notifications, 
+        handleMarkAllAsRead, 
+        handleNotificationClick, 
+        handleViewAll 
+    } = useNotification();
 
     useEffect(() => {
         const frame = requestAnimationFrame(() => {
@@ -104,7 +114,6 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         </span>
                     </Link>
 
-                    {/* Search bar */}
                     <form onSubmit={handleSearch} className="relative hidden md:block w-80 group">
                         <Search className={cn(
                             "absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition-all z-10",
@@ -126,7 +135,6 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                 </div>
 
                 <div className="flex items-center gap-2 md:gap-4">
-                    {/* Theme button */}
                     <Button
                         className={cn(
                             "cursor-pointer transition-colors rounded-full",
@@ -144,7 +152,6 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                         )}
                     </Button>
 
-                    {/* Language button */}
                     <Button
                         variant="ghost"
                         size="sm"
@@ -161,16 +168,73 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                     </Button>
 
                     {mounted && user && (
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className={cn(
-                                "relative rounded-full cursor-pointer transition-colors",
-                                forceWhiteText ? "text-white hover:bg-white/20" : "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
-                            )}
-                        >
-                            <Bell className="h-5 w-5" />
-                        </Button>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className={cn(
+                                        "relative rounded-full cursor-pointer transition-colors",
+                                        forceWhiteText ? "text-white hover:bg-white/20" : "text-foreground dark:text-white hover:bg-black/10 dark:hover:bg-white/10"
+                                    )}
+                                >
+                                    <Bell className="h-5 w-5" />
+                                    {unreadCount > 0 && (
+                                        <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-background">
+                                            {unreadCount > 99 ? "99+" : unreadCount}
+                                        </span>
+                                    )}
+                                </Button>
+                            </DropdownMenuTrigger>
+
+                            <DropdownMenuContent align="end" className="w-80 sm:w-96 p-0 shadow-lg">
+                                <div className="flex items-center justify-between px-4 py-3 border-b">
+                                    <span className="font-semibold text-sm">{t("navbar.notifications", "Thông báo")}</span>
+                                    <Button 
+                                        variant="ghost" 
+                                        size="sm" 
+                                        className="h-auto p-0 text-xs text-indigo-500 hover:text-indigo-600 hover:bg-transparent cursor-pointer disabled:opacity-50"
+                                        onClick={handleMarkAllAsRead}
+                                        disabled={notifications.length === 0 || notifications.every(n => n.isRead)}
+                                    >
+                                        {t("notification.mark_read")}
+                                    </Button>
+                                </div>
+
+                                <div className="max-h-87.5 overflow-y-auto">
+                                    {notifications.length === 0 ? (
+                                        <div className="p-4 text-center text-sm text-muted-foreground">
+                                            {t("notification.action.no_notification")}
+                                        </div>
+                                    ) : (
+                                        notifications.map((noti) => (
+                                            <DropdownMenuItem
+                                                key={noti.id}
+                                                className={cn(
+                                                    "flex flex-col items-start gap-1 p-4 cursor-pointer focus:bg-muted/50 border-b last:border-0",
+                                                    !noti.isRead ? "bg-primary/5" : ""
+                                                )}
+                                                onClick={() => handleNotificationClick(noti)}
+                                            >
+                                                <NotificationComponent noti={noti} />
+                                            </DropdownMenuItem>
+                                        ))
+                                    )}
+                                </div>
+
+                                {notifications.length > 0 && (
+                                    <div className="border-t p-2">
+                                        <Button 
+                                            variant="ghost" 
+                                            className="w-full text-sm justify-center cursor-pointer text-indigo-500 hover:text-indigo-600"
+                                            onClick={handleViewAll}
+                                        >
+                                            {t("notification.action.view_all")}
+                                        </Button>
+                                    </div>
+                                )}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     )}
 
                     {user && !user.verified && (
