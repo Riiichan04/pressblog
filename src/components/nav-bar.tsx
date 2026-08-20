@@ -195,7 +195,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                         size="sm" 
                                         className="h-auto p-0 text-xs text-indigo-500 hover:text-indigo-600 hover:bg-transparent cursor-pointer disabled:opacity-50"
                                         onClick={handleMarkAllAsRead}
-                                        disabled={notifications.length === 0 || notifications.every(n => n.isRead)}
+                                        disabled={notifications.length === 0 || notifications.every(n => n.read)}
                                     >
                                         {t("notification.mark_read")}
                                     </Button>
@@ -212,7 +212,7 @@ export default function Navbar({ isEnableScroll }: { isEnableScroll?: boolean })
                                                 key={noti.id}
                                                 className={cn(
                                                     "flex flex-col items-start gap-1 p-4 cursor-pointer focus:bg-muted/50 border-b last:border-0",
-                                                    !noti.isRead ? "bg-primary/5" : ""
+                                                    !noti.read ? "bg-primary/5" : ""
                                                 )}
                                                 onClick={() => handleNotificationClick(noti)}
                                             >

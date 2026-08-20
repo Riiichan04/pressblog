@@ -14,7 +14,7 @@ export default function NotificationComponent({ noti }: { noti: NotificationItem
 
         <div className="flex items-start gap-3 w-full">
             <div className="flex-1 space-y-1">
-                <p className={cn("text-sm leading-snug", !noti.isRead ? "font-medium" : "text-muted-foreground")}>
+                <p className={cn("text-sm leading-snug", !noti.read ? "font-medium" : "text-muted-foreground")}>
                     <Trans
                         t={t}
                         i18nKey={translateKey}
@@ -26,7 +26,7 @@ export default function NotificationComponent({ noti }: { noti: NotificationItem
                     {new Date(noti.createdAt).toLocaleDateString()}
                 </p>
             </div>
-            {!noti.isRead && (
+            {!noti.read && (
                 <div className="h-2 w-2 bg-indigo-500 rounded-full shrink-0 mt-2"></div>
             )}
         </div>
