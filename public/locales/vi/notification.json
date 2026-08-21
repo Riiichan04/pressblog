@@ -5,5 +5,10 @@
     "new_comment": "Một người dùng đã bình luận về bài viết: <strong>{{postName}}</strong>",
     "reply_comment": "Một người dùng đã trả lời bình luận trong bài viết: <strong>{{postName}}</strong>",
     "unread": "Chưa đọc",
-    "view_all": "Xem tất cả thông báo"
+    "view_all": "Xem tất cả thông báo",
+    "fetch-error": "Có lỗi khi tải thông báo của bạn",
+    "state": {
+        "read": "Đã đọc",
+        "not-read": "Mới"
+    }
 }

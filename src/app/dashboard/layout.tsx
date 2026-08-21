@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import { LayoutDashboard, FileText, Settings, User } from "lucide-react";
+import { LayoutDashboard, FileText, Settings, User, Bell } from "lucide-react";
 import Navbar from "@/components/nav-bar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { fallBackColor, getFallback } from "@/common/utils/avatar-loader";
@@ -13,6 +13,7 @@ const sidebarLinks = [
     { href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.overview" },
     { href: "/dashboard/posts", icon: FileText, labelKey: "nav.posts" },
     { href: "/dashboard/profile", icon: User, labelKey: "nav.profile" },
+    { href: "/dashboard/notification", icon: Bell, labelKey: "nav.notifications" },
     { href: "/dashboard/settings", icon: Settings, labelKey: "nav.settings" },
 ];
 
