@@ -19,6 +19,7 @@ interface NotificationContextType {
     handleMarkAllAsRead: () => Promise<void>;
     handleNotificationClick: (noti: NotificationItem) => Promise<void>;
     handleViewAll: () => void;
+    setUnreadCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -75,7 +76,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const handleNotificationClick = async (noti: NotificationItem) => {
-        if (!noti.isRead) {
+        if (!noti.read) {
             try {
                 await markAsRead(noti.id);
 
@@ -106,7 +107,8 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
                 addNewNotification,
                 handleMarkAllAsRead,
                 handleNotificationClick,
-                handleViewAll
+                handleViewAll,
+                setUnreadCount
             }}
         >
             {children}
