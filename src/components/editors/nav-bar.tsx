@@ -3,7 +3,7 @@
 import {
     ChevronLeft, Send, Settings, Eye,
     Languages, Bell, User, LogOut,
-    Import
+    Import, FileDown, FileText, FileCode2 // 🎯 Bổ sung 3 Icon này
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -67,22 +67,6 @@ export default function EditorNavbar() {
                         <ChevronLeft className="size-4!" />
                         {t("navbar.back_previous")}
                     </Button>
-
-                    <div className="flex items-center gap-2">
-                        {/* <Image
-                            src="/logo.png"
-                            alt="Logo"
-                            width={32}
-                            height={32}
-                            className="transition-transform group-hover:scale-110 rounded-md"
-                            priority
-                            unoptimized
-                        /> */}
-                        {/* <span className="text-sm font-medium text-muted-foreground hidden lg:block">
-                            {t("editor.draft", "Draft")} <span className="mx-2 opacity-50">•</span>
-                            <span className="italic opacity-80 text-xs">{t("editor.saved_just_now", "Đã lưu vài giây trước")}</span>
-                        </span> */}
-                    </div>
                 </div>
 
                 <div className="flex items-center gap-1 md:gap-2">
@@ -116,14 +100,35 @@ export default function EditorNavbar() {
                         Import
                     </Button>
 
-                    {/* <Button
-                        className="h-9 rounded-md px-4 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-all font-semibold"
-                        onClick={() => dispatch(requestPublish())}
-                        disabled={isPublishRequested}
-                    >
-                        <Send className="h-4 w-4 mr-2" />
-                        {isPublishRequested ? t("editor.publishing") : t("editor.publish")}
-                    </Button> */}
+                    {/* 🎯 MENU XUẤT FILE MỚI CHÈN VÀO ĐÂY */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-9 text-muted-foreground hover:text-foreground hidden lg:flex gap-2 cursor-pointer"
+                            >
+                                <FileDown className="h-4 w-4 mr-2" />
+                                Export
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem 
+                                className="cursor-pointer"
+                                onClick={() => document.getElementById("hidden-export-pdf")?.click()}
+                            >
+                                <FileText className="mr-2 h-4 w-4 text-rose-500" />
+                                <span>Xuất file PDF</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                                className="cursor-pointer"
+                                onClick={() => document.getElementById("hidden-export-md")?.click()}
+                            >
+                                <FileCode2 className="mr-2 h-4 w-4 text-indigo-500" />
+                                <span>Xuất file Markdown</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
 
                     <Button
                         disabled={!canPublish || isPublishRequested}

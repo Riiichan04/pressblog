@@ -14,7 +14,8 @@
     },
     "editor": {
         "command_not_found": "No command found",
-        "link_title": "Link title"
+        "link_title": "Link title",
+        "missing_content": "Missing content recommendation"
     },
     "extensions": {
         "placeholder": "Type content or press '/' for commands..."
@@ -114,6 +115,11 @@
     "import": {
         "successs": "Import successful",
         "error": "Error ocurred when importing your file"
+    },
+    "export": {
+        "success": "Exported successfully",
+        "error": "Failed to export",
+        "processing": "Processing file..."
     },
     "mermaid": {
         "title": "Mermaid Diagram",
