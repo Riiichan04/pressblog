@@ -1,11 +1,15 @@
 "use client";
 
 import MarkdownIt from 'markdown-it';
+import TurndownService from 'turndown';
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import 'highlight.js/styles/github-dark.css';     
+import 'highlight.js/styles/github-dark.css';
+import html2canvas from 'html2canvas-pro';
+import { jsPDF } from 'jspdf';
+import "@/components/styles/post-editor.css"
 
 import {
     ImagePlus,
@@ -94,7 +98,7 @@ export default function WritePostComponent() {
 
             setIsPublishable(hasTitle && hasCategory && hasContent);
         }, 500),
-        [] 
+        []
     );
 
     //Handle editor's content
@@ -155,8 +159,122 @@ export default function WritePostComponent() {
         e.target.value = "";
     }, [editorInstance, handleEditorChange, t, mdParser]);
 
+    //Export markdown
+    const handleExportMarkdown = useCallback(() => {
+        const htmlContent = contentRef.current;
+        if (!htmlContent) {
+            toast.error(t("editor.missing_content"));
+            return;
+        }
 
-    //For validate Publish button on mount
+        const turndownService = new TurndownService({
+            headingStyle: 'atx',
+            codeBlockStyle: 'fenced'
+        });
+
+        let markdown = turndownService.turndown(htmlContent);
+
+        const currentTitle = titleRef.current?.value || 'Untitled';
+        markdown = `# ${currentTitle}\n\n${markdown}`;
+
+        const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${currentTitle}.md`;
+        link.click();
+        URL.revokeObjectURL(url);
+        toast.success(t("export.success"));
+    }, [t]);
+
+    const handleExportPDF = useCallback(async () => {
+        if (!contentRef.current) {
+            toast.error(t("editor.missing_content"));
+            return;
+        }
+
+        toast.info(t("export.processing"));
+
+        const container = document.createElement('div');
+        container.style.backgroundColor = '#ffffff';
+        container.style.padding = '2rem';
+        container.style.width = '800px';
+        container.style.color = '#000000';
+
+        const currentTitle = titleRef.current?.value || 'Untitled Document';
+        const titleEl = document.createElement('h1');
+        titleEl.innerText = currentTitle;
+        titleEl.style.fontSize = '2.5rem';
+        titleEl.style.fontWeight = 'bold';
+        titleEl.style.marginBottom = '1.5rem';
+        titleEl.style.borderBottom = '2px solid #e5e7eb';
+        titleEl.style.paddingBottom = '1rem';
+        titleEl.style.color = '#000000';
+        container.appendChild(titleEl);
+
+        const editorDOM = document.querySelector('.ProseMirror');
+        if (editorDOM) {
+            const contentClone = editorDOM.cloneNode(true) as HTMLElement;
+            contentClone.classList.remove('dark:prose-invert');
+            container.appendChild(contentClone);
+        }
+
+        container.style.position = 'absolute';
+        container.style.left = '-9999px';
+        container.style.top = '0';
+        document.body.appendChild(container);
+
+        try {
+            const canvas = await html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                //Override pdf styling to light mode
+                onclone: (clonedDoc) => {
+                    clonedDoc.documentElement.classList.remove('dark');
+                    clonedDoc.body.classList.remove('dark');
+                }
+            });
+
+            const imgData = canvas.toDataURL('image/jpeg', 0.98);
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'pt',
+                format: 'a4'
+            });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            const pageHeight = pdf.internal.pageSize.getHeight();
+
+            let position = 0;
+
+            if (pdfHeight <= pageHeight) {
+                pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            } else {
+                while (position < pdfHeight) {
+                    pdf.addImage(imgData, 'JPEG', 0, position * -1, pdfWidth, pdfHeight);
+                    position += pageHeight;
+                    if (position < pdfHeight) {
+                        pdf.addPage();
+                    }
+                }
+            }
+
+            pdf.save(`${currentTitle}.pdf`);
+            toast.success(t("export.success"));
+
+        } catch (error) {
+            console.error("PDF Export Error:", error);
+            toast.error(t("export.error"));
+        } finally {
+            if (document.body.contains(container)) {
+                document.body.removeChild(container);
+            }
+        }
+    }, [t]);
+
+
     useEffect(() => {
         uploadValidation();
         return () => {
@@ -212,7 +330,7 @@ export default function WritePostComponent() {
                     language: "VI",
                     listTag: tagsRef.current,
                     thumbnail: coverImage,
-                    excerpt: excerptRef.current?.value || "" 
+                    excerpt: excerptRef.current?.value || ""
                 };
 
                 const res = await uploadPost(postData);
@@ -353,6 +471,17 @@ export default function WritePostComponent() {
                     onChange={handleImportMarkdown}
                     className="hidden"
                     accept=".md, .markdown"
+                />
+
+                <button
+                    id="hidden-export-md"
+                    onClick={handleExportMarkdown}
+                    className="hidden"
+                />
+                <button
+                    id="hidden-export-pdf"
+                    onClick={handleExportPDF}
+                    className="hidden"
                 />
             </main>
         </div>

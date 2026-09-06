@@ -15,7 +15,6 @@ import Underline from '@tiptap/extension-underline';
 import { cx } from "class-variance-authority";
 import { TFunction } from "i18next";
 
-import { all, createLowlight } from 'lowlight';
 import { MermaidExtension } from "./mermaid-extension";
 import { TrailingNode } from "./trailing-note";
 import { CustomCodeBlockExtension } from "./code-block-extension";
@@ -132,7 +131,6 @@ const resetFormatOnEnter = Extension.create({
 
                     if (empty && $from.parent.textContent.length === 0) {
                         editor.commands.unsetAllMarks();
-                        editor.commands.clearNodes();
                     }
                 });
 
@@ -142,12 +140,22 @@ const resetFormatOnEnter = Extension.create({
     },
 });
 
+const listIndent = Extension.create({
+    name: 'listIndent',
+    addKeyboardShortcuts() {
+        return {
+            Tab: () => this.editor.commands.sinkListItem('listItem'),
+            'Shift-Tab': () => this.editor.commands.liftListItem('listItem'),
+        }
+    }
+});
+
 const starterKit = StarterKit.configure({
     bulletList: {},
     orderedList: {},
     listItem: {},
     blockquote: {},
-    codeBlock: false, 
+    codeBlock: false,
     code: false,
     horizontalRule: false,
     dropcursor: {
@@ -172,5 +180,6 @@ export const getDefaultExtensions = (t: TFunction) => [
     horizontalRule,
     Underline as never,
     MermaidExtension as never,
-    TrailingNode
+    TrailingNode,
+    listIndent
 ];

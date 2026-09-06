@@ -14,7 +14,8 @@
     },
     "editor": {
         "command_not_found": "Không tìm thấy lệnh",
-        "link_title": "Tiêu đề link"
+        "link_title": "Tiêu đề link",
+        "missing_content": "Không có nội dung để xuất"
     },
     "extensions": {
         "placeholder": "Nhập nội dung bài viết hoặc nhấn '/' để chọn lệnh..."
@@ -112,8 +113,13 @@
         "validate_error": "Nội dung còn trống"
     },
     "import": {
-        "successs": "Nhập file thành công",
+        "success": "Nhập file thành công",
         "error": "Nhập file thất bại"
+    },
+    "export": {
+        "success": "Xuất file thành công",
+        "error": "Đã xảy ra lỗi khi xuất file",
+        "processing": "Đang chuẩn bị file PDF..."
     },
     "mermaid": {
         "title": "Sơ đồ Mermaid",
