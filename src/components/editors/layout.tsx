@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import 'highlight.js/styles/github-dark.css';
 import html2canvas from 'html2canvas-pro';
 import { jsPDF } from 'jspdf';
+import "@/components/styles/post-editor.css"
 
 import {
     ImagePlus,
